@@ -1,12 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+:root{
+    --custom-color: var(--p-rose-600);
+    --c-transparent: transparent;
+}
+:root[class="my-app-dark"]{
+    --custom-color: #fff;
+    --c-transparent:var(--p-zinc-900);
+    --bs-white-rgb : 255,29,72;
+}
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Work Sans", serif;
+
 }
 .custom-dark{
     background-color: var(--p-zinc-950);
     color: white;
 }
+<<<<<<< HEAD
 
 /* Dashboard Section */
 .h-100vh{
@@ -77,3 +90,50 @@
     --bs-btn-disabled-bg: #eae19d;
     --bs-btn-disabled-border-color: #eae19d;
 }
+=======
+.bg-color{
+    background-color: var(--custom-color) ;
+}
+.color{
+    color: var(--custom-color);
+}
+
+.bg-custom{
+    background-size: cover !important;
+    background-position: center ;
+}
+.hr{
+    background-color: var(--custom-color);
+    border: 0 none;
+    height: 5px;
+    border-radius: 25px;
+}
+.wishlist{
+    position: absolute !important;
+    right: 62%;
+}
+.bg-transparent{
+    background-color:  var(--c-transparent) !important;
+}
+.--font-18{
+    font-size: 18px !important;
+}
+.white-always > *{
+    color: white !important;
+}
+.colored-always{
+    background-color: rgb(255,29,72) ;
+
+}
+.activity-zoom{
+    overflow: hidden
+}
+.activity-zoom img{
+    transition: transform .8s ease;
+    overflow: hidden
+}
+
+.activity-zoom:hover img {
+    transform: scale(1.5);
+  }
+>>>>>>> 4de3597c292be8361d7baac2808c402409063aa7

@@ -66,19 +66,19 @@
           </TabPanel>
           <TabPanel :value="2">
             <Details
-              header="Unforgettable cultural experiences"
+              header="Unforgettable food experiences"
               subheader="Top cultural sights you can't miss"
             />
           </TabPanel>
           <TabPanel :value="3">
             <Details
-              header="Unforgettable cultural experiences"
+              header="Unforgettable nature experiences"
               subheader="Top cultural sights you can't miss"
             />
           </TabPanel>
           <TabPanel :value="4">
             <Details
-              header="Unforgettable cultural experiences"
+              header="Unforgettable sports experiences"
               subheader="Top cultural sights you can't miss"
             />
           </TabPanel>

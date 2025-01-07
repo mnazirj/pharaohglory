@@ -6,6 +6,11 @@ const routes = [
     name: "home",
     component: () => import("../views/home/HomeView.vue"),
   },
+  {
+    path: "/details/:uid",
+    name: "details",
+    component: () => import("../views/home/DetailsView.vue"),
+  },
   // Dashboard Routes
   {
     path: "/dashboard",

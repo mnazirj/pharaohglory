@@ -81,6 +81,7 @@ function ToggleDarkMode() {
 
   document.body.classList.toggle("custom-dark");
   document.querySelector("#nav").classList.toggle("bg-body-tertiary");
+  document.querySelector("#footer").classList.toggle("bg-body-secondary");
   var isdark = isDarkModeActive();
   isdark
     ? document.documentElement.setAttribute("data-bs-theme", "dark")

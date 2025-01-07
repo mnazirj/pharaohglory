@@ -2,6 +2,8 @@
 :root{
     --custom-color: var(--p-rose-600);
     --c-transparent: transparent;
+    --a-color : rgb(255,29,72);
+    --icon-size : 25px
 }
 :root[class="my-app-dark"]{
     --custom-color: #fff;
@@ -13,13 +15,14 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Work Sans", serif;
+    /* outline: solid 1px red; */
 
 }
 .custom-dark{
     background-color: var(--p-zinc-950);
     color: white;
 }
-<<<<<<< HEAD
+
 
 /* Dashboard Section */
 .h-100vh{
@@ -90,14 +93,22 @@
     --bs-btn-disabled-bg: #eae19d;
     --bs-btn-disabled-border-color: #eae19d;
 }
-=======
+
 .bg-color{
     background-color: var(--custom-color) ;
 }
 .color{
     color: var(--custom-color);
 }
-
+.color-always{
+    color: var(--a-color) ;
+}
+.border-color{
+    border-color: var(--custom-color) !important;
+}
+.font-icon{
+    font-size: var(--icon-size) !important;
+}
 .bg-custom{
     background-size: cover !important;
     background-position: center ;
@@ -122,7 +133,7 @@
     color: white !important;
 }
 .colored-always{
-    background-color: rgb(255,29,72) ;
+    background-color: var(--a-color) ;
 
 }
 .activity-zoom{
@@ -136,4 +147,20 @@
 .activity-zoom:hover img {
     transform: scale(1.5);
   }
->>>>>>> 4de3597c292be8361d7baac2808c402409063aa7
+
+
+#footer > section> div > a:hover{
+    color: rgb(255,29,72) !important;
+    transition: .9s;
+}
+.reviews > .p-rating-option-active .p-rating-icon{
+    width: 40px;
+    height: 40px;
+    cursor: default;
+}
+.reviews > .p-rating-option .p-rating-off-icon{
+    width: 40px;
+    height: 40px;
+    color: var(--p-zinc-500);
+    cursor: default;
+}

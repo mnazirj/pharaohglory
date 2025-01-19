@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-transparent" id="nav">
     <div class="container">
-      <img :src="logo" alt="PG" class="img-fluid text-center" width="250" />
+      <a href="/"
+        ><img :src="logo" alt="PG" class="img-fluid text-center" width="250"
+      /></a>
       <button
         class="navbar-toggler"
         type="button"

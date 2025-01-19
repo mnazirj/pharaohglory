@@ -1,23 +1,20 @@
 <template>
-  <Navbar />
-  <div class="container">
-    <h1 class="text-uppercase font-bold text-center">
-      Viewing details for uid /{{ $route.params.uid }}/
-    </h1>
-
+  <div class="container" v-if="!isLoading">
     <div>
       <div>
-        <Tag value="Guided Tour" />
+        <Tag :value="eventDetails.category" />
         <h1 class="fw-bold">
-          Orlando: Chocolate Kingdom Factory Adventure Tour
+          {{ eventDetails.title }}
         </h1>
       </div>
       <div class="d-flex justify-content-between py-2">
         <div class="d-flex gap-2 align-items-center">
-          <Rating v-model="stars" readonly class="d-inline" />
+          <Rating v-model="eventDetails.eventRate" readonly class="d-inline" />
           <h6 class="mt-1 fw-bold">
-            4.8 / 5
-            <a href="#" class="ms-1 fw-normal">119 Reviews</a>
+            {{ eventDetails.eventRate }} / 5
+            <a href="#reviews" class="ms-1 fw-normal"
+              >{{ eventDetails.totalEventRate }} Reviews</a
+            >
           </h6>
         </div>
         <div class="d-flex gap-2 align-items-center">
@@ -40,7 +37,7 @@
         >
           <template #item="slotProps">
             <div>
-              <Image :src="slotProps.item.href" preview class="img-fluid" />
+              <Image :src="slotProps.item.image" preview class="img-fluid" />
             </div>
           </template>
         </Galleria>
@@ -51,7 +48,7 @@
           <div class="col-lg-4 col-md-6 col-12 py-2">
             <div class="d-flex h-full" v-if="index != 2">
               <img
-                :src="image.href"
+                :src="image.image"
                 @click="ShowImage(index)"
                 class="img-fluid rounded shadow cursor-pointer"
               />
@@ -61,16 +58,25 @@
               v-if="index == 2"
             >
               <img
-                :src="image.href"
+                :src="image.image"
                 @click="ShowImage(index)"
                 class="img-fluid rounded shadow cursor-pointer"
               />
               <Button
+                v-if="images.length >= 4"
                 :label="images.slice(index + 1).length"
                 icon="fas fa-image"
                 class="position-absolute m-2"
                 rounded
                 @click="ShowImage(index + 1)"
+              />
+              <Button
+                v-if="images.length <= 4"
+                :label="images.slice(index).length"
+                icon="fas fa-image"
+                class="position-absolute m-2"
+                rounded
+                @click="ShowImage(index)"
               />
             </div>
           </div>
@@ -89,11 +95,15 @@
             >
               <div class="mt-2">
                 <h6 class="mb-1">From</h6>
-                <h5 class="fw-bold mb-1">$209.15</h5>
+                <h5 class="fw-bold mb-1">${{ eventDetails.adultPrice }}</h5>
                 <h6>per person</h6>
               </div>
               <div>
-                <Button label="Check availiability" rounded />
+                <Button
+                  label="Check availiability"
+                  rounded
+                  @click="openCheck()"
+                />
               </div>
             </div>
             <div class="d-flex gap-3 align-items-center">
@@ -110,9 +120,7 @@
       <!-- TITLE and ABOUT -->
       <div class="col-lg-8 col-md-12 col-12">
         <h6>
-          Indulge your passion for all things chocolate on a 45-minute adventure
-          tour at the Chocolate Kingdom in Orlando. Experience the only
-          micro-batch chocolate factory and museum tour on the East Coast.
+          {{ eventDetails.description }}
         </h6>
         <div class="py-2">
           <h3 class="fw-bold">About this activity</h3>
@@ -126,8 +134,8 @@
               </div>
               <div class="col">
                 <h6>{{ prob.title }}</h6>
-                <h6 class="text-muted" v-if="prob.subtitle != null">
-                  {{ prob.subtitle }}
+                <h6 class="text-muted" v-if="prob.subTitle != null">
+                  {{ prob.subTitle }}
                 </h6>
               </div>
             </div>
@@ -135,36 +143,70 @@
         </div>
         <div class="float-start">
           <h4 class="fw-bold">Experience</h4>
-          <div v-for="item in eventHighlight" :key="item" class="col-12">
-            <div class="row" v-if="!item.isList">
+          <div class="col-12">
+            <div class="row">
               <div class="col-lg-3 col-md-3 col-12">
-                <h6>{{ item.title }}</h6>
+                <h6>Highlights</h6>
               </div>
               <div class="col">
-                <h6>{{ item.subtitle }}</h6>
+                <ul class="fa-ul ms-0">
+                  <li v-for="list in eventDetails.eventHighlight" :key="list">
+                    <i class="me-1 fas fa-circle-notch color-always" />
+                    {{ list.title }}
+                  </li>
+                </ul>
               </div>
               <hr />
             </div>
 
-            <div class="row" v-if="item.isList">
+            <div class="row">
               <div class="col-lg-3 col-md-3 col-12">
-                <h6>{{ item.title }}</h6>
+                <h6>Full Description</h6>
+              </div>
+              <div class="col">
+                <h6>{{ eventDetails.fullDescription }}</h6>
+              </div>
+              <hr />
+            </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-12">
+                <h6>Includes</h6>
               </div>
               <div class="col">
                 <ul class="fa-ul ms-0">
-                  <li v-for="list in item.list" :key="list">
+                  <li v-for="list in eventDetails.eventIncludes" :key="list">
                     <i
+                      class="me-1 fas"
                       :class="[
                         list.icon,
-                        { 'text-danger': list.icon == 'fas fa-circle-xmark' },
-                        { 'text-success': list.icon == 'fas fa-circle-check' },
-                        { 'color-always': list.icon == 'fas fa-circle-notch' },
+                        { 'text-danger': list.status == false },
+                        { 'text-success': list.status == true },
+                        { 'fas fa-circle-xmark': list.status == false },
+                        { 'fas fa-circle-check': list.status == true },
                       ]"
-                      class="me-1"
                     />
                     {{ list.title }}
                   </li>
                 </ul>
+              </div>
+              <hr />
+            </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-12">
+                <h6>Meeting Point</h6>
+              </div>
+              <div class="col">
+                <h6>
+                  {{ eventDetails.meetingPoint }}
+                </h6>
+                <h6>
+                  <i class="fa fa-arrow-right color-always me-2" />
+                  <a :href="eventDetails.meetingPointLink" class="font-semibold"
+                    >Open in Google Maps</a
+                  >
+                </h6>
               </div>
               <hr />
             </div>
@@ -174,163 +216,231 @@
       <!-- TITLE and ABOUT END -->
     </div>
     <div>
-      <SimillarActivity header="You might also like..." />
+      <SimillarActivity
+        header="You might also like..."
+        :card="eventDetails.similarEvents"
+      />
     </div>
     <hr class="hr" />
 
-    <div>
-      <Reviews />
+    <div id="reviews">
+      <Reviews
+        :rate="eventDetails.eventRate"
+        :total="eventDetails.totalEventRate"
+        :reviews="eventDetails.eventReview"
+      />
     </div>
-  </div>
 
-  <Footer />
+    <Dialog
+      v-model:visible="checkDialog"
+      modal
+      header="Checking availiability for trip"
+      class="col-6"
+    >
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <h5>Adult</h5>
+              <h6>(Age 13-99)</h6>
+            </div>
+            <div class="col">
+              <div class="d-flex justify-content-end align-items-center gap-2">
+                <Button
+                  icon="fas fa-minus"
+                  rounded
+                  variant="text"
+                  size="small"
+                  @click="adultCount <= 0 ? 0 : adultCount--"
+                />
+                <h5 class="border py-2 px-3">{{ adultCount }}</h5>
+                <Button
+                  icon="fas fa-plus"
+                  rounded
+                  variant="text"
+                  size="small"
+                  @click="adultCount++"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <h5>Child</h5>
+              <h6>(Age 4-12)</h6>
+            </div>
+            <div class="col">
+              <div class="d-flex justify-content-end align-items-center gap-2">
+                <Button
+                  icon="fas fa-minus"
+                  rounded
+                  variant="text"
+                  size="small"
+                  @click="childCount <= 0 ? 0 : childCount--"
+                />
+                <h5 class="border py-2 px-3">{{ childCount }}</h5>
+                <Button
+                  icon="fas fa-plus"
+                  rounded
+                  variant="text"
+                  size="small"
+                  @click="childCount++"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <h5>Price breakdown</h5>
+            <ul>
+              <li>
+                Adult 1x ${{ eventDetails.adultPrice }}
+                <span class="float-end"
+                  >${{ eventDetails.adultPrice * adultCount }}</span
+                >
+              </li>
+              <li>
+                Child 1x ${{ eventDetails.childPrice }}
+                <span class="float-end"
+                  >${{ eventDetails.childPrice * childCount }}</span
+                >
+              </li>
+            </ul>
+            <div>
+              <Button
+                label="Check availiability"
+                @click="checkDate"
+                outlined
+                :loading="isChecking"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <h4>Please select date</h4>
+          <div class="card flex justify-center">
+            <DatePicker
+              v-model="tripDate"
+              :disabled="isChecking"
+              showIcon
+              inline
+              :minDate="minmumDate"
+              :maxDate="new Date(eventDetails.endDate)"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div v-if="code == 200 && !isChecking">
+          <p>Trip with selected date above is available</p>
+
+          <Button label="Checkout" />
+        </div>
+        <p v-if="code == -1">Number Exceeded the limit ({{ remaningSeat }})</p>
+      </div>
+    </Dialog>
+  </div>
 </template>
 
 <script setup>
-import Navbar from "@/components/home/Navbar.vue";
-import Footer from "@/components/home/Footer.vue";
 import Tag from "primevue/tag";
 import Rating from "primevue/rating";
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import Button from "primevue/button";
 import Galleria from "primevue/galleria";
 import Image from "primevue/image";
 import Card from "primevue/card";
 import SimillarActivity from "@/components/home/SimillarActivity.vue";
 import Reviews from "@/components/home/CustomerRating.vue";
+import Dialog from "primevue/dialog";
+import DatePicker from "primevue/datepicker";
+import axios from "axios";
+import router from "@/router";
+const activeIndex = ref(0); //current active image
+const displayCustom = ref(false); //Store Gallira state
+var eventDetails = []; //Store Details of trip
+const isLoading = ref(false); //Loader state
+const isChecking = ref(false); //Checking trip state
+const images = ref([]); //Store trip images
+const checkDialog = ref(false); //Store check trip dialog state
+const eventProbs = ref([]); //Store trip probs
+const adultCount = ref(1); //Store selected adult count
+const childCount = ref(0); //Store selected child count
+const tripDate = ref(); //Store selected trip date
+const minmumDate = ref(new Date()); //Store minmum trip date
+const code = ref(0); //Store trip reservation state
+const remaningSeat = ref(null); //Store trip remaning space
 
-const stars = ref(5);
-const activeIndex = ref(0);
-const displayCustom = ref(false);
-
-const images = ref([
-  { id: 1, href: require("@/assets/images/test1.jpg") },
-  { id: 2, href: require("@/assets/images/test2.jpg") },
-  { id: 3, href: require("@/assets/images/test3.jpg") },
-  { id: 4, href: require("@/assets/images/test4.jpg") },
-  { id: 5, href: require("@/assets/images/test5.jpg") },
-  { id: 6, href: require("@/assets/images/test6.jpg") },
-]);
-
-const eventProbs = ref([
-  {
-    id: 1,
-    title: "Free cancellation",
-    subtitle: "Cancel up to 24 hours in advance for a full refund",
-    icon: "fas fa-calendar-check",
-  },
-  {
-    id: 2,
-    title: "Reserve now & pay later",
-    subtitle:
-      "Keep your travel plans flexible — book your spot and pay nothing today.",
-    icon: "fas fa-credit-card",
-  },
-
-  {
-    id: 3,
-    title: "Duration 45 minutes",
-    subtitle: "Check availability to see starting times.",
-    icon: "fas fa-clock",
-  },
-
-  {
-    id: 4,
-    title: "Live tour guide",
-    subtitle: "English",
-    icon: "fas fa-person",
-  },
-  {
-    id: 5,
-    title: "Wheelchair accessible",
-    subtitle: null,
-    icon: "fas fa-wheelchair",
-  },
-]);
-
-const eventHighlight = ref([
-  {
-    id: 1,
-    title: "Highlights",
-    subtitle: null,
-    isList: true,
-    list: [
-      {
-        id: 1,
-        title:
-          "Learn how cacao beans are transformed into a chocolate bar at Chocolate Kingdom",
-        icon: "fas fa-circle-notch",
-      },
-      {
-        id: 2,
-        title:
-          "Sample chocolate treats on an interactive adventure tour for all ages",
-        icon: "fas fa-circle-notch",
-      },
-      {
-        id: 3,
-        title:
-          "Enjoy a guided tour combined with a multi-media interactive component",
-        icon: "fas fa-circle-notch",
-      },
-      {
-        id: 4,
-        title:
-          "Customize your own chocolate bar with 17 ingredient options to finish your your",
-        icon: "fas fa-circle-notch",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Full description",
-    subtitle: `Select a departure time and immerse yourself in the indulgent World of Chocolate on a 45-minute Tour of Chocolate Kingdom, located in Orlando, Florida, a combination of a micro-batch chocolate factory, museum with a river of chocolate, and a retail store with freshly-made chocolates.
-    
-     Your tour guide will join forces with a handsome prince and his dragon sidekick to accompany you through the tour. At the end, you will have an opportunity to create a customized chocolate bar.
-     Also, enjoy Chocolate Kingdom wine and chocolate pairings during your experience.`,
-    isList: false,
-    list: null,
-  },
-  {
-    id: 3,
-    title: "Includes",
-    subtitle: null,
-    isList: true,
-    list: [
-      {
-        id: 1,
-        title: "Chocolate Factory tour",
-        icon: "fas fa-circle-check",
-      },
-      {
-        id: 2,
-        title: "Chocolate samples throughout the tour",
-        icon: "fas fa-circle-check",
-      },
-      {
-        id: 3,
-        title: "Customized chocolate bar (available for purchase on-site)",
-        icon: "fas fa-circle-xmark",
-      },
-      {
-        id: 4,
-        title: "Wine and chocolate pairings (available for purchase on-site)",
-        icon: "fas fa-circle-xmark",
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: "Meeting point",
-    subtitle:
-      "Please present your voucher at the ticket counter 15 minutes before the tour begins. Tours take place at our Factory located at 9901 Hawaiian Ct, Orlando, FL 32819. Tours take place every hour from 12 PM-4 PM daily.",
-    isList: false,
-    list: null,
-  },
-]);
-
+//Change Image by index
 const ShowImage = (index) => {
-  activeIndex.value = index;
-  displayCustom.value = true;
+  activeIndex.value = index; //Set new index to current index
+  displayCustom.value = true; //Change state of Gallira to popup
 };
+
+async function fetchDetails() {
+  isLoading.value = true;
+  await axios
+    .get(
+      "https://publicws.pharaohglory.com/base/view/event/detail/" +
+        router.currentRoute.value.params.uid
+    )
+    .then((response) => {
+      eventDetails = response.data[0];
+      images.value = response.data[0].eventImages;
+      eventProbs.value = response.data[0].eventProbs;
+      isLoading.value = false;
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+}
+
+//Watch counter change and call check date function
+watch([() => adultCount.value, () => childCount.value], () => {
+  if (tripDate.value != null) checkDate();
+});
+
+async function checkDate() {
+  isChecking.value = true; //Set loader on
+  var newDate = tripDate.value.toLocaleDateString("en-UK"); //Format Date
+  //Call api and post information to check
+  await axios
+    .post("https://publicws.pharaohglory.com/base/check/event/availability", {
+      eventSlug: eventDetails.slug,
+      date: newDate,
+      seats: adultCount.value + childCount.value,
+    })
+    .then((response) => {
+      if (response.status == 200) {
+        //if server responded with code 200 wait 1 second delay
+        setTimeout(() => {
+          //if customer can checkout store code 200 or -1 if trip is full
+          code.value = response.data.isAvailable ? 200 : -1;
+          remaningSeat.value = response.data.remainingQuantity; //store remaning seat to be displayed when limit exceeded
+          isChecking.value = false; //set the loder off
+        }, 1000);
+      }
+    });
+}
+//Open Check Dialog after setting date
+function openCheck() {
+  //Calculate diffrent in (days) between the today and start date
+  var date = Math.abs(new Date() - new Date(eventDetails.startDate)) / 86400000;
+  var current = new Date(eventDetails.startDate); //Store trip start date
+  var newMin = new Date(); //Init new minmum date
+  if (current > newMin) {
+    //Check if trip date grater than today
+    minmumDate.value = current; //set minmum date to be the first date of trip start date
+  } else {
+    //if not
+    newMin.setDate(current.getDate() + date); //add days to start date
+    minmumDate.value = newMin; //set today as minmum start date
+  }
+  tripDate.value = new Date(minmumDate.value); //automatic set today as selected date
+  checkDialog.value = true; //open check dialog
+}
+
+onMounted(() => {
+  fetchDetails(); //Get Details of trip when page mounted
+});
 </script>

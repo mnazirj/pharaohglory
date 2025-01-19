@@ -3,33 +3,35 @@
     <h2 class="font-bold">{{ header }}</h2>
     <hr class="w-50 hr" />
     <div class="row py-5 pt-0">
-      <div class="col-lg-4 col-12" v-for="index in 6" :key="index">
-        <div class="card shadow h-100">
-          <div class="card-img-top activity-zoom">
-            <img src="@/assets/images/test.webp" class="img-fluid" />
-          </div>
-          <div class="card-header border-0 bg-transparent">
-            <div class="d-flex justify-content-between">
-              <Tag value="Entry Ticket" />
-              <Button icon="fa fa-heart" rounded variant="text" />
+      <div class="col-lg-4 col-12" v-for="(item, index) in card" :key="index">
+        <a :href="'details/' + item.slug" class="nav-link">
+          <div class="card shadow h-100">
+            <div class="card-img-top activity-zoom">
+              <img :src="item.eventImages" class="w-100" height="300" />
+            </div>
+            <div class="card-header border-0 bg-transparent">
+              <div class="d-flex justify-content-between">
+                <Tag :value="item.category" />
+                <Button icon="fa fa-heart" rounded variant="text" />
+              </div>
+            </div>
+            <div class="card-body bg-transparent">
+              <h5 class="font-bold">{{ item.title }}</h5>
+              <div class="d-flex justify-content-between">
+                <h6>{{ item.formattedDuration }}</h6>
+              </div>
+            </div>
+            <div class="card-footer border-0 bg-transparent">
+              <div class="d-flex align-items-center">
+                <Rating v-model="item.eventRate" readonly />
+                <h6 class="ms-2 mt-2">
+                  {{ item.eventRate }} ({{ item.totalEventRate }})
+                </h6>
+              </div>
+              <h6>From ${{ item.adultPrice }} per perosn</h6>
             </div>
           </div>
-          <div class="card-body bg-transparent">
-            <h5 class="font-bold">San Diego: USS Midway Museum Entry Ticket</h5>
-            <div class="d-flex justify-content-between">
-              <h6>1 day</h6>
-              <h6>Skip the line</h6>
-              <h6>Optional audio guide</h6>
-            </div>
-          </div>
-          <div class="card-footer border-0 bg-transparent">
-            <div class="d-flex align-items-center">
-              <Rating v-model="stars" readonly />
-              <h6 class="ms-2 mt-2">4.9 (2,250)</h6>
-            </div>
-            <h6>From $209.99 per perosn</h6>
-          </div>
-        </div>
+        </a>
       </div>
     </div>
     <h2 class="font-bold">{{ subheader }}</h2>

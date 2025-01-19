@@ -5,12 +5,19 @@ const routes = [
     path: "/",
     name: "home",
     component: () => import("../views/home/HomeView.vue"),
+    children: [
+      {
+        path: "/details/:uid",
+        name: "details",
+        component: () => import("../views/home/DetailsView.vue"),
+      },
+    ],
   },
-  {
-    path: "/details/:uid",
-    name: "details",
-    component: () => import("../views/home/DetailsView.vue"),
-  },
+  // {
+  //   path: "/details/:uid",
+  //   name: "details",
+  //   component: () => import("../views/home/DetailsView.vue"),
+  // },
   // Dashboard Routes
   {
     path: "/dashboard",
@@ -18,12 +25,12 @@ const routes = [
     component: () => import("@/views/dashboard/DashboardView.vue"),
     children: [
       {
-        path: "/dashboard/home",
+        path: "home",
         name: "dash.home",
         component: () => import("@/components/dashboard/Home.vue"),
       },
       {
-        path: "/dashboard/reviews",
+        path: "reviews",
         name: "dash.reviews",
         component: () => import("@/components/dashboard/Reviews.vue"),
       },

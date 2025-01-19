@@ -15,14 +15,14 @@
             <div class="d-flex align-items-center">
               <img
                 v-if="isExpanded || isHovered"
-                src=""
-                class="text-white"
+                :src="logo"
+                class="text-white img-fluid"
                 alt="logo1"
               />
               <img
                 v-if="!isExpanded && !isHovered"
-                src=""
-                class="text-white"
+                :src="logo"
+                class="text-white img-fluid"
                 alt="logo2"
               />
             </div>
@@ -204,6 +204,7 @@ export default {
       isExpanded: false,
       isHovered: false,
       isShown: true,
+      logo: require("@/assets/images/logo2.png"),
     };
   },
   methods: {

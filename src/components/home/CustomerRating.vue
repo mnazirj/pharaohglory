@@ -14,11 +14,46 @@
     <div class="d-flex flex-column">
       <h6 class="fw-semibold">Overall rating</h6>
       <h1 class="fw-bold text-center">
-        4.8<small class="text-muted">/5</small>
+        {{ rate }}<small class="text-muted">/5</small>
       </h1>
-      <Rating modelValue="4" readonly class="reviews mb-3" />
-      <h6 class="text-muted text-center fw-semibold">based on 120 reviews</h6>
+      <Rating :modelValue="rate" readonly class="reviews mb-3" />
+      <h6 class="text-muted text-center fw-semibold">
+        based on {{ total }} reviews
+      </h6>
     </div>
+  </div>
+  <div class="container">
+    <DataView :value="reviews" paginator :rows="10">
+      <template #list="slotProps">
+        <div
+          class="col py-3"
+          v-for="(item, index) in slotProps.items"
+          :key="index"
+        >
+          <Rating :modelValue="item.rate" />
+          <Button
+            icon="fas fa-ellipsis"
+            variant="text"
+            rounded
+            class="float-end"
+            @click="formatDate(item.createdAt)"
+          />
+          <div class="d-flex gap-3 py-3">
+            <div>
+              <h1><i class="fas fa-user-circle color" /></h1>
+            </div>
+            <div>
+              <h6>{{ item.userName }} - City</h6>
+              <h6>{{ formatDate(item.createdAt) }} - Verified booking</h6>
+            </div>
+          </div>
+          <p class="font-medium">
+            {{ item.feedback }}
+          </p>
+          <hr class="hr" />
+        </div>
+      </template>
+    </DataView>
   </div>
   <Dialog
     v-model:visible="infoDialog"
@@ -42,7 +77,22 @@
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Rating from "primevue/rating";
+import DataView from "primevue/dataview";
 import { ref } from "vue";
-
+defineProps({
+  rate: Number,
+  total: String,
+  reviews: Array,
+});
 const infoDialog = ref(false);
+
+function formatDate(date) {
+  var options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  var newDate = new Date(date);
+  return newDate.toLocaleDateString("en-US", options);
+}
 </script>

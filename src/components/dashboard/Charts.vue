@@ -224,7 +224,7 @@ export default {
             pointHoverBackgroundColor: textColor,
             pointHoverBorderColor:
               documentStyle.getPropertyValue("--p-teal-700"),
-            data: [15, 20, 22, 12, 18, 13],
+            data: [200, 350, 500, 500, 105, 800],
           },
         ],
       };

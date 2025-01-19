@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-if="!isLoading">
     <div
       class="d-flex align-items-center bg-custom p-5"
       :style="
@@ -11,9 +11,8 @@
       <div class="container">
         <div>
           <div class="py-3 white-always">
-            <h1 class="text-white font-bold text-uppercase">
-              Travel memories <br />you'll
-              <span class="colored-always p-1 rounded">never forget</span>
+            <h1 class="text-white font-bold text-uppercase w-50">
+              {{ information.coverTitle }}
             </h1>
             <h5 class="text-white">
               Discover the heart of Paris and the new Notre Dame
@@ -62,24 +61,28 @@
             <Details
               header="Unforgettable cultural experiences"
               subheader="Top cultural sights you can't miss"
+              :card="cards.Culture"
             />
           </TabPanel>
           <TabPanel :value="2">
             <Details
               header="Unforgettable food experiences"
               subheader="Top cultural sights you can't miss"
+              :card="cards.Food"
             />
           </TabPanel>
           <TabPanel :value="3">
             <Details
               header="Unforgettable nature experiences"
               subheader="Top cultural sights you can't miss"
+              :card="cards.Nature"
             />
           </TabPanel>
           <TabPanel :value="4">
             <Details
               header="Unforgettable sports experiences"
               subheader="Top cultural sights you can't miss"
+              :card="cards.Sports"
             />
           </TabPanel>
         </TabPanels>
@@ -97,7 +100,14 @@ import TabPanel from "primevue/tabpanel";
 import Button from "primevue/button";
 import Details from "./CardDetails";
 
+import axios from "axios";
 import { ref } from "vue";
+
+defineProps({
+  cards: Array,
+  information: Array,
+});
+
 const background = ref(require("@/assets/images/hero1.jpeg"));
 const currentTab = ref(1);
 

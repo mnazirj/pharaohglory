@@ -123,9 +123,8 @@
           {{ eventDetails.description }}
         </h6>
         <div class="py-2">
-          <h3 class="fw-bold">About this activity</h3>
-
-          <div class="float-start pt-2">
+          <h3 class="fw-bold" v-if="eventProbs != null">About this activity</h3>
+          <div class="float-start pt-2" v-if="eventProbs != null">
             <div class="row" v-for="(prob, index) in eventProbs" :key="index">
               <div class="col-1">
                 <h6 class="text-center">
@@ -144,7 +143,7 @@
         <div class="float-start">
           <h4 class="fw-bold">Experience</h4>
           <div class="col-12">
-            <div class="row">
+            <div class="row" v-if="eventDetails.eventHighlight">
               <div class="col-lg-3 col-md-3 col-12">
                 <h6>Highlights</h6>
               </div>
@@ -169,7 +168,7 @@
               <hr />
             </div>
 
-            <div class="row">
+            <div class="row" v-if="eventDetails.eventIncludes != null">
               <div class="col-lg-3 col-md-3 col-12">
                 <h6>Includes</h6>
               </div>
@@ -295,17 +294,35 @@
             <ul>
               <li>
                 Adult 1x ${{ eventDetails.adultPrice }}
-                <span class="float-end"
-                  >${{ eventDetails.adultPrice * adultCount }}</span
-                >
+                <span class="float-end">{{
+                  new Intl.NumberFormat("en-IN", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(eventDetails.adultPrice * adultCount)
+                }}</span>
               </li>
               <li>
                 Child 1x ${{ eventDetails.childPrice }}
-                <span class="float-end"
-                  >${{ eventDetails.childPrice * childCount }}</span
-                >
+                <span class="float-end">{{
+                  new Intl.NumberFormat("en-IN", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(eventDetails.childPrice * childCount)
+                }}</span>
               </li>
             </ul>
+            <h5 class="float-end color-always">
+              Subtotal:
+              {{
+                new Intl.NumberFormat("en-IN", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(
+                  eventDetails.adultPrice * adultCount +
+                    eventDetails.childPrice * childCount
+                )
+              }}
+            </h5>
             <div>
               <Button
                 label="Check availiability"
@@ -334,7 +351,7 @@
         <div v-if="code == 200 && !isChecking">
           <p>Trip with selected date above is available</p>
 
-          <Button label="Checkout" />
+          <Button label="Checkout" :loading="isChecking" @click="checkOut" />
         </div>
         <p v-if="code == -1">Number Exceeded the limit ({{ remaningSeat }})</p>
       </div>
@@ -438,6 +455,37 @@ function openCheck() {
   }
   tripDate.value = new Date(minmumDate.value); //automatic set today as selected date
   checkDialog.value = true; //open check dialog
+}
+
+async function checkOut() {
+  isChecking.value = true;
+  var newDate = tripDate.value.toLocaleDateString("en-UK"); //Format Date
+  await axios
+    .post(
+      "https://publicws.pharaohglory.com/base/checkout",
+
+      {
+        eventSlug: eventDetails.slug,
+        reservationDate: newDate,
+        numberOfAdult: adultCount.value,
+        numberOfChild: childCount.value,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("_token"),
+        },
+      }
+    )
+    .then((response) => {
+      if (response.status == 201) {
+        isChecking.value = false;
+        window.location.href = response.data.approval_url;
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      isChecking.value = false;
+    });
 }
 
 onMounted(() => {

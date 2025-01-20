@@ -13,11 +13,11 @@ const routes = [
       },
     ],
   },
-  // {
-  //   path: "/details/:uid",
-  //   name: "details",
-  //   component: () => import("../views/home/DetailsView.vue"),
-  // },
+  {
+    path: "/confirm/:(?params)",
+    name: "confirminvoice",
+    component: () => import("@/components/home/registerInvoice.vue"),
+  },
   // Dashboard Routes
   {
     path: "/dashboard",

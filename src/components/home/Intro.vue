@@ -60,28 +60,24 @@
           <TabPanel :value="1">
             <Details
               header="Unforgettable cultural experiences"
-              subheader="Top cultural sights you can't miss"
               :card="cards.Culture"
             />
           </TabPanel>
           <TabPanel :value="2">
             <Details
               header="Unforgettable food experiences"
-              subheader="Top cultural sights you can't miss"
               :card="cards.Food"
             />
           </TabPanel>
           <TabPanel :value="3">
             <Details
               header="Unforgettable nature experiences"
-              subheader="Top cultural sights you can't miss"
               :card="cards.Nature"
             />
           </TabPanel>
           <TabPanel :value="4">
             <Details
               header="Unforgettable sports experiences"
-              subheader="Top cultural sights you can't miss"
               :card="cards.Sports"
             />
           </TabPanel>

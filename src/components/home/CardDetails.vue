@@ -36,7 +36,7 @@
     </div>
     <h2 class="font-bold">{{ subheader }}</h2>
 
-    <Carousel
+    <!-- <Carousel
       :value="items"
       :numVisible="4"
       :responsiveOptions="responsiveOptions"
@@ -68,7 +68,7 @@
       <template #previcon>
         <Button icon="fas fa-arrow-left" />
       </template>
-    </Carousel>
+    </Carousel> -->
   </section>
 </template>
 

@@ -7,7 +7,7 @@
           {{ eventDetails.title }}
         </h1>
       </div>
-      <div class="d-flex justify-content-between py-2">
+      <div class="d-lg-flex d-md-flex justify-content-between py-2">
         <div class="d-flex gap-2 align-items-center">
           <Rating v-model="eventDetails.eventRate" readonly class="d-inline" />
           <h6 class="mt-1 fw-bold">
@@ -19,7 +19,12 @@
         </div>
         <div class="d-flex gap-2 align-items-center">
           <Button label="Add to wishlist" icon="fas fa-heart" size="small" />
-          <Button label="Share" icon="fas fa-share" size="small" />
+          <Button
+            :label="hasCopy ? 'Link copied to clipboard' : 'Share'"
+            icon="fas fa-share"
+            @click="copyLink"
+            size="small"
+          />
         </div>
       </div>
 
@@ -89,13 +94,28 @@
       <div class="col-lg-4 col-md-12 col-12">
         <Card class="border border-color">
           <template #content>
-            <Tag value="Liekly to sell out" />
+            <Tag
+              value="You are already booked in"
+              v-if="eventDetails.isBooked"
+            />
+
             <div
               class="d-flex justify-content-between align-items-center gap-5"
             >
               <div class="mt-2">
                 <h6 class="mb-1">From</h6>
-                <h5 class="fw-bold mb-1">${{ eventDetails.adultPrice }}</h5>
+                <h5
+                  class="fw-bold mb-1"
+                  v-if="eventDetails.adultDiscountPrice == null"
+                >
+                  ${{ eventDetails.adultPrice }}
+                </h5>
+                <h5 class="fw-bold mb-1" v-else>
+                  <sup class="text-decoration-line-through color"
+                    >${{ eventDetails.adultPrice }}</sup
+                  >
+                  ${{ eventDetails.adultDiscountPrice }}
+                </h5>
                 <h6>per person</h6>
               </div>
               <div>
@@ -103,6 +123,15 @@
                   label="Check availiability"
                   rounded
                   @click="openCheck()"
+                  v-if="!eventDetails.isBooked"
+                />
+                <Button
+                  label="Client Area"
+                  rounded
+                  as="router-link"
+                  to="/clientarea"
+                  class="text-decoration-none"
+                  v-if="eventDetails.isBooked"
                 />
               </div>
             </div>
@@ -227,6 +256,8 @@
         :rate="eventDetails.eventRate"
         :total="eventDetails.totalEventRate"
         :reviews="eventDetails.eventReview"
+        :isBooked="eventDetails.isBooked"
+        :hasReview="eventDetails.hasReview"
       />
     </div>
 
@@ -234,7 +265,7 @@
       v-model:visible="checkDialog"
       modal
       header="Checking availiability for trip"
-      class="col-6"
+      class="col-lg-6 col-md-8 col-12"
     >
       <div class="row">
         <div class="col">
@@ -293,20 +324,33 @@
             <h5>Price breakdown</h5>
             <ul>
               <li>
-                Adult 1x ${{ eventDetails.adultPrice }}
+                Adult 1x ${{
+                  eventDetails.adultDiscountPrice != null
+                    ? eventDetails.adultDiscountPrice
+                    : eventDetails.adultPrice
+                }}
                 <span class="float-end">{{
                   new Intl.NumberFormat("en-IN", {
                     style: "currency",
                     currency: "USD",
-                  }).format(eventDetails.adultPrice * adultCount)
+                  }).format(
+                    eventDetails.adultDiscountPrice != null
+                      ? eventDetails.adultDiscountPrice
+                      : eventDetails.adultPrice * adultCount
+                  )
                 }}</span>
               </li>
               <li>
-                Child 1x ${{ eventDetails.childPrice }}
+                Child 1x ${{
+                  eventDetails.childDiscountPrice != null
+                    ? eventDetails.childDiscountPrice
+                    : eventDetails.childPrice
+                }}
                 <span class="float-end">{{
-                  new Intl.NumberFormat("en-IN", {
+                  new Intl.NumberFormat("en-US", {
                     style: "currency",
                     currency: "USD",
+                    maximumSignificantDigits: 2,
                   }).format(eventDetails.childPrice * childCount)
                 }}</span>
               </li>
@@ -373,6 +417,7 @@ import Dialog from "primevue/dialog";
 import DatePicker from "primevue/datepicker";
 import axios from "axios";
 import router from "@/router";
+
 const activeIndex = ref(0); //current active image
 const displayCustom = ref(false); //Store Gallira state
 var eventDetails = []; //Store Details of trip
@@ -387,7 +432,7 @@ const tripDate = ref(); //Store selected trip date
 const minmumDate = ref(new Date()); //Store minmum trip date
 const code = ref(0); //Store trip reservation state
 const remaningSeat = ref(null); //Store trip remaning space
-
+const hasCopy = ref(false);
 //Change Image by index
 const ShowImage = (index) => {
   activeIndex.value = index; //Set new index to current index
@@ -396,12 +441,14 @@ const ShowImage = (index) => {
 
 async function fetchDetails() {
   isLoading.value = true;
+  var url = "base/view/event/detail/" + router.currentRoute.value.params.uid;
+  if (localStorage.getItem("_token") != null) {
+    url += "?access_token=" + localStorage.getItem("_token");
+  }
   await axios
-    .get(
-      "https://publicws.pharaohglory.com/base/view/event/detail/" +
-        router.currentRoute.value.params.uid
-    )
+    .get(url)
     .then((response) => {
+      console.log(response);
       eventDetails = response.data[0];
       images.value = response.data[0].eventImages;
       eventProbs.value = response.data[0].eventProbs;
@@ -422,7 +469,7 @@ async function checkDate() {
   var newDate = tripDate.value.toLocaleDateString("en-UK"); //Format Date
   //Call api and post information to check
   await axios
-    .post("https://publicws.pharaohglory.com/base/check/event/availability", {
+    .post("base/check/event/availability", {
       eventSlug: eventDetails.slug,
       date: newDate,
       seats: adultCount.value + childCount.value,
@@ -459,10 +506,17 @@ function openCheck() {
 
 async function checkOut() {
   isChecking.value = true;
+
   var newDate = tripDate.value.toLocaleDateString("en-UK"); //Format Date
+  var temp = {
+    eventId: eventDetails.id,
+    reservationDate: newDate,
+    numberOfAdult: adultCount.value,
+    numberOfChild: childCount.value,
+  };
   await axios
     .post(
-      "https://publicws.pharaohglory.com/base/checkout",
+      "base/checkout",
 
       {
         eventSlug: eventDetails.slug,
@@ -478,14 +532,30 @@ async function checkOut() {
     )
     .then((response) => {
       if (response.status == 201) {
-        isChecking.value = false;
+        localStorage.setItem("info", JSON.stringify(temp));
         window.location.href = response.data.approval_url;
+        isChecking.value = false;
       }
     })
     .catch((e) => {
       console.log(e);
       isChecking.value = false;
     });
+}
+
+function copyLink() {
+  hasCopy.value = true;
+  var dummy = document.createElement("input"),
+    text = window.location.href;
+
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand("copy");
+  document.body.removeChild(dummy);
+  setTimeout(() => {
+    hasCopy.value = false;
+  }, 1000);
 }
 
 onMounted(() => {

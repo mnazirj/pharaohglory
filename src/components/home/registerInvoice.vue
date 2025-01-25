@@ -14,7 +14,8 @@
 
 <script setup>
 import router from "@/router";
-import axios from "axios";
+import axios, { formToJSON } from "axios";
+axios.defaults.baseURL = "https://publicws.pharaohglory.com";
 import { onMounted, ref } from "vue";
 const param = ref([]);
 const isWrong = ref(false);
@@ -23,22 +24,27 @@ import Button from "primevue/button";
 
 onMounted(() => {
   param.value = router.currentRoute.value.query;
+  var temp = JSON.parse(localStorage.getItem("info"));
+  var newinfo = {};
+  newinfo = {
+    eventId: temp.eventId,
+    numberOfAdult: temp.numberOfAdult,
+    numberOfChild: temp.numberOfChild,
+    reservationDate: temp.reservationDate,
+    paymentId: param.value.paymentId,
+    PayerID: param.value.PayerID,
+  };
+  localStorage.removeItem("info");
   axios
-    .post(
-      "https://publicws.pharaohglory.com/base/execute/payment",
-      {
-        paymentId: param.value.paymentId,
-        PayerID: param.value.PayerID,
+    .post("base/execute/payment", newinfo, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("_token"),
+        "Content-Type": "application/json",
       },
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("_token"),
-        },
-      }
-    )
+    })
     .then((response) => {
       if (response.status == 200) {
-        router.go("/client");
+        router.push("/clientarea");
       }
     })
     .catch((e) => {

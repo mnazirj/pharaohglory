@@ -21,6 +21,12 @@ import "./assets/style/custom.css";
 //Custom PrimeVue Preset
 import MyPreset from "./assets/js/createPreset.js";
 
+//Google Login Plugin
+import vue3GoogleLogin from "vue3-google-login";
+
+//Axios
+import axios from "axios";
+axios.defaults.baseURL = "https://publicws.pharaohglory.com";
 createApp(App)
   .use(store)
   .use(router)
@@ -35,4 +41,9 @@ createApp(App)
       },
     },
   })
+  .use(vue3GoogleLogin, {
+    clientId:
+      "367400907501-4gp0n76rp2vbmu4hgsbuc05ibjieivg5.apps.googleusercontent.com",
+  })
+
   .mount("#app");

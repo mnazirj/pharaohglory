@@ -164,7 +164,6 @@ export default {
       isExpanded: false,
       isHovered: false,
       isShown: true,
-      isLargeScreen: window.innerWidth >= 1024,
     };
   },
   computed: {},

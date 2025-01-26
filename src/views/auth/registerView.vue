@@ -1,0 +1,243 @@
+<template>
+  <div class="container">
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+      <Card class="col-lg-6 col-md-6 col-12 shadow-none">
+        <template #title>
+          <img :src="logo" alt="Pharaohgolry" />
+        </template>
+        <template #content>
+          <div>
+            <Form
+              v-slot="$form"
+              class="w-full"
+              :resolver="resolver"
+              @submit="onFormSubmit"
+              :disabled="isLoading"
+            >
+              <div class="d-flex flex-column gap-3">
+                <FloatLabel variant="on">
+                  <InputText
+                    id="firstname"
+                    name="firstname"
+                    type="text"
+                    v-model="firstName"
+                    fluid
+                  />
+                  <label for="firstname">First Name</label>
+                </FloatLabel>
+                <Message
+                  v-if="$form.email?.invalid"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  >{{ $form.firstname.error?.message }}</Message
+                >
+                <FloatLabel variant="on">
+                  <InputText
+                    id="lastname"
+                    name="lastname"
+                    type="text"
+                    v-model="lastName"
+                    fluid
+                  />
+                  <label for="lastname">Last Name</label>
+                </FloatLabel>
+                <Message
+                  v-if="$form.email?.invalid"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  >{{ $form.lastname.error?.message }}</Message
+                >
+                <FloatLabel variant="on">
+                  <InputText
+                    id="email"
+                    name="email"
+                    type="text"
+                    v-model="email"
+                    fluid
+                  />
+                  <label for="email">Email Address</label>
+                </FloatLabel>
+                <Message
+                  v-if="$form.email?.invalid"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  >{{ $form.email.error?.message }}</Message
+                >
+
+                <FloatLabel variant="on">
+                  <Password
+                    v-model="password"
+                    id="email"
+                    name="password"
+                    :feedback="false"
+                    toggleMask
+                    fluid
+                  />
+                  <label>Password</label>
+                </FloatLabel>
+                <Message
+                  v-if="$form.password?.invalid"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  >{{ $form.password.error?.message }}</Message
+                >
+              </div>
+              <Button
+                type="submit"
+                label="Submit"
+                class="w-100 mt-2"
+                :loading="isLoading"
+              />
+            </Form>
+            <Message v-if="message != null" severity="secondary" class="mt-2">{{
+              message
+            }}</Message>
+          </div>
+        </template>
+        <template #footer>
+          <hr class="hr" />
+          <div class="d-flex flex-column gap-2">
+            <h5 class="text-center">OR</h5>
+            <div class="text-center">
+              <Button
+                icon="fab fa-google"
+                label="Register with Google"
+                rounded
+                @click="googleRegistration()"
+                :loading="isLoading"
+              />
+            </div>
+          </div>
+          <hr />
+          <div>
+            <h6 class="mb-0">
+              Already having acconut?
+              <a href="/auth/login">Login</a>
+            </h6>
+          </div>
+        </template>
+      </Card>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { Form } from "@primevue/forms";
+import Card from "primevue/card";
+import InputText from "primevue/inputtext";
+import FloatLabel from "primevue/floatlabel";
+import Password from "primevue/password";
+import Button from "primevue/button";
+const logo = require("@/assets/images/logo.svg");
+import { reactive, ref } from "vue";
+import Message from "primevue/message";
+import { googleTokenLogin } from "vue3-google-login";
+import axios from "axios";
+import router from "@/router";
+
+const firstName = ref(null);
+const lastName = ref(null);
+const email = ref(null);
+const password = ref(null);
+const isLoading = ref(false);
+const message = ref(null);
+const resolver = ({ values }) => {
+  const errors = {};
+  if (!values.firstname) {
+    errors.firstname = [{ message: "Please enter your first name." }];
+  }
+  if (!values.lastname) {
+    errors.lastname = [{ message: "Please enter your last name." }];
+  }
+  if (!values.email) {
+    errors.email = [{ message: "Please enter your email address." }];
+  }
+  if (!values.password) {
+    errors.password = [{ message: "Please enter your password." }];
+  } else {
+    if (values.password.length < 8) {
+      errors.password = [
+        { message: "Password should be at least 8 char long." },
+      ];
+    }
+  }
+
+  return {
+    errors,
+  };
+};
+
+const googleRegistration = () => {
+  isLoading.value = true;
+  googleTokenLogin().then((response) => {
+    if (response.access_token) {
+      getGoogleAcconutInfo(response.access_token);
+    }
+  });
+};
+
+const getGoogleAcconutInfo = (token) => {
+  axios
+    .get("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((response) => {
+      sendDataToBackEnd(response.data);
+    });
+};
+
+const sendDataToBackEnd = (payload) => {
+  axios
+    .post("account/auth/google/register", {
+      first_name: payload.given_name,
+      last_name: payload.family_name,
+      email: payload.email,
+    })
+    .then((response) => {
+      if (response.status == 201) {
+        localStorage.setItem("_item", response.data.token.access);
+        isLoading.value = false;
+        router.push("/");
+      }
+    });
+};
+
+function createAccount() {
+  isLoading.value = true;
+  axios
+    .post("account/auth/register", {
+      first_name: firstName.value,
+      last_name: lastName.value,
+      email: email.value,
+      password: password.value,
+    })
+    .then((response) => {
+      if (response.status == 201) {
+        message.value =
+          "Successfully registered new acconut please check your email inbox to verify it.";
+        isLoading.value = false;
+        setTimeout(() => {
+          router.push("/auth/login");
+        }, 1000);
+      }
+    })
+    .catch((e) => {
+      if (e.response.status == 400) {
+        message.value = e.response.data.email;
+        isLoading.value = false;
+      }
+    });
+}
+
+const onFormSubmit = ({ valid }) => {
+  if (valid) {
+    createAccount();
+  }
+};
+</script>

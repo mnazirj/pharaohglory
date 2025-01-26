@@ -1,38 +1,48 @@
 <template>
   <h3 class="fw-bold">{{ header }}</h3>
   <Carousel
-    :value="items"
-    :numVisible="4"
+    :value="card"
+    :numVisible="3"
     :responsiveOptions="responsiveOptions"
     circular
     :showIndicators="false"
   >
     <template #item="slotProps">
-      <div class="col-12 h-100">
-        <div class="card border-color h-100">
-          <div class="card-img-top activity-zoom">
-            <img src="@/assets/images/test.webp" class="img-fluid" />
-          </div>
-          <div class="card-header border-0 bg-transparent">
-            <div class="d-flex justify-content-between">
-              <Tag value="Entry Ticket" />
-              <Button icon="fa fa-heart" rounded variant="text" />
+      <div class="col-12 col-lg-4 h-100">
+        <a :href="'/details/' + slotProps.data.slug" class="nav-link">
+          <div class="card border-color h-100">
+            <div class="card-img-top activity-zoom">
+              <img
+                :src="slotProps.data.eventImages"
+                class="w-100"
+                height="300"
+              />
+            </div>
+            <div class="card-header border-0 bg-transparent">
+              <div class="d-flex justify-content-between">
+                <Tag :value="slotProps.data.category" />
+                <Button icon="fa fa-heart" rounded variant="text" />
+              </div>
+            </div>
+            <div class="card-body bg-transparent">
+              <h5 class="font-bold">{{ slotProps.data.title }}</h5>
+              <div class="d-flex justify-content-between">
+                <h6>{{ slotProps.data.formattedDuration }}</h6>
+              </div>
+            </div>
+            <div class="card-footer border-0 bg-transparent">
+              <div class="d-flex align-items-center">
+                <Rating v-model="slotProps.data.eventRate" readonly />
+                <h6 class="ms-2 mt-2">
+                  {{ slotProps.data.eventRate }} ({{
+                    slotProps.data.totalEventRate
+                  }})
+                </h6>
+              </div>
+              <h6>From ${{ slotProps.data.adultPrice }} per perosn</h6>
             </div>
           </div>
-          <div class="card-body bg-transparent">
-            <h5 class="font-bold">{{ slotProps.data.name }}</h5>
-            <div class="d-flex justify-content-between">
-              <h6>1 day</h6>
-            </div>
-          </div>
-          <div class="card-footer border-0 bg-transparent">
-            <div class="d-flex align-items-center">
-              <Rating v-model="stars" readonly />
-              <h6 class="ms-2 mt-2">4.9 (2,250)</h6>
-            </div>
-            <h6>From $209.99 per perosn</h6>
-          </div>
-        </div>
+        </a>
       </div>
     </template>
     <template #nexticon>
@@ -77,12 +87,5 @@ const responsiveOptions = ref([
     numVisible: 1,
     numScroll: 1,
   },
-]);
-const items = ref([
-  { id: 1, name: "Statue of Liberty", activities: 168 },
-  { id: 2, name: "Vatican Museums", activities: 501 },
-  { id: 3, name: "Eiffel Tower", activities: 457 },
-  { id: 4, name: "Metropolitan Museum of Art", activities: 45 },
-  { id: 5, name: "United States Capitol", activities: 97 },
 ]);
 </script>

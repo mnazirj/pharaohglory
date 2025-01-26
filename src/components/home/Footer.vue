@@ -2,26 +2,29 @@
   <footer class="text-center text-lg-start bg-body-secondary" id="footer">
     <section class="d-flex justify-content-center p-4 border-bottom color">
       <div>
-        <a href="#" class="me-4 text-reset">
+        <a :href="facebook" class="me-4 text-reset">
           <i class="fab fa-facebook-f"></i>
         </a>
-        <a href="#" class="me-4 text-reset">
+        <a :href="x" class="me-4 text-reset">
           <i class="fab fa-x"></i>
         </a>
 
-        <a href="" class="me-4 text-reset">
+        <a :href="instagram" class="me-4 text-reset">
           <i class="fab fa-instagram"></i>
         </a>
-        <a href="" class="me-4 text-reset">
+        <a :href="youtube" class="me-4 text-reset">
           <i class="fab fa-youtube"></i>
         </a>
-        <a href="" class="me-4 text-reset">
+        <a :href="tiktok" class="me-4 text-reset">
           <i class="fab fa-tiktok"></i>
+        </a>
+        <a :href="snapchat" class="me-4 text-reset">
+          <i class="fab fa-snapchat"></i>
         </a>
       </div>
     </section>
 
-    <section class="">
+    <section>
       <div class="container text-center text-md-start mt-5">
         <div class="row mt-3">
           <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
@@ -63,12 +66,12 @@
 
           <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
             <h6 class="text-uppercase fw-bold mb-4 color-always">Contact</h6>
-            <p><i class="fas fa-home me-3 color"></i> New York, NY 10012, US</p>
+            <p><i class="fas fa-home me-3 color"></i> {{ location }}</p>
             <p>
               <i class="fas fa-envelope me-3 color"></i>
-              info@example.com
+              {{ email }}
             </p>
-            <p><i class="fas fa-phone me-3 color"></i> + 01 234 567 88</p>
+            <p><i class="fas fa-phone me-3 color"></i>{{ phone }}</p>
           </div>
         </div>
       </div>
@@ -80,3 +83,17 @@
     </div>
   </footer>
 </template>
+
+<script setup>
+defineProps({
+  facebook: String,
+  youtube: String,
+  x: String,
+  instagram: String,
+  snapchat: String,
+  tiktok: String,
+  location: String,
+  email: String,
+  phone: String,
+});
+</script>

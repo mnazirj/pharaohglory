@@ -31,8 +31,8 @@
 .w-10{
     width: 10% !important;
 }
-.w-90{
-    width: 90% !important;
+.w-30{
+    width: 30% !important;
 }
 .w-40{
     width: 40% !important;
@@ -43,11 +43,11 @@
 .w-70{
     width: 70% !important;
 }
-.w-30{
-    width: 30% !important;
-}
 .w-80{
     width: 80% !important;
+}
+.w-90{
+    width: 90% !important;
 }
 .bg-main-color{
     background-color:#014f51 !important;
@@ -77,6 +77,22 @@
     --bs-btn-disabled-bg: #014f51;
     --bs-btn-disabled-border-color: #014f51;
 }
+.btn-outline-main {
+    --bs-btn-color: #014f51;
+    --bs-btn-border-color: #014f51;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #014f51;
+    --bs-btn-hover-border-color: #014f51;
+    --bs-btn-focus-shadow-rgb: 25, 135, 84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #014f51;
+    --bs-btn-active-border-color: #014f51;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #014f51;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #014f51;
+    --bs-gradient: none;
+}
 .btn-second{
     --bs-btn-color: #014f51;
     --bs-btn-bg: #eae19d;
@@ -93,6 +109,11 @@
     --bs-btn-disabled-bg: #eae19d;
     --bs-btn-disabled-border-color: #eae19d;
 }
+.img-user {
+    width: 3rem;
+    height: 3rem;
+  }
+/* End Dashbaord section */
 
 .bg-color{
     background-color: var(--custom-color) ;

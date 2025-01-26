@@ -15,11 +15,13 @@
       <div
         class="w-60 d-flex justify-content-center align-items-center flex-wrap text-nowrap"
       >
-        <span id="card-name" class="w-100 text-center">{{ card.name }}</span>
+        <span id="card-name" :class="['w-100 text-center', card.nameClass]">{{
+          card.name
+        }}</span>
         <span id="card-value" class="w-100 text-center">{{ card.value }}</span>
         <span id="card-lable" class="w-100 text-center text-muted"
           ><i :class="['me-1', card.lableIcon]"></i
-          ><span>{{ card.lable }}</span>
+          ><span class="text-wrap">{{ card.lable }}</span>
         </span>
       </div>
     </div>
@@ -39,6 +41,7 @@ export default {
         icon: "",
         lableIcon: "",
         lable: "",
+        nameClass: "",
       }),
     },
   },
@@ -67,20 +70,20 @@ export default {
 #card-lable {
   font-size: 0.7rem;
 }
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1024px) {
   .card {
-    width: 20%;
+    width: 22%;
   }
   .card:hover {
-    width: 21%;
+    width: 23%;
   }
   .icon {
     font-size: 3.8rem;
   }
 }
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 1024px) {
   .card {
-    width: 22.5%;
+    width: 35%;
   }
   .icon {
     font-size: 3.2rem;
@@ -88,7 +91,7 @@ export default {
 }
 @media screen and (max-width: 768px) {
   .card {
-    width: 40%;
+    width: 50%;
   }
   .icon {
     font-size: 3rem;

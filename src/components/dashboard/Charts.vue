@@ -1,61 +1,43 @@
 <template>
-  <div class="d-flex align-items-center flex-wrap pt-4">
-    <div
-      id="section1"
-      class="d-flex justify-content-center align-items-center w-100 flex-wrap my-3"
-    >
-      <div
-        id="section1-charts"
-        class="d-flex justify-content-around align-items-center flex-wrap"
-      >
-        <Chart
-          type="radar"
-          :data="chartDataRadar"
-          :options="chartOptionsRadar"
-          class="chart-radar d-flex justify-content-center"
-        />
-        <Chart
-          type="doughnut"
-          :data="chartDataDonat"
-          :options="chartOptionsDonat"
-          class="chart-donat d-flex justify-content-center"
-        />
-      </div>
-      <div
-        id="section1-slot"
-        class="d-flex justify-content-around align-items-center"
-      >
-        <slot name="section-1"></slot>
-      </div>
-    </div>
-    <div
-      id="section2"
-      class="d-flex justify-content-between align-items-center w-100 flex-wrap my-3"
-    >
-      <div
-        id="section2-charts"
-        class="d-flex justify-content-center align-items-center flex-wrap"
-      >
-        <!-- <Chart
+  <div
+    id="section1"
+    class="d-flex justify-content-between align-items-center flex-wrap w-100 mb-2"
+  >
+    <!-- <Chart
           type="bar"
           :data="chartDataBar"
           :options="chartOptionsBar"
           class="chart-bar d-flex justify-content-center"
         /> -->
-        <Chart
-          type="line"
-          :data="chartDataLine"
-          :options="chartOptionsLine"
-          class="chart-line d-flex justify-content-center"
-        />
-      </div>
-      <div
-        id="section2-slot"
-        class="d-flex justify-content-around align-items-center"
-      >
-        <slot name="section-2"></slot>
-      </div>
+    <Chart
+      type="line"
+      :data="chartDataLine"
+      :options="chartOptionsLine"
+      class="chart-line d-flex justify-content-center"
+    />
+    <Chart
+      type="radar"
+      :data="chartDataRadar"
+      :options="chartOptionsRadar"
+      class="chart-radar d-flex justify-content-center"
+    />
+  </div>
+  <div
+    id="section2"
+    class="d-flex justify-content-between align-items-center w-100 flex-wrap mt-2"
+  >
+    <div
+      class="chart-table d-flex justify-content-center align-items-center flex-wrap"
+    >
+      <slot name="table-slot"></slot>
     </div>
+
+    <Chart
+      type="doughnut"
+      :data="chartDataDonat"
+      :options="chartOptionsDonat"
+      class="chart-donat d-flex justify-content-center"
+    />
   </div>
 </template>
 
@@ -329,55 +311,32 @@ export default {
 };
 </script>
 <style scoped>
-.chart-donat {
-  height: 100%;
-}
-/* .chart-bar {
-  height: 100%;
-} */
-.chart-line {
-  height: 18rem;
-}
+.chart-donat,
+.chart-line,
 .chart-radar {
-  height: 100%;
+  height: 20rem;
 }
-#section1-charts,
-#section2-charts {
-  height: 100%;
-}
-@media screen and (min-width: 992px) {
-  #section1-charts,
-  #section2-charts {
-    width: 60%;
-  }
-  #section1-slot,
-  #section2-slot {
-    width: 40%;
-  }
+
+@media screen and (min-width: 1024px) {
   .chart-donat {
-    width: 40%;
+    width: 30%;
   }
   .chart-line {
-    width: 90%;
+    width: 65%;
   }
   /* .chart-bar {
     width: 90%;
   } */
   .chart-radar {
-    width: 55%;
+    width: 30%;
+  }
+  .chart-table {
+    width: 65%;
   }
 }
-@media screen and (max-width: 992px) {
-  #section1-charts,
-  #section2-charts {
-    width: 60%;
-  }
-  #section1-slot,
-  #section2-slot {
-    width: 40%;
-  }
+@media screen and (max-width: 1024px) {
   .chart-donat {
-    width: 40%;
+    width: 100%;
   }
   .chart-line {
     width: 90%;
@@ -389,7 +348,7 @@ export default {
     width: 60%;
   }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .chart-donat {
     width: 100%;
   }
@@ -402,33 +361,19 @@ export default {
   .chart-radar {
     width: 100%;
   }
-  #section-1,
-  #section-2 {
-    width: 40%;
-  }
 }
-@media screen and (max-width: 576px) {
+/* @media screen and (max-width: 576px) {
   .chart-donat {
     width: 90%;
   }
   .chart-line {
     width: 90%;
   }
-  /* .chart-bar {
+  .chart-bar {
     width: 90%;
-  } */
+  }
   .chart-radar {
     width: 90%;
   }
-  #section1-charts,
-  #section2-charts,
-  #section1-slot,
-  #section2-slot {
-    width: 90%;
-  }
-  #section1-slot,
-  #section2-slot {
-    margin-top: 1rem;
-  }
-}
+} */
 </style>

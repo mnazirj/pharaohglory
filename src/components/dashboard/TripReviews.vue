@@ -1,19 +1,22 @@
 <template>
   <div class="">
-    <div
-      class="d-flex justify-content-center align-content-center mt-1 mb-3 w-100"
-    >
-      <div
-        class="d-flex justify-content-center align-content-center w-40 input-group"
-      >
-        <i
-          class="pi pi-search fs-5 p-2 bg-main-color rounded-start-2 text-white"
-        ></i>
-        <input
-          type="text"
-          id="search"
-          class="w-60 p-1 pe-2 ps-2 border-2 border-start-0 rounded-end-2"
-        />
+    <div class="d-flex align-content-center mt-1 mb-3 w-100">
+      <div class="d-flex justify-content-between align-content-center w-75">
+        <div class="w-30 d-flex">
+          <span class="font-bold fs-4 text-nowrap cursor-pointer" @click="backToTrip($route.params.tripId)">Reviews for trip #{{ $route.params.tripId }}</span>
+        </div>
+        <div
+          class="d-flex justify-content-center align-content-center w-70 input-group"
+        >
+          <i
+            class="pi pi-search fs-5 p-2 bg-main-color rounded-start-2 text-white"
+          ></i>
+          <input
+            type="text"
+            id="search"
+            class="w-60 p-1 pe-2 ps-2 border-2 border-start-0 rounded-end-2"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -23,32 +26,36 @@
         <thead>
           <tr>
             <th scope="col" colspan="2">User</th>
-            <th scope="col">Trip</th>
             <th scope="col">Review</th>
             <th scope="col">Description</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="review in paginatedReviews" :key="review.id">
+          <tr v-for="tripReview in paginatedTripReviews" :key="tripReview.id">
             <td>
               <img
-                :src="review.user.img"
+                :src="tripReview.user.img"
                 alt="user-img"
                 class="img-user rounded-circle"
               />
             </td>
-            <td>{{ review.user.name }}</td>
-            <td>{{ review.trip.name }}</td>
-            <td><Rating v-model="review.rate" readonly /></td>
-            <td>{{ clipText(review.description) }}</td>
+            <td>{{ tripReview.user.name }}</td>
+            <td>
+              <Rating
+                v-model="tripReview.rate"
+                readonly
+                class="d-flex justify-content-center align-items-center"
+              />
+            </td>
+            <td>{{ clipText(tripReview.description) }}</td>
             <td>
               <button
                 type=" button"
                 class="btn btn-main me-1 ms-1"
                 data-bs-toggle="modal"
                 data-bs-target="#show-modal"
-                @click="currentDataSeeder(review)"
+                @click="currentDataSeeder(tripReview)"
               >
                 <i class="pi pi-eye pt-1"></i>
               </button>
@@ -56,8 +63,8 @@
                 type=" button"
                 class="btn btn-danger me-1 ms-1"
                 data-bs-toggle="modal"
-                data-bs-target="#delete-modal"
-                @click="currentDataSeeder(review)"
+                data-bs-target="#deleteTrip-modal"
+                @click="currentDataSeeder(tripReview)"
               >
                 <i class="pi pi-trash pt-1"></i>
               </button>
@@ -66,14 +73,14 @@
           </tr>
         </tbody>
       </table>
-      <Paginator
-        class="w-100"
-        :rows="rowsPerPage"
-        :totalRecords="reviews.length"
-        :rowsPerPageOptions="[5, 10, 20, 30]"
-        @page="onPageChange"
-      ></Paginator>
     </div>
+    <Paginator
+      class="w-100"
+      :rows="rowsPerPage"
+      :totalRecords="tripReviews.length"
+      :rowsPerPageOptions="[5, 10, 20, 30]"
+      @page="onPageChange"
+    ></Paginator>
     <!-- show Modal -->
     <div id="show-modal" class="modal fade" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -120,7 +127,7 @@
                 </div>
               </div>
 
-              <div
+              <!-- <div
                 class="d-flex justify-content-center align-items-center flex-wrap w-90 border-bottom-1 pb-2"
               >
                 <span class="text-center w-100 mb-1 fs-5 font-bold"
@@ -142,7 +149,7 @@
                     <span>{{ currentData.trip.type }}</span>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <div
                 class="d-flex justify-content-center align-items-center flex-wrap w-90 pb-2"
@@ -170,7 +177,7 @@
 
     <!-- Delete Modal -->
 
-    <div class="modal fade" id="delete-modal" tabindex="-1">
+    <div class="modal fade" id="deleteTrip-modal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -227,26 +234,16 @@ export default {
           name: null,
           img: null,
         },
-        trip: {
-          id: null,
-          name: null,
-          type: null,
-        },
         rate: null,
         description: null,
       },
-      reviews: [
+      tripReviews: [
         {
           id: 1,
           user: {
             id: 1,
             name: "Ahmad Alahmad",
             img: require("@/assets/images/dashboard/avatar-1.png"),
-          },
-          trip: {
-            id: 1,
-            name: "Latakia Trip",
-            type: "Sea Trip",
           },
           rate: 3.5,
           description:
@@ -259,11 +256,6 @@ export default {
             name: "Samer GG",
             img: require("@/assets/images/dashboard/avatar-1.png"),
           },
-          trip: {
-            id: 1,
-            name: "Alshik Trip",
-            type: "Mountin Trip",
-          },
           rate: 3.5,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sunt alias veritatis odit minima assumenda, eveniet voluptas repellendus sint. Doloribus unde ab commodi autem. Repellendus eum atque non accusantium quod?",
@@ -274,11 +266,6 @@ export default {
             id: 1,
             name: "Ahmad Alahmad",
             img: require("@/assets/images/dashboard/avatar-1.png"),
-          },
-          trip: {
-            id: 4,
-            name: "mhajren-mountin Trip",
-            type: "Mountin Trip",
           },
           rate: 4.5,
           description:
@@ -291,11 +278,6 @@ export default {
             name: "Sara Alsrsasa",
             img: require("@/assets/images/dashboard/avatar-1.png"),
           },
-          trip: {
-            id: 1,
-            name: "Latakia Trip",
-            type: "Sea Trip",
-          },
           rate: 2.5,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sunt alias veritatis odit minima assumenda, eveniet voluptas repellendus sint. Doloribus unde ab commodi autem. Repellendus eum atque non accusantium quod?",
@@ -306,11 +288,6 @@ export default {
             id: 1,
             name: "Omar AlOmary",
             img: require("@/assets/images/dashboard/avatar-1.png"),
-          },
-          trip: {
-            id: 1,
-            name: " Trip",
-            type: "Sea Trip",
           },
           rate: 3,
           description:
@@ -323,11 +300,6 @@ export default {
             name: "Ammar Alatar",
             img: require("@/assets/images/dashboard/avatar-1.png"),
           },
-          trip: {
-            id: 1,
-            name: "Latakia Trip",
-            type: "Sea Trip",
-          },
           rate: 2,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sunt alias veritatis odit minima assumenda, eveniet voluptas repellendus sint. Doloribus unde ab commodi autem. Repellendus eum atque non accusantium quod?",
@@ -338,11 +310,6 @@ export default {
             id: 1,
             name: "Osama AlBihk",
             img: require("@/assets/images/dashboard/avatar-1.png"),
-          },
-          trip: {
-            id: 1,
-            name: "Latakia Trip",
-            type: "Sea Trip",
           },
           rate: 4.5,
           description:
@@ -355,11 +322,6 @@ export default {
             name: "Sami Mousa",
             img: require("@/assets/images/dashboard/avatar-1.png"),
           },
-          trip: {
-            id: 1,
-            name: "Latakia Trip",
-            type: "Sea Trip",
-          },
           rate: 3.4,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sunt alias veritatis odit minima assumenda, eveniet voluptas repellendus sint. Doloribus unde ab commodi autem. Repellendus eum atque non accusantium quod?",
@@ -370,11 +332,6 @@ export default {
             id: 1,
             name: "Abrahim anan",
             img: require("@/assets/images/dashboard/avatar-1.png"),
-          },
-          trip: {
-            id: 1,
-            name: "Latakia Trip",
-            type: "Sea Trip",
           },
           rate: 2.69,
           description:
@@ -387,11 +344,6 @@ export default {
             name: "Adnan AlDnan",
             img: require("@/assets/images/dashboard/avatar-1.png"),
           },
-          trip: {
-            id: 1,
-            name: "Latakia Trip",
-            type: "Sea Trip",
-          },
           rate: 5,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sunt alias veritatis odit minima assumenda, eveniet voluptas repellendus sint. Doloribus unde ab commodi autem. Repellendus eum atque non accusantium quod?",
@@ -403,11 +355,6 @@ export default {
             name: "Dina Almdina",
             img: require("@/assets/images/dashboard/avatar-1.png"),
           },
-          trip: {
-            id: 1,
-            name: "Latakia Trip",
-            type: "Sea Trip",
-          },
           rate: 0.5,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sunt alias veritatis odit minima assumenda, eveniet voluptas repellendus sint. Doloribus unde ab commodi autem. Repellendus eum atque non accusantium quod?",
@@ -416,10 +363,10 @@ export default {
     };
   },
   computed: {
-    paginatedReviews() {
+    paginatedTripReviews() {
       const start = this.currentPage * this.rowsPerPage;
       const end = start + this.rowsPerPage;
-      return this.reviews.slice(start, end);
+      return this.tripReviews.slice(start, end);
     },
   },
   methods: {
@@ -437,16 +384,16 @@ export default {
       this.currentPage = event.page;
       this.rowsPerPage = event.rows;
     },
+    backToTrip(id){
+      this.$router.back();
+    }
   },
 };
 </script>
 
 <style scoped>
-.img-user {
-  width: 3rem;
-  height: 3rem;
-}
-::v-deep .p-rating-option,
+
+/* ::v-deep .p-rating-option,
 .p-rating-option-active {
   cursor: default !important;
 }
@@ -455,5 +402,5 @@ export default {
 }
 ::v-deep .p-rating-icon {
   color: #014f51 !important;
-}
+} */
 </style>

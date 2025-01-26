@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-transparent" id="nav">
-    <div class="container">
+    <div class="container-fluid">
       <a href="/"
         ><img :src="logo" alt="PG" class="img-fluid text-center" width="250"
       /></a>
@@ -13,26 +13,33 @@
             <InputGroupAddon>
               <i class="pi pi-search" />
             </InputGroupAddon>
-            <InputText
-              v-model="search"
-              placeholder="Find places and things to do"
-            />
+            <InputText v-model="search" :placeholder="$t('nav.input')" />
             <DatePicker
               v-model="date"
               showIcon
               showButtonBar
-              placeholder="Anytime"
+              :placeholder="$t('nav.time')"
               iconDisplay="input"
               dateFormat="dd/mm/yy"
             />
-            <Button label="Search" @click="searchPlace" />
+            <Button :label="$t('nav.search')" @click="searchPlace" />
           </InputGroup>
         </div>
         <div class="col">
           <div
             class="d-flex justify-content-lg-end justify-content-md-end justify-content-center align-items-center gap-3"
           >
-            <Button icon="fas fa-heart" label="Wishlist" variant="text" />
+            <SelectButton
+              v-model="value"
+              :options="options"
+              @change="changeLocale"
+            />
+
+            <Button
+              icon="fas fa-heart"
+              :label="$t('nav.wishlist')"
+              variant="text"
+            />
             <Menubar
               :model="isLoggedIn == true ? client : items"
               class="border-0 color-always"
@@ -52,7 +59,7 @@
                     class="color-always"
                   >
                     <span :class="item.icon" />
-                    <span>{{ item.label }}</span>
+                    <span>{{ $t("nav." + item.label) }}</span>
                   </a>
                 </router-link>
                 <a
@@ -64,7 +71,13 @@
                   class="color-always"
                 >
                   <span :class="item.icon" />
-                  <span>{{ item.label }}</span>
+                  <span v-if="item.label == 'logout'">{{
+                    $t("nav." + item.label)
+                  }}</span>
+                  <span v-if="item.label == 'profile'">{{
+                    $t("nav." + item.label)
+                  }}</span>
+                  <span v-else>{{ item.label }}</span>
                   <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down" />
                 </a>
               </template>
@@ -90,30 +103,31 @@
         <InputGroupAddon>
           <i class="pi pi-search" />
         </InputGroupAddon>
-        <InputText
-          v-model="search"
-          placeholder="Find places and things to do"
-        />
+        <InputText v-model="search" :placeholder="$t('nav.input')" />
         <DatePicker
           v-model="date"
           showIcon
           showButtonBar
-          placeholder="Anytime"
+          :placeholder="$t('nav.time')"
           iconDisplay="input"
           dateFormat="dd/mm/yy"
         />
-        <Button label="Search" @click="searchPlace" />
+        <Button :label="$t('nav.search')" @click="searchPlace" />
       </InputGroup>
     </div>
     <div class="col">
       <div
         class="d-flex justify-content-lg-end justify-content-md-end justify-content-center align-items-center gap-3"
       >
-        <Button icon="fas fa-heart" label="Wishlist" variant="text" />
+        <Button
+          icon="fas fa-heart"
+          :label="$t('nav.wishlist')"
+          variant="text"
+        />
         <Menubar
           :model="isLoggedIn == true ? client : items"
-          class="border-0"
-          breakpoint="100px"
+          class="border-0 color-always"
+          :breakpoint="100"
         >
           <template #item="{ item, props, hasSubmenu }">
             <router-link
@@ -127,10 +141,10 @@
                 :href="href"
                 v-bind="props.action"
                 @click="navigate"
-                class="color"
+                class="color-always"
               >
                 <span :class="item.icon" />
-                <span>{{ item.label }}</span>
+                <span>{{ $t("nav." + item.label) }}</span>
               </a>
             </router-link>
             <a
@@ -139,10 +153,16 @@
               :href="item.url"
               :target="item.target"
               v-bind="props.action"
-              class="color"
+              class="color-always"
             >
               <span :class="item.icon" />
-              <span>{{ item.label }}</span>
+              <span v-if="item.label == 'logout'">{{
+                $t("nav." + item.label)
+              }}</span>
+              <span v-if="item.label == 'profile'">{{
+                $t("nav." + item.label)
+              }}</span>
+              <span v-else>{{ item.label }}</span>
               <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down" />
             </a>
           </template>
@@ -152,6 +172,13 @@
           :icon="[{ 'fas fa-moon': !isDarkMode }, { 'fas fa-sun': isDarkMode }]"
           rounded
           @click="ToggleDarkMode()"
+        />
+      </div>
+      <div class="text-center">
+        <SelectButton
+          v-model="value"
+          :options="options"
+          @change="changeLocale"
         />
       </div>
     </div>
@@ -170,25 +197,28 @@ import Menubar from "primevue/menubar";
 import axios from "axios";
 import router from "@/router";
 import Drawer from "primevue/drawer";
+import SelectButton from "primevue/selectbutton";
 
-const logo = require("@/assets/images/logo.svg");
+const logo = ref(require("@/assets/images/logo.svg"));
 const search = ref("");
 const date = ref("");
 const isDarkMode = ref(false);
 const isLoggedIn = ref(false);
 const nav = ref(false);
+const options = ref(["AR", "EN"]);
+const value = ref(null);
 const items = ref([
   {
-    label: "Profile",
+    label: "profile",
     icon: "fas fa-user-circle",
     items: [
       {
-        label: "Register",
+        label: "reigster",
         icon: "fas fa-user-plus",
         route: "/auth/register",
       },
       {
-        label: "Login",
+        label: "login",
         icon: "fas fa-key",
         route: "/auth/login",
       },
@@ -202,13 +232,13 @@ const client = ref([
     icon: "fas fa-user-circle",
     items: [
       {
-        label: "Client Area",
+        label: "clientarea",
         icon: "fas fa-shapes",
         route: "/clientarea",
       },
 
       {
-        label: "Logout",
+        label: "logout",
         icon: "fas fa-door-open",
         command: () => {
           localStorage.removeItem("_token");
@@ -221,9 +251,11 @@ const client = ref([
 function isDarkModeActive() {
   if (document.documentElement.classList.contains("my-app-dark")) {
     isDarkMode.value = true;
+    logo.value = require("@/assets/images/dark-logo.svg");
     return true;
   }
   isDarkMode.value = false;
+  logo.value = require("@/assets/images/logo.svg");
   return false;
 }
 
@@ -259,6 +291,11 @@ function searchPlace() {
   router.push("/search/?places=" + search.value + "&startDate=" + startDate);
 }
 
+function changeLocale() {
+  localStorage.setItem("locale", value.value.toLowerCase());
+  window.location.reload();
+}
+
 onMounted(() => {
   isLoggedIn.value = localStorage.getItem("_token") == null ? false : true;
   if (isLoggedIn.value) {
@@ -267,5 +304,6 @@ onMounted(() => {
   date.value = null;
   search.value = null;
   isDarkModeActive();
+  value.value = localStorage.getItem("locale").toLocaleUpperCase();
 });
 </script>

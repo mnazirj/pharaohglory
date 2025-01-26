@@ -3,7 +3,9 @@
     <div class="d-flex justify-content-center align-items-center min-vh-100">
       <Card class="col-lg-6 col-md-6 col-12 shadow-none">
         <template #title>
-          <img :src="logo" alt="Pharaohgolry" />
+          <div class="text-center">
+            <img :src="logo" alt="Pharaohgolry" class="img-fluid" width="512" />
+          </div>
         </template>
         <template #content>
           <div>
@@ -22,7 +24,7 @@
                     v-model="email"
                     fluid
                   />
-                  <label for="email">Email Address</label>
+                  <label for="email">{{ $t("auth.email") }}</label>
                 </FloatLabel>
                 <Message
                   v-if="$form.email?.invalid"
@@ -41,7 +43,7 @@
                     toggleMask
                     fluid
                   />
-                  <label>Password</label>
+                  <label>{{ $t("auth.password") }}</label>
                 </FloatLabel>
                 <Message
                   v-if="$form.password?.invalid"
@@ -53,7 +55,7 @@
               </div>
               <Button
                 type="submit"
-                label="Submit"
+                :label="$t('auth.button')"
                 class="w-100 mt-2"
                 :loading="isLoading"
               />
@@ -66,11 +68,11 @@
         <template #footer>
           <hr class="hr" />
           <div class="d-flex flex-column gap-2">
-            <h5 class="text-center">OR</h5>
+            <h5 class="text-center">{{ $t("auth.or") }}</h5>
             <div class="text-center">
               <Button
                 icon="fab fa-google"
-                label="Login with Google"
+                :label="$t('auth.login.google')"
                 rounded
                 @click="googleLogin()"
                 :loading="isLoading"
@@ -82,15 +84,26 @@
             class="d-flex flex-lg-row flex-md-row flex-column gap-3 justify-content-between mt-4"
           >
             <div>
-              <h6 class="mb-0">
-                <a href="#">Forget Password?</a>
-              </h6>
+              <Button
+                as="router-link"
+                to="/auth/login"
+                :label="$t('auth.login.forget')"
+                variant="text"
+                icon="fas fa-gears"
+                class="text-decoration-none"
+                :iconPos="$i18n.locale == 'ar' ? 'right' : 'left'"
+              />
             </div>
             <div>
-              <h6 class="mb-0">
-                No account yet?
-                <a href="/auth/register">create one</a>
-              </h6>
+              <Button
+                as="router-link"
+                to="/auth/register"
+                :label="$t('auth.login.new')"
+                variant="text"
+                icon="fas fa-user-plus"
+                class="text-decoration-none"
+                :iconPos="$i18n.locale == 'ar' ? 'right' : 'left'"
+              />
             </div>
           </div>
         </template>
@@ -106,8 +119,8 @@ import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
 import Password from "primevue/password";
 import Button from "primevue/button";
-const logo = require("@/assets/images/logo.svg");
-import { reactive, ref } from "vue";
+const logo = ref(require("@/assets/images/logo.svg"));
+import { onMounted, reactive, ref } from "vue";
 import Message from "primevue/message";
 import { decodeCredential } from "vue3-google-login";
 
@@ -196,4 +209,11 @@ const onFormSubmit = ({ valid }) => {
     login();
   }
 };
+
+onMounted(() => {
+  var mode = localStorage.getItem("mode");
+  if (mode == "dark") {
+    logo.value = require("@/assets/images/dark-logo.svg");
+  }
+});
 </script>

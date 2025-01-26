@@ -39,46 +39,78 @@
           </div>
 
           <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-            <h6 class="text-uppercase fw-bold mb-4 color-always">Support</h6>
+            <h6 class="text-uppercase fw-bold mb-4 color-always">
+              {{ $t("footer.support.title") }}
+            </h6>
             <p>
-              <a href="#" class="text-reset">Contact</a>
+              <a href="#" class="text-reset">
+                {{ $t("footer.support.contact") }}</a
+              >
             </p>
             <p>
-              <a href="#" class="text-reset">Privacy Policy</a>
+              <a href="#" class="text-reset">{{ $t("footer.support.pp") }}</a>
             </p>
             <p>
-              <a href="#" class="text-reset">Legal Notice</a>
+              <a href="#" class="text-reset">{{ $t("footer.support.ln") }}</a>
             </p>
           </div>
 
           <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-            <h6 class="text-uppercase fw-bold mb-4 color-always">Company</h6>
+            <h6 class="text-uppercase fw-bold mb-4 color-always">
+              {{ $t("footer.company.title") }}
+            </h6>
             <p>
-              <a href="#" class="text-reset">About Us</a>
+              <a href="#" class="text-reset">{{
+                $t("footer.company.about")
+              }}</a>
             </p>
             <p>
-              <a href="#" class="text-reset">Blogs</a>
+              <a href="#" class="text-reset">{{ $t("footer.company.blog") }}</a>
             </p>
             <p>
-              <a href="#" class="text-reset">Gift Cards</a>
+              <a href="#" class="text-reset">{{ $t("footer.company.gift") }}</a>
             </p>
           </div>
 
           <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
             <h6 class="text-uppercase fw-bold mb-4 color-always">Contact</h6>
-            <p><i class="fas fa-home me-3 color"></i> {{ location }}</p>
             <p>
-              <i class="fas fa-envelope me-3 color"></i>
+              <i
+                class="fas fa-home me-3 color"
+                :class="[
+                  { 'float-start': $i18n.locale == 'ar' },
+                  { 'float-end': $i18n.locale == 'en' },
+                ]"
+              ></i>
+              {{ location }}
+            </p>
+            <p>
+              <i
+                class="fas fa-envelope me-3 color"
+                :class="[
+                  { 'float-start': $i18n.locale == 'ar' },
+                  { 'float-end': $i18n.locale == 'en' },
+                ]"
+              ></i>
               {{ email }}
             </p>
-            <p><i class="fas fa-phone me-3 color"></i>{{ phone }}</p>
+            <p>
+              <i
+                class="fas fa-phone me-3 color"
+                :class="[
+                  { 'float-start': $i18n.locale == 'ar' },
+                  { 'float-end': $i18n.locale == 'en' },
+                ]"
+              ></i
+              >{{ phone }}
+            </p>
           </div>
         </div>
       </div>
     </section>
 
     <div class="text-center p-4">
-      © {{ new Date().getFullYear() }} Copyright:
+      © {{ new Date().getFullYear() }} {{ $t("footer.copy") }}:
       <a class="text-reset fw-bold" href="#">Pharaoh Glory</a>
     </div>
   </footer>

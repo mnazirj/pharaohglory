@@ -4,7 +4,7 @@
     <hr class="w-50 hr" />
     <div class="row py-5 pt-0">
       <div class="col-lg-4 col-12" v-for="(item, index) in card" :key="index">
-        <a :href="'details/' + item.slug" class="nav-link">
+        <a :href="'/details/' + item.slug" class="nav-link">
           <div class="card shadow h-100">
             <div class="card-img-top activity-zoom">
               <img :src="item.eventImages" class="w-100" height="300" />
@@ -28,13 +28,15 @@
                   {{ item.eventRate }} ({{ item.totalEventRate }})
                 </h6>
               </div>
-              <h6>From ${{ item.adultPrice }} per perosn</h6>
+              <h6>
+                {{ $t("trips.price", { amount: item.adultPrice }) }}
+              </h6>
             </div>
           </div>
         </a>
       </div>
     </div>
-    <h2 class="font-bold">{{ subheader }}</h2>
+    <!-- <h2 class="font-bold">{{ subheader }}</h2> -->
 
     <!-- <Carousel
       :value="items"

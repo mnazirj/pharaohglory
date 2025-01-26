@@ -2,7 +2,7 @@
   <div class="container">
     <div class="col text-end">
       <Button
-        label="Acconut Settings"
+        :label="$t('clientarea.account.title')"
         icon="fas fa-gears"
         variant="text"
         rounded
@@ -19,18 +19,25 @@
         removableSort
         v-if="trips != ''"
       >
-        <Column field="eventTitle" header="Trip"> </Column>
+        <Column field="eventTitle" :header="$t('clientarea.details.trip')">
+        </Column>
         <Column
           field="reservationDate"
-          header="Reservation Date"
+          :header="$t('clientarea.details.date')"
           sortable
         ></Column>
-        <Column field="numberOfAdults" header="Adult"></Column>
-        <Column field="numberOfChildren" header="Child"></Column>
-        <Column header="Action">
+        <Column
+          field="numberOfAdults"
+          :header="$t('clientarea.adult')"
+        ></Column>
+        <Column
+          field="numberOfChildren"
+          :header="$t('clientarea.child')"
+        ></Column>
+        <Column :header="$t('clientarea.details.action')">
           <template #body="slotProps">
             <Button
-              label="View Details"
+              :label="$t('clientarea.details.view')"
               rounded
               icon="fas fa-eye"
               @click="displayDetails(slotProps.data)"
@@ -51,43 +58,47 @@
     >
       <div class="row">
         <div class="col">
-          <h6>Members</h6>
+          <h6>{{ $t("clientarea.details.member") }}</h6>
           <ul>
-            <li>{{ currentTrip.numberOfAdults }}x Adult</li>
-            <li>{{ currentTrip.numberOfChildren }}x Child</li>
+            <li>
+              {{ currentTrip.numberOfAdults }}x {{ $t("clientarea.adult") }}
+            </li>
+            <li>
+              {{ currentTrip.numberOfChildren }}x {{ $t("clientarea.child") }}
+            </li>
           </ul>
         </div>
         <div class="col">
-          <h6>Dates</h6>
+          <h6>{{ $t("clientarea.details.dates") }}</h6>
           <ul>
             <li class="font-semibold">
-              Reservation date:
+              {{ $t("clientarea.details.reservtion") }}:
               <span class="color">{{
                 formatDate(currentTrip.reservationDate)
               }}</span>
             </li>
             <li class="font-semibold">
-              Payment date:
+              {{ $t("clientarea.details.pay_date") }}:
               <span class="color">{{ formatDate(currentTrip.createdAt) }}</span>
             </li>
           </ul>
         </div>
       </div>
       <div class="col">
-        <h6>Payment Information</h6>
+        <h6>{{ $t("clientarea.details.payment") }}</h6>
         <ul>
           <li class="font-semibold">
-            Payment ID
+            {{ $t("clientarea.details.payment_id") }}
             <span class="color">{{ currentTrip.paymentId }}</span>
           </li>
           <li class="font-semibold">
-            Total Price
+            {{ $t("clientarea.details.price") }}
             <span class="color">{{ formatPrice(currentTrip.totalPrice) }}</span>
           </li>
         </ul>
       </div>
       <Button
-        label="Request a refund"
+        :label="$t('clientarea.details.refund')"
         class="float-end"
         variant="text"
         @click="refundTrip(currentTrip.id)"
@@ -103,8 +114,8 @@
     >
       <Tabs value="0">
         <TabList>
-          <Tab value="0">Personal Information</Tab>
-          <Tab value="1">Authentication Information</Tab>
+          <Tab value="0">{{ $t("clientarea.account.personal") }}</Tab>
+          <Tab value="1">{{ $t("clientarea.account.auth") }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
@@ -123,7 +134,9 @@
                       v-model="userInfo.first_name"
                       fluid
                     />
-                    <label for="firstname">First Name</label>
+                    <label for="firstname">{{
+                      $t("clientarea.account.first_name")
+                    }}</label>
                   </FloatLabel>
                   <Message
                     v-if="$form.firstname?.invalid"
@@ -142,7 +155,9 @@
                       v-model="userInfo.last_name"
                       fluid
                     />
-                    <label for="lastname">Last Name</label>
+                    <label for="lastname">{{
+                      $t("clientarea.account.last_name")
+                    }}</label>
                   </FloatLabel>
                   <Message
                     v-if="$form.lastname?.invalid"
@@ -162,7 +177,7 @@
                   fluid
                 />
 
-                <label for="phone">Phone Number</label>
+                <label for="phone">{{ $t("clientarea.account.phone") }}</label>
               </FloatLabel>
               <Message
                 v-if="$form.phone?.invalid"
@@ -172,7 +187,7 @@
                 >{{ $form.phone.error?.message }}</Message
               >
               <Button
-                label="Change"
+                :label="$t('clientarea.account.button')"
                 icon="fas fa-save"
                 class="mt-3 float-end"
                 type="submit"
@@ -204,7 +219,9 @@
                       toggleMask
                       fluid
                     />
-                    <label for="old_password">Old Password</label>
+                    <label for="old_password">{{
+                      $t("clientarea.account.old")
+                    }}</label>
                   </FloatLabel>
                   <Message
                     v-if="$form.oldPassword?.invalid"
@@ -223,7 +240,9 @@
                       toggleMask
                       fluid
                     />
-                    <label for="new_password">New Password</label>
+                    <label for="new_password">{{
+                      $t("clientarea.account.new")
+                    }}</label>
                   </FloatLabel>
                   <Message
                     v-if="$form.newPassword?.invalid"
@@ -235,7 +254,7 @@
                 </div>
               </div>
               <Button
-                label="Change"
+                :label="$t('clientarea.account.button')"
                 icon="fas fa-save"
                 class="mt-3 float-end"
                 type="submit"
@@ -291,7 +310,7 @@ const status = ref(null);
 const currentTrip = ref([]);
 async function fetchTrips() {
   await axios
-    .get("base/user/reservation", {
+    .get("base/user/reservation?lang=" + localStorage.getItem("locale"), {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("_token"),
       },
@@ -303,7 +322,7 @@ async function fetchTrips() {
 
 async function fetchUserInfo(token) {
   await axios
-    .get("account/get/user/info", {
+    .get("account/get/user/info?lang=" + localStorage.getItem("locale"), {
       headers: {
         Authorization: "Bearer " + token,
       },

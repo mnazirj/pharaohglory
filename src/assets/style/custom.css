@@ -176,7 +176,7 @@ footer {
 
 .bg-custom {
     background-size: cover !important;
-    background-position: center;
+    background-position: center !important;
 }
 
 .hr {

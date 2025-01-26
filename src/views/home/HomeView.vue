@@ -29,13 +29,15 @@ var info = [];
 const isLoading = ref(false);
 async function fetchInfo() {
   isLoading.value = true;
-  await axios.get("base/homepage").then((response) => {
-    if (response.status == 200) {
-      info = response.data.webInfo[0];
-      card = response.data.events;
-      isLoading.value = false;
-    }
-  });
+  await axios
+    .get("base/homepage?lang=" + localStorage.getItem("locale"))
+    .then((response) => {
+      if (response.status == 200) {
+        info = response.data.webInfo[0];
+        card = response.data.events;
+        isLoading.value = false;
+      }
+    });
 }
 
 onMounted(() => {

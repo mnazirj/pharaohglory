@@ -1,6 +1,6 @@
 <template>
   <h4 class="fw-bold">
-    <span>Customer reviews</span>
+    <span>{{ $t("trips.customer_review") }}</span>
     <Button
       icon="fas fa-info-circle"
       outlined
@@ -12,13 +12,13 @@
   </h4>
   <div class="col-lg-2 col-md-2 col-12 text-lg-start text-md-start text-center">
     <div class="d-flex flex-column">
-      <h6 class="fw-semibold">Overall rating</h6>
+      <h6 class="fw-semibold">{{ $t("trips.overall") }}</h6>
       <h1 class="fw-bold text-center">
         {{ rate }}<small class="text-muted">/5</small>
       </h1>
       <Rating :modelValue="rate" readonly class="reviews mb-3 mx-auto" />
       <h6 class="text-muted text-center fw-semibold">
-        based on {{ total }} reviews
+        {{ $t("trips.based", { amount: total }) }}
       </h6>
     </div>
   </div>
@@ -37,7 +37,7 @@
       </div>
       <FloatLabel variant="on">
         <Textarea v-model="review" rows="5" name="review" class="col-12" />
-        <label for="review">Your Review</label>
+        <label for="review">{{ $t("trips.your") }}</label>
       </FloatLabel>
       <Message
         v-if="$form.review?.invalid"
@@ -48,7 +48,7 @@
       >
       <div class="text-end mt-2">
         <Button
-          label="Submit"
+          :label="$t('trips.button')"
           type="submit"
           icon="fas fa-check"
           class="text-end"
@@ -58,7 +58,7 @@
     </Form>
   </div>
 
-  <div class="container">
+  <div class="container" v-if="review != null">
     <DataView :value="reviews" paginator :rows="10">
       <template #list="slotProps">
         <div

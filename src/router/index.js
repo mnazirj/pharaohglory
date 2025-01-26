@@ -3,6 +3,13 @@ import store from "@/store/index.js";
 
 const routes = [
   {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    beforeEnter: () => {
+      router.push("/");
+    },
+  },
+  {
     path: "/",
     name: "home",
     component: () => import("../views/home/HomeView.vue"),
@@ -15,6 +22,11 @@ const routes = [
       {
         path: "clientarea",
         name: "cleintarea",
+        beforeEnter: () => {
+          if (localStorage.getItem("_token") == null) {
+            router.push("/auth/login");
+          }
+        },
         component: () => import("../views/home/ClientView.vue"),
       },
       {

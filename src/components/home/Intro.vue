@@ -3,9 +3,13 @@
     <div
       class="d-flex align-items-center bg-custom p-5"
       :style="
-        'background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)) ,url(' +
-        background +
-        '); height:560px'
+        background != null
+          ? 'background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)) ,url(' +
+            background +
+            '); height:560px;'
+          : 'background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)) ,url(' +
+            information.mediaImage1 +
+            '); height:560px;'
       "
     >
       <div class="container">
@@ -14,72 +18,54 @@
             <h1 class="text-white font-bold text-uppercase w-50">
               {{ information.coverTitle }}
             </h1>
-            <h5 class="text-white">
-              Discover the heart of Paris and the new Notre Dame
-            </h5>
           </div>
-          <a href="#" class="text-decoration-none font-bold text-white"
-            >Learn more
-          </a>
         </div>
       </div>
     </div>
     <div class="container">
       <div class="d-flex justify-content-between gap-3 mt-2">
         <Button
-          label="Culture"
+          :label="$t('selector.culture')"
           icon="fas fa-monument"
           :variant="currentTab == 1 ? '' : 'outlined'"
           class="w-100"
-          @click="ChangeTab(1)"
+          @click="ChangeTab(1, information.mediaImage1)"
         />
         <Button
-          label="Food"
+          :label="$t('selector.food')"
           icon="fas fa-utensils"
           :variant="currentTab == 2 ? '' : 'outlined'"
           class="w-100"
-          @click="ChangeTab(2)"
+          @click="ChangeTab(2, information.mediaImage2)"
         />
         <Button
-          label="Nature"
+          :label="$t('selector.culture')"
           icon="fas fa-mountain"
           :variant="currentTab == 3 ? '' : 'outlined'"
           class="w-100"
-          @click="ChangeTab(3)"
+          @click="ChangeTab(3, information.mediaImage3)"
         />
         <Button
-          label="Sport"
+          :label="$t('selector.culture')"
           icon="fas fa-person-skiing"
           :variant="currentTab == 4 ? '' : 'outlined'"
           class="w-100"
-          @click="ChangeTab(4)"
+          @click="ChangeTab(4, information.mediaImage4)"
         />
       </div>
       <Tabs :value="currentTab" class="mt-3">
         <TabPanels>
           <TabPanel :value="1">
-            <Details
-              header="Unforgettable cultural experiences"
-              :card="cards.Culture"
-            />
+            <Details :header="$t('trips.culture')" :card="cards.Culture" />
           </TabPanel>
           <TabPanel :value="2">
-            <Details
-              header="Unforgettable food experiences"
-              :card="cards.Food"
-            />
+            <Details :header="$t('trips.food')" :card="cards.Food" />
           </TabPanel>
           <TabPanel :value="3">
-            <Details
-              header="Unforgettable nature experiences"
-              :card="cards.Nature"
-            />
+            <Details :header="$t('trips.nature')" :card="cards.Nature" />
           </TabPanel>
           <TabPanel :value="4">
-            <Details
-              header="Unforgettable sports experiences"
-              :card="cards.Sports"
-            />
+            <Details :header="$t('trips.sport')" :card="cards.Sports" />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -95,20 +81,20 @@ import TabPanels from "primevue/tabpanels";
 import TabPanel from "primevue/tabpanel";
 import Button from "primevue/button";
 import Details from "./CardDetails";
+import { toRefs } from "@vue/reactivity";
 
 import axios from "axios";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 defineProps({
   cards: Array,
   information: Array,
 });
-
-const background = ref(require("@/assets/images/hero1.jpeg"));
+const background = ref(null);
 const currentTab = ref(1);
 
-function ChangeTab(value) {
-  background.value = require("@/assets/images/hero" + value + ".jpeg");
+function ChangeTab(value, img) {
+  background.value = img;
   currentTab.value = value;
 }
 </script>

@@ -13,14 +13,18 @@
           <h6 class="mt-1 fw-bold">
             {{ eventDetails.eventRate }} / 5
             <a href="#reviews" class="ms-1 fw-normal"
-              >{{ eventDetails.totalEventRate }} Reviews</a
+              >{{ eventDetails.totalEventRate }} {{ $t("trips.review") }}</a
             >
           </h6>
         </div>
         <div class="d-flex gap-2 align-items-center">
-          <Button label="Add to wishlist" icon="fas fa-heart" size="small" />
           <Button
-            :label="hasCopy ? 'Link copied to clipboard' : 'Share'"
+            :label="$t('trips.add_wish')"
+            icon="fas fa-heart"
+            size="small"
+          />
+          <Button
+            :label="hasCopy ? $t('trips.copid') : $t('trips.share')"
             icon="fas fa-share"
             @click="copyLink"
             size="small"
@@ -103,7 +107,7 @@
               class="d-flex justify-content-between align-items-center gap-5"
             >
               <div class="mt-2">
-                <h6 class="mb-1">From</h6>
+                <h6 class="mb-1">{{ $t("trips.check.from") }}</h6>
                 <h5
                   class="fw-bold mb-1"
                   v-if="eventDetails.adultDiscountPrice == null"
@@ -116,17 +120,17 @@
                   >
                   ${{ eventDetails.adultDiscountPrice }}
                 </h5>
-                <h6>per person</h6>
+                <h6>{{ $t("trips.check.person") }}</h6>
               </div>
               <div>
                 <Button
-                  label="Check availiability"
+                  :label="$t('trips.check.title')"
                   rounded
                   @click="openCheck()"
                   v-if="!eventDetails.isBooked"
                 />
                 <Button
-                  label="Client Area"
+                  :label="$t('nav.clientarea')"
                   rounded
                   as="router-link"
                   to="/clientarea"
@@ -152,8 +156,17 @@
           {{ eventDetails.description }}
         </h6>
         <div class="py-2">
-          <h3 class="fw-bold" v-if="eventProbs != null">About this activity</h3>
-          <div class="float-start pt-2" v-if="eventProbs != null">
+          <h3 class="fw-bold" v-if="eventProbs != null">
+            {{ $t("trips.about") }}
+          </h3>
+          <div
+            class="pt-2"
+            :class="[
+              { 'float-end': $i18n.locale == 'ar' },
+              { 'float-start': $i18n.locale == 'en' },
+            ]"
+            v-if="eventProbs != null"
+          >
             <div class="row" v-for="(prob, index) in eventProbs" :key="index">
               <div class="col-1">
                 <h6 class="text-center">
@@ -170,11 +183,11 @@
           </div>
         </div>
         <div class="float-start">
-          <h4 class="fw-bold">Experience</h4>
+          <h4 class="fw-bold">{{ $t("trips.experience") }}</h4>
           <div class="col-12">
             <div class="row" v-if="eventDetails.eventHighlight">
               <div class="col-lg-3 col-md-3 col-12">
-                <h6>Highlights</h6>
+                <h6>{{ $t("trips.highlight") }}</h6>
               </div>
               <div class="col">
                 <ul class="fa-ul ms-0">
@@ -189,7 +202,7 @@
 
             <div class="row">
               <div class="col-lg-3 col-md-3 col-12">
-                <h6>Full Description</h6>
+                <h6>{{ $t("trips.desc") }}</h6>
               </div>
               <div class="col">
                 <h6>{{ eventDetails.fullDescription }}</h6>
@@ -199,7 +212,7 @@
 
             <div class="row" v-if="eventDetails.eventIncludes != null">
               <div class="col-lg-3 col-md-3 col-12">
-                <h6>Includes</h6>
+                <h6>{{ $t("trips.include") }}</h6>
               </div>
               <div class="col">
                 <ul class="fa-ul ms-0">
@@ -223,7 +236,7 @@
 
             <div class="row">
               <div class="col-lg-3 col-md-3 col-12">
-                <h6>Meeting Point</h6>
+                <h6>{{ $t("trips.meeting") }}</h6>
               </div>
               <div class="col">
                 <h6>
@@ -231,8 +244,10 @@
                 </h6>
                 <h6>
                   <i class="fa fa-arrow-right color-always me-2" />
-                  <a :href="eventDetails.meetingPointLink" class="font-semibold"
-                    >Open in Google Maps</a
+                  <a
+                    :href="eventDetails.meetingPointLink"
+                    class="font-semibold"
+                    >{{ $t("trips.map") }}</a
                   >
                 </h6>
               </div>
@@ -245,7 +260,7 @@
     </div>
     <div>
       <SimillarActivity
-        header="You might also like..."
+        :header="$t('trips.subheader')"
         :card="eventDetails.similarEvents"
       />
     </div>
@@ -264,15 +279,16 @@
     <Dialog
       v-model:visible="checkDialog"
       modal
-      header="Checking availiability for trip"
+      :header="$t('trips.check.header')"
       class="col-lg-6 col-md-8 col-12"
+      :dir="$i18n.locale == 'ar' ? 'rtl' : 'ltr'"
     >
       <div class="row">
         <div class="col">
           <div class="row">
             <div class="col">
-              <h5>Adult</h5>
-              <h6>(Age 13-99)</h6>
+              <h5>{{ $t("trips.check.adult") }}</h5>
+              <h6>(13-99)</h6>
             </div>
             <div class="col">
               <div class="d-flex justify-content-end align-items-center gap-2">
@@ -297,8 +313,8 @@
 
           <div class="row">
             <div class="col">
-              <h5>Child</h5>
-              <h6>(Age 4-12)</h6>
+              <h5>{{ $t("trips.check.child") }}</h5>
+              <h6>(4-12)</h6>
             </div>
             <div class="col">
               <div class="d-flex justify-content-end align-items-center gap-2">
@@ -321,42 +337,60 @@
             </div>
           </div>
           <div>
-            <h5>Price breakdown</h5>
+            <h5>{{ $t("trips.check.price") }}</h5>
             <ul>
               <li>
-                Adult 1x ${{
+                {{ $t("trips.check.adult") }} 1x ${{
                   eventDetails.adultDiscountPrice != null
                     ? eventDetails.adultDiscountPrice
                     : eventDetails.adultPrice
                 }}
-                <span class="float-end">{{
-                  new Intl.NumberFormat("en-IN", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(
-                    eventDetails.adultDiscountPrice != null
-                      ? eventDetails.adultDiscountPrice
-                      : eventDetails.adultPrice * adultCount
-                  )
-                }}</span>
+                <span
+                  :class="[
+                    { 'float-start': $i18n.locale == 'ar' },
+                    { 'float-end': $i18n.locale == 'en' },
+                  ]"
+                  >{{
+                    new Intl.NumberFormat("en-IN", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(
+                      eventDetails.adultDiscountPrice != null
+                        ? eventDetails.adultDiscountPrice
+                        : eventDetails.adultPrice * adultCount
+                    )
+                  }}</span
+                >
               </li>
               <li>
-                Child 1x ${{
+                {{ $t("trips.check.child") }} 1x ${{
                   eventDetails.childDiscountPrice != null
                     ? eventDetails.childDiscountPrice
                     : eventDetails.childPrice
                 }}
-                <span class="float-end">{{
-                  new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                    maximumSignificantDigits: 2,
-                  }).format(eventDetails.childPrice * childCount)
-                }}</span>
+                <span
+                  :class="[
+                    { 'float-start': $i18n.locale == 'ar' },
+                    { 'float-end': $i18n.locale == 'en' },
+                  ]"
+                  >{{
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                      maximumSignificantDigits: 2,
+                    }).format(eventDetails.childPrice * childCount)
+                  }}</span
+                >
               </li>
             </ul>
-            <h5 class="float-end color-always">
-              Subtotal:
+            <h5
+              class="color-always"
+              :class="[
+                { 'float-start': $i18n.locale == 'ar' },
+                { 'float-end': $i18n.locale == 'en' },
+              ]"
+            >
+              {{ $t("trips.check.total") }}:
               {{
                 new Intl.NumberFormat("en-IN", {
                   style: "currency",
@@ -369,7 +403,7 @@
             </h5>
             <div>
               <Button
-                label="Check availiability"
+                :label="$t('trips.check.button')"
                 @click="checkDate"
                 outlined
                 :loading="isChecking"
@@ -378,7 +412,7 @@
           </div>
         </div>
         <div class="col">
-          <h4>Please select date</h4>
+          <h4>{{ $t("trips.check.date") }}</h4>
           <div class="card flex justify-center">
             <DatePicker
               v-model="tripDate"
@@ -407,6 +441,7 @@
 import Tag from "primevue/tag";
 import Rating from "primevue/rating";
 import { onMounted, ref, watch } from "vue";
+
 import Button from "primevue/button";
 import Galleria from "primevue/galleria";
 import Image from "primevue/image";
@@ -441,9 +476,13 @@ const ShowImage = (index) => {
 
 async function fetchDetails() {
   isLoading.value = true;
-  var url = "base/view/event/detail/" + router.currentRoute.value.params.uid;
+  var url =
+    "base/view/event/detail/" +
+    router.currentRoute.value.params.uid +
+    "?lang=" +
+    localStorage.getItem("locale");
   if (localStorage.getItem("_token") != null) {
-    url += "?access_token=" + localStorage.getItem("_token");
+    url += "&access_token=" + localStorage.getItem("_token");
   }
   await axios
     .get(url)

@@ -27,11 +27,16 @@ import vue3GoogleLogin from "vue3-google-login";
 //Axios
 import axios from "axios";
 axios.defaults.baseURL = "https://publicws.pharaohglory.com";
+
+//i18n
+import i18n from "./i18n";
+
 createApp(App)
   .use(store)
   .use(router)
   .use(PrimeVue, {
     ripple: true,
+
     theme: {
       preset: MyPreset,
 
@@ -45,5 +50,5 @@ createApp(App)
     clientId:
       "367400907501-4gp0n76rp2vbmu4hgsbuc05ibjieivg5.apps.googleusercontent.com",
   })
-
+  .use(i18n)
   .mount("#app");

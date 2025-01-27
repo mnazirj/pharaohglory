@@ -4,17 +4,22 @@
     <hr class="w-50 hr" />
     <div class="row py-5 pt-0">
       <div class="col-lg-4 col-12" v-for="(item, index) in card" :key="index">
-        <a :href="'/details/' + item.slug" class="nav-link">
-          <div class="card shadow h-100">
-            <div class="card-img-top activity-zoom">
-              <img :src="item.eventImages" class="w-100" height="300" />
+        <div class="card shadow h-100">
+          <div class="card-img-top activity-zoom">
+            <img :src="item.eventImages" class="w-100" height="300" />
+          </div>
+          <div class="card-header border-0 bg-transparent">
+            <div class="d-flex justify-content-between">
+              <Tag :value="item.category" />
+              <Button
+                icon="fa fa-heart"
+                rounded
+                variant="text"
+                @click="addToWishList(item)"
+              />
             </div>
-            <div class="card-header border-0 bg-transparent">
-              <div class="d-flex justify-content-between">
-                <Tag :value="item.category" />
-                <Button icon="fa fa-heart" rounded variant="text" />
-              </div>
-            </div>
+          </div>
+          <a :href="'/details/' + item.slug" class="nav-link">
             <div class="card-body bg-transparent">
               <h5 class="font-bold">{{ item.title }}</h5>
               <div class="d-flex justify-content-between">
@@ -32,8 +37,8 @@
                 {{ $t("trips.price", { amount: item.adultPrice }) }}
               </h6>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </div>
     </div>
     <!-- <h2 class="font-bold">{{ subheader }}</h2> -->
@@ -81,6 +86,8 @@ import Rating from "primevue/rating";
 import { ref } from "vue";
 import Button from "primevue/button";
 import Carousel from "primevue/carousel";
+import { useStore } from "vuex";
+const store = useStore();
 
 const stars = ref(4.7);
 defineProps({
@@ -118,4 +125,8 @@ const items = ref([
   { id: 4, name: "Metropolitan Museum of Art", activities: 45 },
   { id: 5, name: "United States Capitol", activities: 97 },
 ]);
+
+function addToWishList(payload) {
+  store.commit("addToWishList", payload);
+}
 </script>

@@ -6,7 +6,8 @@
 
 <script setup>
 import { onMounted } from "vue";
-
+import { useStore } from "vuex";
+const store = useStore();
 onMounted(() => {
   var mode = localStorage.getItem("mode");
   if (mode == "dark") {
@@ -18,6 +19,7 @@ onMounted(() => {
   if (localStorage.getItem("locale") == null) {
     localStorage.setItem("locale", "en");
   }
+  store.commit("updateWishListFromLocal");
 });
 </script>
 

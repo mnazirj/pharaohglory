@@ -22,6 +22,15 @@
             :label="$t('trips.add_wish')"
             icon="fas fa-heart"
             size="small"
+            @click="addToWishList(eventDetails)"
+            v-if="!$store.state.item.find((i) => i.id == eventDetails.id)"
+          />
+          <Button
+            :label="$t('trips.remove_wish')"
+            icon="fas fa-heart"
+            size="small"
+            @click="removeFromWishList(eventDetails)"
+            v-else
           />
           <Button
             :label="hasCopy ? $t('trips.copid') : $t('trips.share')"
@@ -453,6 +462,8 @@ import DatePicker from "primevue/datepicker";
 import axios from "axios";
 import router from "@/router";
 
+import { useStore } from "vuex";
+const store = useStore();
 const activeIndex = ref(0); //current active image
 const displayCustom = ref(false); //Store Gallira state
 var eventDetails = []; //Store Details of trip
@@ -595,6 +606,13 @@ function copyLink() {
   setTimeout(() => {
     hasCopy.value = false;
   }, 1000);
+}
+
+function addToWishList(payload) {
+  store.commit("addToWishList", payload);
+}
+function removeFromWishList(payload) {
+  store.commit("removeFromWishList", payload);
 }
 
 onMounted(() => {

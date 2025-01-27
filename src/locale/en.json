@@ -24,6 +24,7 @@
         "sport":"Unforgettable sport experiences",
         "price":"From ${amount} per person",
         "add_wish":"Add to wishlist",
+        "remove_wish":"Remove from wishlist",
         "share":"Share",
         "copid":"Link copied to clipboard",
         "review":"Reviews",

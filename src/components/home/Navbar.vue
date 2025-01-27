@@ -39,6 +39,7 @@
               icon="fas fa-heart"
               :label="$t('nav.wishlist')"
               variant="text"
+              @click="wishlist = true"
             />
             <Menubar
               :model="isLoggedIn == true ? client : items"
@@ -123,6 +124,7 @@
           icon="fas fa-heart"
           :label="$t('nav.wishlist')"
           variant="text"
+          @click="wishlist = true"
         />
         <Menubar
           :model="isLoggedIn == true ? client : items"
@@ -183,6 +185,42 @@
       </div>
     </div>
   </Drawer>
+
+  <Drawer
+    v-model:visible="wishlist"
+    header="Wishlist"
+    position="right"
+    class="w-25"
+  >
+    <div v-if="$store.state.item.length <= 0">
+      <h5 class="color text-center">Your Wishlist is empty :'(</h5>
+    </div>
+    <div
+      class="d-flex flex-row"
+      v-for="(item, index) in $store.state.item"
+      :key="index"
+    >
+      <div class="col">
+        <img :src="item.eventImages" class="img-fluid rounded" />
+      </div>
+      <div class="col">
+        <h6>{{ item.title }}</h6>
+        <div class="d-flex flex-row gap-5">
+          <div class="col">
+            <h4>${{ item.adultPrice }}</h4>
+          </div>
+          <div class="col">
+            <Button
+              icon="fas fa-trash"
+              rounded
+              size="small"
+              @click="removeFromWishList(item)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </Drawer>
 </template>
 
 <script setup>
@@ -198,13 +236,15 @@ import axios from "axios";
 import router from "@/router";
 import Drawer from "primevue/drawer";
 import SelectButton from "primevue/selectbutton";
-
+import { useStore } from "vuex";
+const store = useStore();
 const logo = ref(require("@/assets/images/logo.svg"));
 const search = ref("");
 const date = ref("");
 const isDarkMode = ref(false);
 const isLoggedIn = ref(false);
 const nav = ref(false);
+const wishlist = ref(false);
 const options = ref(["AR", "EN"]);
 const value = ref(null);
 const items = ref([
@@ -294,6 +334,10 @@ function searchPlace() {
 function changeLocale() {
   localStorage.setItem("locale", value.value.toLowerCase());
   window.location.reload();
+}
+
+function removeFromWishList(payload) {
+  store.commit("removeFromWishList", payload);
 }
 
 onMounted(() => {

@@ -35,7 +35,7 @@ html {
     padding-bottom: 160px;
 }
 
-body {
+#home {
     margin-bottom: 260px;
 }
 
@@ -63,7 +63,8 @@ footer {
 .w-10 {
     width: 10% !important;
 }
-.w-30{
+
+.w-30 {
     width: 30% !important;
 }
 
@@ -78,14 +79,17 @@ footer {
 .w-70 {
     width: 70% !important;
 }
-.w-80{
+
+.w-80 {
     width: 80% !important;
 }
-.w-90{
+
+.w-90 {
     width: 90% !important;
 }
-.bg-main-color{
-    background-color:#014f51 !important;
+
+.bg-main-color {
+    background-color: #014f51 !important;
 }
 
 .bg-second-color {
@@ -116,6 +120,7 @@ footer {
     --bs-btn-disabled-bg: #014f51;
     --bs-btn-disabled-border-color: #014f51;
 }
+
 .btn-outline-main {
     --bs-btn-color: #014f51;
     --bs-btn-border-color: #014f51;
@@ -132,7 +137,8 @@ footer {
     --bs-btn-disabled-border-color: #014f51;
     --bs-gradient: none;
 }
-.btn-second{
+
+.btn-second {
     --bs-btn-color: #014f51;
     --bs-btn-bg: #eae19d;
     --bs-btn-border-color: #eae19d;
@@ -148,10 +154,12 @@ footer {
     --bs-btn-disabled-bg: #eae19d;
     --bs-btn-disabled-border-color: #eae19d;
 }
+
 .img-user {
     width: 3rem;
     height: 3rem;
-  }
+}
+
 /* End Dashbaord section */
 
 .bg-color {

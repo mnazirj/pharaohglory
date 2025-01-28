@@ -188,12 +188,12 @@
 
   <Drawer
     v-model:visible="wishlist"
-    header="Wishlist"
+    :header="$t('wishlist.title')"
     position="right"
     class="w-25"
   >
     <div v-if="$store.state.item.length <= 0">
-      <h5 class="color text-center">Your Wishlist is empty :'(</h5>
+      <h5 class="color text-center">{{ $t("wishlist.empty") }} :'(</h5>
     </div>
     <div
       class="d-flex flex-row"
@@ -201,7 +201,7 @@
       :key="index"
     >
       <div class="col">
-        <img :src="item.eventImages" class="img-fluid rounded" />
+        <img :src="item.eventImage" class="img-fluid rounded" />
       </div>
       <div class="col">
         <h6>{{ item.title }}</h6>

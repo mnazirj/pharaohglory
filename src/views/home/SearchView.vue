@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Details header="Reslut" v-if="!isLoading" :card="info" />
+    <Details :header="$t('nav.result')" v-if="!isLoading" :card="info" />
   </div>
 </template>
 

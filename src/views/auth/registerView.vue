@@ -100,7 +100,7 @@
               />
             </Form>
             <Message v-if="message != null" severity="secondary" class="mt-2">{{
-              message
+              $t(message)
             }}</Message>
           </div>
         </template>
@@ -221,7 +221,7 @@ const sendDataToBackEnd = (payload) => {
 function createAccount() {
   isLoading.value = true;
   axios
-    .post("account/auth/register", {
+    .post("account/auth/register?lang=" + localStorage.getItem("locale"), {
       first_name: firstName.value,
       last_name: lastName.value,
       email: email.value,
@@ -229,8 +229,7 @@ function createAccount() {
     })
     .then((response) => {
       if (response.status == 201) {
-        message.value =
-          "Successfully registered new acconut please check your email inbox to verify it.";
+        message.value = "messages.auth.register";
         isLoading.value = false;
         setTimeout(() => {
           router.push("/auth/login");

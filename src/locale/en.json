@@ -9,7 +9,8 @@
         "reigster":"Register",
         "login":"Login",
         "clientarea":"Client Area",
-        "logout":"Logout"
+        "logout":"Logout",
+        "result":"Search results"
     },
     "selector":{
         "culture":"Culture",
@@ -28,6 +29,7 @@
         "share":"Share",
         "copid":"Link copied to clipboard",
         "review":"Reviews",
+        "tip":"Reserve now to book your spot ",
         "check":{
             "title":"Check availability",
             "header":"Checking availability for trip",
@@ -103,6 +105,10 @@
             "button":"Change"
         }
     },
+    "wishlist":{
+        "title":"Wishlist",
+        "empty":"Your wishlist is empty"
+    },
     "footer":{
         "support":{
             "title":"Support",
@@ -117,5 +123,14 @@
             "gift":"Gifts Cards"
         },
         "copy":"Copyright"
+    },
+    "messages":{
+        "trip":{
+            "available":"Trips with selected information available",
+            "full":"Sorry remaing seat are: "
+        },
+        "auth":{
+            "register":"Successfully registered an acconut please verfiy your email via link we've sent to your email"
+        }
     }
 }

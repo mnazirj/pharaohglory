@@ -1,5 +1,5 @@
 <template>
-  <section v-if="!isLoading">
+  <section id="home" v-if="!isLoading">
     <Navbar />
     <Intro :information="info" :cards="card" v-if="$route.fullPath == '/'" />
     <router-view></router-view>

@@ -75,34 +75,15 @@
           <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
             <h6 class="text-uppercase fw-bold mb-4 color-always">Contact</h6>
             <p>
-              <i
-                class="fas fa-home me-3 color"
-                :class="[
-                  { 'float-start': $i18n.locale == 'ar' },
-                  { 'float-end': $i18n.locale == 'en' },
-                ]"
-              ></i>
+              <i class="fas fa-home me-3 color float-start"></i>
               {{ location }}
             </p>
             <p>
-              <i
-                class="fas fa-envelope me-3 color"
-                :class="[
-                  { 'float-start': $i18n.locale == 'ar' },
-                  { 'float-end': $i18n.locale == 'en' },
-                ]"
-              ></i>
+              <i class="fas fa-envelope me-3 color float-start"></i>
               {{ email }}
             </p>
             <p>
-              <i
-                class="fas fa-phone me-3 color"
-                :class="[
-                  { 'float-start': $i18n.locale == 'ar' },
-                  { 'float-end': $i18n.locale == 'en' },
-                ]"
-              ></i
-              >{{ phone }}
+              <i class="fas fa-phone me-3 color float-start"></i>{{ phone }}
             </p>
           </div>
         </div>

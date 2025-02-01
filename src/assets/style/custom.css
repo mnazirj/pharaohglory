@@ -35,7 +35,7 @@ html {
     padding-bottom: 160px;
 }
 
-body {
+#home {
     margin-bottom: 260px;
 }
 
@@ -63,7 +63,8 @@ footer {
 .w-10 {
     width: 10% !important;
 }
-.w-30{
+
+.w-30 {
     width: 30% !important;
 }
 
@@ -78,10 +79,12 @@ footer {
 .w-70 {
     width: 70% !important;
 }
-.w-80{
+
+.w-80 {
     width: 80% !important;
 }
-.w-90{
+
+.w-90 {
     width: 90% !important;
 }
 .bg-main-color{
@@ -133,6 +136,7 @@ footer {
     --bs-btn-disabled-border-color: #c4c3c3;
     --bs-gradient: none;
 }
+
 .btn-outline-main {
     --bs-btn-color: #ff1d48;
     --bs-btn-border-color: #ff1d48;
@@ -169,7 +173,8 @@ footer {
 .img-user {
     width: 3rem;
     height: 3rem;
-  }
+}
+
 /* End Dashbaord section */
 
 .bg-color {

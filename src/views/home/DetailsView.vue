@@ -151,7 +151,7 @@
             <div class="d-flex gap-3 align-items-center">
               <i class="fas fa-credit-card font-icon color-always" />
               <h6 class="mt-2">
-                Reserve now & pay later to book your spot and pay nothing today
+                {{ $t("trips.tip") }}
               </h6>
             </div>
           </template>
@@ -436,11 +436,13 @@
       </div>
       <div>
         <div v-if="code == 200 && !isChecking">
-          <p>Trip with selected date above is available</p>
+          <p>{{ $t("messages.trip.available") }}</p>
 
           <Button label="Checkout" :loading="isChecking" @click="checkOut" />
         </div>
-        <p v-if="code == -1">Number Exceeded the limit ({{ remaningSeat }})</p>
+        <p v-if="code == -1">
+          {{ $t("messages.trip.full") }} ({{ remaningSeat }})
+        </p>
       </div>
     </Dialog>
   </div>

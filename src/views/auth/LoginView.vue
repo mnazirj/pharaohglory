@@ -183,7 +183,7 @@ const sendDataToBackEnd = (email) => {
 function login() {
   isLoading.value = true;
   axios
-    .post("account/auth/login", {
+    .post("account/auth/login?lang=" + localStorage.getItem("locale"), {
       email: email.value,
       password: password.value,
     })

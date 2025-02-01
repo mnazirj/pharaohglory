@@ -2,21 +2,15 @@
   <div class="">
     <div class="d-flex align-content-center mt-1 mb-3 w-100">
       <div
-        class="d-flex justify-content-end align-content-center w-70 input-group"
+        class="d-flex justify-content-end align-content-center w-60 input-group"
       >
-        <i
-          class="pi pi-search fs-5 p-2 bg-main-color rounded-start-2 text-white"
-        ></i>
-        <input
-          type="text"
-          id="search"
-          class="w-50 p-1 pe-2 ps-2 border-2 border-start-0 rounded-end-2"
-        />
+        <IconField class="w-50">
+          <InputIcon class="pi pi-search text-main-color" />
+          <InputText v-model="searchValue" placeholder="Search" class="w-100" />
+        </IconField>
       </div>
     </div>
-    <div
-      class="table-responsive d-flex justify-content-center align-content-center flex-wrap mt-1 mb-1"
-    >
+    <div class="table-responsive">
       <table class="table-page table align-middle text-center text-nowrap">
         <thead>
           <tr>
@@ -50,7 +44,7 @@
             <td>
               <button
                 type=" button"
-                class="btn btn-main me-1 ms-1"
+                class="btn btn-outline-second me-1 ms-1"
                 data-bs-toggle="modal"
                 data-bs-target="#show-modal"
                 @click="currentDataSeeder(payment)"
@@ -59,7 +53,7 @@
               </button>
               <button
                 type=" button"
-                class="btn btn-danger me-1 ms-1"
+                class="btn btn-main me-1 ms-1"
                 data-bs-toggle="modal"
                 data-bs-target="#delete-modal"
                 @click="currentDataSeeder(payment)"
@@ -75,7 +69,7 @@
     <Paginator
       class="w-100"
       :rows="rowsPerPage"
-      :totalRecords="payments.length"
+      :totalRecords="filteredData.length"
       :rowsPerPageOptions="[5, 10, 20, 30]"
       @page="onPageChange"
     ></Paginator>
@@ -230,15 +224,22 @@
 <script>
 import Paginator from "primevue/paginator";
 import Divider from "primevue/divider";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
 export default {
   components: {
     Paginator,
     Divider,
+    IconField,
+    InputIcon,
+    InputText,
   },
   data() {
     return {
       currentPage: 0,
       rowsPerPage: 5,
+      searchValue: "",
       currentData: {
         id: null,
         total: null,
@@ -304,7 +305,7 @@ export default {
           adultCount: 2,
         },
         {
-          id: 2,
+          id: 3,
           total: "48$",
           to: {
             id: 10,
@@ -324,6 +325,90 @@ export default {
           childernCount: 10,
           adultCount: 1,
         },
+        {
+          id: 4,
+          total: "120$",
+          to: {
+            id: 10,
+            title: "Al-Adawe Animal Garden Tirp",
+            type: "Garden Trip",
+            adultPrice: "8$",
+            childPrice: "4$",
+            discount: "0",
+          },
+          from: {
+            id: 11,
+            name: "Wassem",
+            username: "wassem_123",
+            email: "wassem@test.com",
+            userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          },
+          childernCount: 10,
+          adultCount: 1,
+        },
+        {
+          id: 5,
+          total: "500$",
+          to: {
+            id: 50,
+            title: "Am altour village Tirp",
+            type: "Culter Trip",
+            adultPrice: "40$",
+            childPrice: "30$",
+            discount: "10%",
+          },
+          from: {
+            id: 24,
+            name: "Rami",
+            username: "rami_123",
+            email: "rami@test.com",
+            userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          },
+          childernCount: 0,
+          adultCount: 5,
+        },
+        {
+          id: 6,
+          total: "400$",
+          to: {
+            id: 78,
+            title: "tabaria Lake Tirp",
+            type: "Culter Trip",
+            adultPrice: "150$",
+            childPrice: "50$",
+            discount: "9%",
+          },
+          from: {
+            id: 14,
+            name: "Rami",
+            username: "rami_123",
+            email: "rami@test.com",
+            userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          },
+          childernCount: 2,
+          adultCount: 2,
+        },
+        {
+          id: 7,
+          total: "1000$",
+          to: {
+            id: 478,
+            title: "Bosra Tirp",
+            type: "Culter Trip",
+            adultPrice: "400$",
+            childPrice: "200$",
+            discount: "9%",
+          },
+          from: {
+            id: 98,
+            name: "Hanin",
+            username: "hanin_123",
+            email: "hanin@test.com",
+            userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          },
+          childernCount: 1,
+          adultCount: 2,
+        },
       ],
     };
   },
@@ -331,7 +416,40 @@ export default {
     paginatedPayments() {
       const start = this.currentPage * this.rowsPerPage;
       const end = start + this.rowsPerPage;
-      return this.payments.slice(start, end);
+      return this.filteredData.slice(start, end);
+    },
+    filteredData() {
+      if (!this.searchValue) {
+        return this.payments;
+      }
+      return this.payments.filter(
+        (item) =>
+          item.total.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+          item.adultCount.toString().includes(this.searchValue.toLowerCase()) ||
+          item.childernCount
+            .toString()
+            .includes(this.searchValue.toLocaleLowerCase()) ||
+          item.to.title
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase()) ||
+          item.to.type.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+          item.to.discount
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase()) ||
+          item.to.adultPrice
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase()) ||
+          item.to.childPrice
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase()) ||
+          item.from.name
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase()) ||
+          item.from.username
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase()) ||
+          item.from.email.toLowerCase().includes(this.searchValue.toLowerCase())
+      );
     },
   },
   methods: {

@@ -32,7 +32,7 @@
           />
           <button
             type="button"
-            class="btn btn-main rounded-circle"
+            class="btn btn-second rounded-circle"
             @click="triggerFileInput"
             title="Edit Image"
           >
@@ -288,20 +288,24 @@ export default {
       showChangePassDialog: false,
       isImageHovered: false,
       thereIsAChange: false,
-      user: {
-        id: 1,
-        name: "Mohammad Almasry",
-        username: "mohammadAlmasry",
-        password: "mohammad123",
-        email: "mohammad@test.com",
-        birthday: "2000-01-01",
-        img: require("@/assets/images/dashboard/avatar-1.png"),
-        address: "Syria , Damascus , Almidan",
-        phone: "+963 914 842 248",
-      },
+      // user: {
+      //   id: 1,
+      //   name: "Mohammad Almasry",
+      //   username: "mohammadAlmasry",
+      //   password: "mohammad123",
+      //   email: "mohammad@test.com",
+      //   birthday: "2000-01-01",
+      //   img: require("@/assets/images/dashboard/avatar-1.png"),
+      //   address: "Syria , Damascus , Almidan",
+      //   phone: "+963 914 842 248",
+      // },
     };
   },
-
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+  },
   methods: {
     triggerFileInput() {
       this.$refs.fileInput.click();
@@ -331,10 +335,8 @@ export default {
       }
     },
   },
-  beforeUnmount() {
-    if (this.thereIsAChange) {
-      console.log(this.user);
-    }
+  mounted() {
+    console.log(this.user);
   },
 };
 </script>

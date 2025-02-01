@@ -1,35 +1,40 @@
 export default {
-    state: {
-      // user: null,
-      isAuth:
-        localStorage.getItem("isAuth") === "true" ||
-        sessionStorage.getItem("isAuth") === "true",
+  state: {
+    // user: null,
+    isAuth:
+      localStorage.getItem("isAuth") === "true" ||
+      sessionStorage.getItem("isAuth") === "true",
+    user:
+      JSON.parse(localStorage.getItem("user")) ||
+      JSON.parse(sessionStorage.getItem("user")) ||
+      null,
+  },
+  getters: {
+    isAuth: (state) => state.isAuth,
+    user: (state) => state.user,
+  },
+  mutations: {
+    login(state, userInfo) {
+      state.isAuth = true;
+      state.user = userInfo;
     },
-    getters: {
-      isAuth: (state) => state.isAuth,
+    logout(state) {
+      state.isAuth = false;
+      state.user = null;
+      localStorage.removeItem("isAuth");
+      localStorage.removeItem("user");
+      sessionStorage.removeItem("isAuth");
+      sessionStorage.removeItem("user");
     },
-    mutations: {
-      login(state) {
-        state.isAuth = true;
-      },
-      logout(state) {
-        state.isAuth = false;
-        localStorage.removeItem("isAuth");
-        sessionStorage.removeItem("isAuth");
-      },
-      // userLoader(state, newUser) {
-      //   state.user = newUser;
-      //   console.log(state.user);
-      // },
+  },
+  actions: {
+    login({ commit }, userInfo) {
+      // api
+      commit("login", userInfo);
     },
-    actions: {
-      login({ commit }) {
-        // api
-        commit("login");
-      },
-      logout({ commit }) {
-        //api
-        commit("logout");
-      },
+    logout({ commit }) {
+      //api
+      commit("logout");
     },
-  };
+  },
+};

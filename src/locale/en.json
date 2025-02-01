@@ -117,5 +117,20 @@
             "gift":"Gifts Cards"
         },
         "copy":"Copyright"
+    },
+
+
+    "dash":{
+        "login":{
+            "login":"Login",
+            "username":"Username",
+            "password":"Password",
+            "remember_me":"Remember Me",
+            "log":"Login",
+            "username_is_required":"Username is required",
+            "password_is_required":"Password is required"
+            
+        }
     }
+    
 }

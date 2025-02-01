@@ -3,35 +3,34 @@
     <div
       class="d-flex justify-content-between align-content-center mt-1 mb-3 w-100"
     >
-      <div class="d-flex justify-content-center align-content-center w-90">
+      <div class="d-flex justify-content-center align-content-center w-80">
         <div
-          class="d-flex justify-content-end align-content-center w-60 input-group"
+          class="d-flex justify-content-end align-content-center w-50 input-group"
         >
-          <i
-            class="pi pi-search fs-5 p-2 bg-main-color rounded-start-2 text-white"
-          ></i>
-          <input
-            type="text"
-            id="search"
-            class="w-60 p-1 pe-2 ps-2 border-2 border-start-0 rounded-end-2"
-          />
+          <IconField class="w-75">
+            <InputIcon class="pi pi-search text-main-color" />
+            <InputText
+              v-model="searchValue"
+              placeholder="Search"
+              class="w-100"
+            />
+          </IconField>
         </div>
       </div>
 
       <div class="d-flex justify-content-end align-content-center w-10 me-4">
-        <button
+        <!-- <button
           type="button"
           class="btn btn-main d-flex align-items-center justify-content-center"
           @click="openCreateDialog"
         >
           <i class="pi pi-plus me-2"></i>
           <span>Create</span>
-        </button>
+        </button> -->
+        <Button label="Create" icon="pi pi-plus" @click="openCreateDialog" />
       </div>
     </div>
-    <div
-      class="table-responsive d-flex justify-content-center align-content-center flex-wrap mt-1 mb-1"
-    >
+    <div class="table-responsive">
       <table class="table-page table align-middle text-center text-nowrap">
         <thead>
           <tr class="align-middle">
@@ -69,20 +68,23 @@
             </td>
             <td>
               <router-link :to="{ name: 'details', params: { uid: trip.id } }"
-                ><button type=" button" class="btn btn-main me-1 ms-1">
+                ><button
+                  type=" button"
+                  class="btn btn-outline-second me-1 ms-1"
+                >
                   <i class="pi pi-eye pt-1"></i></button
               ></router-link>
 
               <router-link
                 :to="{ name: 'dash.trips.edit', params: { tripId: trip.id } }"
               >
-                <button type="button" class="btn btn-second me-1 ms-1">
+                <button type="button" class="btn btn-outline-second me-1 ms-1">
                   <i class="pi pi-pen-to-square pt-1"></i></button
               ></router-link>
 
               <button
                 type=" button"
-                class="btn btn-danger me-1 ms-1"
+                class="btn btn-main me-1 ms-1"
                 data-bs-toggle="modal"
                 data-bs-target="#delete-modal"
                 @click="currentDataTripSeeder(trip)"
@@ -90,9 +92,12 @@
                 <i class="pi pi-trash pt-1"></i>
               </button>
               <router-link
-                :to="{ name: 'dash.tripReviews', params: { tripId: trip.id } }"
+                :to="{
+                  name: 'dash.tripReviews',
+                  params: { tripId: trip.id },
+                }"
               >
-                <button type=" button" class="btn btn-main me-1 ms-1">
+                <button type=" button" class="btn btn-outline-second me-1 ms-1">
                   <i class="pi pi-star pt-1"></i>
                 </button>
               </router-link>
@@ -102,11 +107,12 @@
         </tbody>
       </table>
     </div>
+
     <!-- Pagination -->
     <Paginator
       class="w-100"
       :rows="rowsPerPageTrip"
-      :totalRecords="trips.length"
+      :totalRecords="filteredData.length"
       :rowsPerPageOptions="[5, 10, 20, 30]"
       @page="onPageChangeTrip"
     ></Paginator>
@@ -969,6 +975,10 @@ import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
 import Textarea from "primevue/textarea";
 import { nextTick } from "vue";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
 export default {
   components: {
     Paginator,
@@ -981,9 +991,14 @@ export default {
     AccordionHeader,
     AccordionContent,
     Textarea,
+    IconField,
+    InputIcon,
+    InputText,
+    Button,
   },
   data() {
     return {
+      searchValue: "",
       showCreateDialog: false,
       showImageDialog: false,
       isImageHovered: false,
@@ -1171,12 +1186,28 @@ export default {
     paginatedTrips() {
       const start = this.currentPageTrip * this.rowsPerPageTrip;
       const end = start + this.rowsPerPageTrip;
-      return this.trips.slice(start, end);
+      return this.filteredData.slice(start, end);
     },
-    paginatedReviews() {
-      const start = this.currentPageReviews * this.rowsPerPageReviews;
-      const end = start + this.rowsPerPageReviews;
-      return this.tripReviews.slice(start, end);
+    // paginatedReviews() {
+    //   const start = this.currentPageReviews * this.rowsPerPageReviews;
+    //   const end = start + this.rowsPerPageReviews;
+    //   return this.tripReviews.slice(start, end);
+    // },
+    filteredData() {
+      if (!this.searchValue) {
+        return this.trips;
+      }
+      return this.trips.filter(
+        (item) =>
+          item.title.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+          item.category
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase()) ||
+          item.maxMember.toString().includes(this.searchValue) ||
+          item.currentMember.toString().includes(this.searchValue) ||
+          item.rate.toString().includes(this.searchValue) ||
+          item.availability.toString().includes(this.searchValue)
+      );
     },
   },
   methods: {
@@ -1290,7 +1321,7 @@ export default {
     addMarker(latLng) {
       const svgIcon = {
         path: "M288 0C422.4 0 512 35.2 512 80l0 16 0 32c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l0 160c0 17.7-14.3 32-32 32l0 32c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-32-192 0 0 32c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-32c-17.7 0-32-14.3-32-32l0-160c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32c0 0 0 0 0 0l0-32s0 0 0 0l0-16C64 35.2 153.6 0 288 0zM128 160l0 96c0 17.7 14.3 32 32 32l112 0 0-160-112 0c-17.7 0-32 14.3-32 32zM304 288l112 0c17.7 0 32-14.3 32-32l0-96c0-17.7-14.3-32-32-32l-112 0 0 160zM144 400a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm288 0a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM384 80c0-8.8-7.2-16-16-16L208 64c-8.8 0-16 7.2-16 16s7.2 16 16 16l160 0c8.8 0 16-7.2 16-16z",
-        fillColor: "#014f51", // Fill color of the icon
+        fillColor: "#ff1d48", // Fill color of the icon
         fillOpacity: 1, // Opacity
         strokeWeight: 0, // No border
         scale: 0.05, // Scale the size
@@ -1350,7 +1381,7 @@ export default {
 <style scoped>
 .table-page thead tr th span {
   font-size: 0.7rem;
-  color: rgb(182, 182, 182);
+  color: rgb(224, 224, 224);
 }
 /* show rate modal */
 .img-user {
@@ -1412,7 +1443,7 @@ textarea {
   background: #c6c6c6 !important;
 }
 ::v-deep .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
-  background: #014f51 !important;
+  background: #ff1d48 !important;
 }
 ::v-deep
   .p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover)
@@ -1424,7 +1455,7 @@ textarea {
     .p-toggleswitch-input:hover
   ).p-toggleswitch-checked
   .p-toggleswitch-slider {
-  background: #013a3c !important;
+  background: #e1183d !important;
 }
 /* map */
 #map {

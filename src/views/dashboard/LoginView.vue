@@ -3,11 +3,14 @@
     <div class="d-flex justify-content-center align-items-center w-100 h-100vh">
       <div
         id="container"
-        class="d-flex justify-content-center align-items-center rounded-2 shadow-2"
+        class="d-flex justify-content-center align-items-center shadow-2 rounded-2"
       >
         <div
           id="logo-side"
-          class="w-40 h-100 d-flex justify-content-center align-items-center bg-main-color rounded-start-2"
+          :class="[
+            'w-40 h-100 d-flex justify-content-center align-items-center bg-main-color',
+            isEng ? 'rounded-start-2' : 'rounded-end-2',
+          ]"
         >
           <img
             src="../../assets/images/dashboard/logo-full.svg"
@@ -15,26 +18,68 @@
             :style="{ width: '100%', height: 'auto' }"
           />
         </div>
-        <div id="main-side" class="w-60 h-100 bg-white rounded-end-2">
-          <div class="w-100 text-center mt-2 mb-4">
-            <span class="fs-3">Login</span>
+        <div
+          id="main-side"
+          :class="[
+            'w-60 h-100 bg-white ',
+            isEng ? 'rounded-end-2' : 'rounded-start-2',
+          ]"
+        >
+          <div class="w-100 text-center mt-2 mb-3">
+            <span class="fs-3">{{ $t("dash.login.login") }}</span>
           </div>
           <div
-            class="w-100 d-flex justify-content-center align-items-center flex-wrap mt-5"
+            class="w-100 d-flex justify-content-center align-items-center flex-wrap mt-4"
           >
-            <form action="">
+            <Form
+              v-slot="$form"
+              :initialValues="initialValues"
+              :resolver="resolver"
+              @submit="onFormSubmit"
+            >
               <!-- username -->
               <div class="w-100 mb-4 mt-2">
-                <input
+                <InputText
+                  name="username"
+                  v-model="username"
+                  type="text"
+                  :placeholder="$t('dash.login.username')"
+                  fluid
+                />
+                <Message
+                  v-if="$form.username?.invalid"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  >{{ $form.username.error?.message }}</Message
+                >
+                <!-- <input
                   type="text"
                   class="form-control"
                   placeholder="Username"
                   aria-label="Username"
                   ref="usernameInput"
-                />
+                /> -->
               </div>
               <!-- Password -->
-              <div class="w-100 mb-2 mt-2 relative">
+              <div class="w-100 my-2">
+                <Password
+                  name="password"
+                  v-model="password"
+                  :feedback="false"
+                  :placeholder="$t('dash.login.password')"
+                  toggleMask
+                  fluid
+                />
+                <Message
+                  v-if="$form.password?.invalid"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  >{{ $form.password.error?.message }}</Message
+                >
+              </div>
+              <!-- <div class="w-100 mb-2 mt-2 relative">
                 <input
                   type="password"
                   class="form-control"
@@ -50,9 +95,9 @@
                   ></i>
                   <i v-else class="pi pi-eye-slash text-muted"></i>
                 </div>
-              </div>
-              <div class="form-check mb-4">
-                <input
+              </div> -->
+              <div class="w-100 mb-4 flex items-center gap-2">
+                <!-- <input
                   class="form-check-input"
                   type="checkbox"
                   id="remember-me"
@@ -60,16 +105,26 @@
                 />
                 <label class="form-check-label text-nowrap" for="remember-me">
                   Remember me
+                </label> -->
+                <Checkbox
+                  v-model="rememberMe"
+                  inputId="remember-me"
+                  name="rememberMe"
+                  binary
+                />
+                <label for="remember-me">
+                  {{ $t("dash.login.remember_me") }}
                 </label>
               </div>
 
               <!-- Login Button -->
               <div class="w-100 mb-2 d-flex justify-content-center mt-2">
-                <button type="button" class="btn btn-main" @click="login">
+                <!-- <button type="button" class="btn btn-main" @click="login">
                   Login
-                </button>
+                </button> -->
+                <Button type="submit" :label="$t('dash.login.log')" />
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>
@@ -78,13 +133,43 @@
 </template>
 
 <script>
+import Password from "primevue/password";
+import InputText from "primevue/inputtext";
+import { Form } from "@primevue/forms";
+import Button from "primevue/button";
+import Message from "primevue/message";
+import Checkbox from "primevue/checkbox";
+import Card from "primevue/card";
+import { $t } from "@primevue/themes";
 export default {
+  components: {
+    Form,
+    Password,
+    InputText,
+    Button,
+    Message,
+    Checkbox,
+  },
   data() {
     return {
+      isEng: "",
       rememberMe: false,
       inputType: "password",
+      initialValues: {
+        username: "",
+        password: "",
+      },
+      username: "",
+      password: "",
       user: {
+        id: 56,
+        name: "Admin",
         username: "admin",
+        email: "admin@test.com",
+        birthday: "1999-09-21",
+        address: "Syria , Damascus-Ref , Adsia",
+        img: "http://localhost:8080/dashboard/@/assets/images/dashboard/avatar-1.png",
+        phone: "+963 978 654 123",
         password: "admin",
       },
     };
@@ -99,22 +184,48 @@ export default {
         this.inputType = "password";
       }
     },
-    login() {
-      if (
-        this.$refs.usernameInput.value == this.user.username &&
-        this.$refs.passwordInput.value == this.user.password
-      ) {
-        if (this.rememberMe) {
-          localStorage.setItem("isAuth", "true");
+    login() {},
+    resolver: ({ values }) => {
+      const errors = { username: [], password: [] };
+      if (!values.username) {
+        errors.username.push({
+          type: "required",
+          message: "Username is required",
+        });
+      }
+      if (!values.password) {
+        errors.password.push({
+          type: "required",
+          message: "Password is required",
+        });
+      }
+      return {
+        errors,
+      };
+    },
+    onFormSubmit({ valid }) {
+      if (valid) {
+        if (
+          this.username == this.user.username &&
+          this.password == this.user.password
+        ) {
+          if (this.rememberMe) {
+            localStorage.setItem("isAuth", "true");
+            localStorage.setItem("user", JSON.stringify(this.user));
+          } else {
+            sessionStorage.setItem("isAuth", "true");
+            sessionStorage.setItem("user", JSON.stringify(this.user));
+          }
+          this.$store.dispatch("login", this.user);
+          this.$router.push({ name: "dash.home" });
         } else {
-          sessionStorage.setItem("isAuth", "true");
+          console.log("error");
         }
-        this.$store.dispatch("login");
-        this.$router.push({ name: "dash.home" });
-      } else {
-        console.log("error");
       }
     },
+  },
+  beforeMount() {
+    this.isEng = localStorage.getItem("locale") == "en";
   },
 };
 </script>
@@ -155,18 +266,32 @@ export default {
     width: 90%;
   }
 }
-#logo-side {
+#logo-side:is(.rounded-start-2) {
   background: linear-gradient(
     45deg,
-    #013e40,
-    #014f51,
-    #015558,
-    #015b5f,
-    #01696e,
-    #017980,
-    #01868d,
-    #029da5,
-    #03b1bb
+    #c71737,
+    #e61b40,
+    #ff1d48,
+    #fb2f55,
+    #fc3f62,
+    #fe4e6e,
+    #fa5674,
+    #ff708a,
+    #ff849a
+  );
+}
+#logo-side:is(.rounded-end-2) {
+  background: linear-gradient(
+    315deg,
+    #c71737,
+    #e61b40,
+    #ff1d48,
+    #fb2f55,
+    #fc3f62,
+    #fe4e6e,
+    #fa5674,
+    #ff708a,
+    #ff849a
   );
 }
 .show-toggle {
@@ -176,5 +301,10 @@ export default {
 }
 .show-toggle i:hover {
   cursor: pointer;
+}
+/* inputs */
+.form-control:focus {
+  border-color: rgb(255, 61, 97);
+  box-shadow: 0 0 0 0.25rem rgba(255, 46, 84, 0.397);
 }
 </style>

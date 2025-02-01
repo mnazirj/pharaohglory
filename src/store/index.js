@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import login from "./dashboard/login";
 
 async function updateWishListLocal(item) {
   await localStorage.setItem("wishlist", JSON.stringify(item));
@@ -14,26 +15,26 @@ function findWishItemIndex(state, payload) {
 export default createStore({
   state: {
     // user: null,
-    isAuth:
-      localStorage.getItem("isAuth") === "true" ||
-      sessionStorage.getItem("isAuth") === "true",
+    // isAuth:
+    //   localStorage.getItem("isAuth") === "true" ||
+    //   sessionStorage.getItem("isAuth") === "true",
 
     //WishList
     item: [],
   },
   getters: {
-    isAuth: (state) => state.isAuth,
+    // isAuth: (state) => state.isAuth,
     getWishList: (state) => state.item,
   },
   mutations: {
-    login(state) {
-      state.isAuth = true;
-    },
-    logout(state) {
-      state.isAuth = false;
-      localStorage.removeItem("isAuth");
-      sessionStorage.removeItem("isAuth");
-    },
+    // login(state) {
+    //   state.isAuth = true;
+    // },
+    // logout(state) {
+    //   state.isAuth = false;
+    //   localStorage.removeItem("isAuth");
+    //   sessionStorage.removeItem("isAuth");
+    // },
     // userLoader(state, newUser) {
     //   state.user = newUser;
     //   console.log(state.user);
@@ -63,13 +64,16 @@ export default createStore({
     },
   },
   actions: {
-    login({ commit }) {
-      // api
-      commit("login");
-    },
-    logout({ commit }) {
-      //api
-      commit("logout");
-    },
+    // login({ commit }) {
+    //   // api
+    //   commit("login");
+    // },
+    // logout({ commit }) {
+    //   //api
+    //   commit("logout");
+    // },
+  },
+  modules: {
+    Login: login,
   },
 });

@@ -68,7 +68,7 @@ const routes = [
     name: "dash",
     component: () => import("@/views/dashboard/DashboardView.vue"),
     beforeEnter: (to, from, next) => {
-      if (!store.getters.isAuth) {
+      if (!store.getters.isAuth || store.getters.user == null) {
         next({ name: "dash.login" });
       } else {
         if (to.name === "dash") {
@@ -124,6 +124,13 @@ const routes = [
     path: "/dashboard/login",
     name: "dash.login",
     component: () => import("@/views/dashboard/LoginView.vue"),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isAuth && store.getters.user != null) {
+        next({ name: "dash.home" });
+      } else {
+        next();
+      }
+    },
   },
   // End Dashboard routes
 ];

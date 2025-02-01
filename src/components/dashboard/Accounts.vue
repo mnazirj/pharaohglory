@@ -2,22 +2,15 @@
   <div class="">
     <div class="d-flex align-content-center mt-1 mb-3 w-100">
       <div
-        class="d-flex justify-content-end align-content-center w-70 input-group"
+        class="d-flex justify-content-end align-content-center w-60 input-group"
       >
-        <i
-          class="pi pi-search fs-5 p-2 bg-main-color rounded-start-2 text-white"
-        ></i>
-        <input
-          type="text"
-          id="search"
-          v-model="searchValue"
-          class="w-50 p-1 pe-2 ps-2 border-2 border-start-0 rounded-end-2"
-        />
+        <IconField class="w-50">
+          <InputIcon class="pi pi-search text-main-color" />
+          <InputText v-model="searchValue" placeholder="Search" class="w-100" />
+        </IconField>
       </div>
     </div>
-    <div
-      class="table-responsive d-flex justify-content-center align-content-center flex-wrap mt-1 mb-1"
-    >
+    <div class="table-responsive">
       <table class="table-page table align-middle text-center text-nowrap">
         <thead>
           <tr>
@@ -46,7 +39,7 @@
             <td>
               <button
                 type=" button"
-                class="btn btn-main me-1 ms-1"
+                class="btn btn-outline-second me-1 ms-1"
                 data-bs-toggle="modal"
                 data-bs-target="#show-modal"
                 @click="currentDataSeeder(account)"
@@ -66,6 +59,13 @@
       :rowsPerPageOptions="[5, 10, 20, 30]"
       @page="onPageChange"
     ></Paginator>
+    <!-- <div
+      class="pt:content: flex justify-content-center align-items-center flex-wrap gap-2"
+    ></div> -->
+    <!-- <div
+      class="pt:root="flex justify-content-center align-items-center flex-wrap bg-white text-main-color p-3 gap-2 rounded-2 w-full""
+    ></div> -->
+    <div class=""></div>
     <!-- show Modal -->
     <div id="show-modal" class="modal fade" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -149,10 +149,17 @@
 <script>
 import Paginator from "primevue/paginator";
 import Divider from "primevue/divider";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
+
 export default {
   components: {
     Paginator,
     Divider,
+    IconField,
+    InputIcon,
+    InputText,
   },
   data() {
     return {
@@ -289,7 +296,7 @@ export default {
     paginatedAccounts() {
       const start = this.currentPage * this.rowsPerPage;
       const end = start + this.rowsPerPage;
-      return this.accounts.slice(start, end);
+      return this.filteredData.slice(start, end);
     },
     filteredData() {
       if (!this.searchValue) {
@@ -303,7 +310,17 @@ export default {
             .includes(this.searchValue.toLowerCase()) ||
           item.email
             .toLocaleLowerCase()
-            .includes(this.searchValue.toLocaleLowerCase())
+            .includes(this.searchValue.toLocaleLowerCase()) ||
+          item.payments.some((payment) =>
+            payment.to
+              .toLowerCase()
+              .includes(this.searchValue.toLocaleLowerCase())
+          ) ||
+          item.payments.some((payment) =>
+            payment.cash
+              .toLowerCase()
+              .includes(this.searchValue.toLocaleLowerCase())
+          )
       );
     },
   },

@@ -4,7 +4,10 @@
       class="d-flex justify-content-center align-items-center flex-nowrap w-100 h-100"
     >
       <div
-        class="w-40 d-flex justify-content-center align-item-center bg-main-color h-100 rounded-start-2"
+        :class="[
+          'w-40 d-flex justify-content-center align-item-center bg-main-color h-100',
+          isEng ? 'rounded-start-2' : 'rounded-end-2',
+        ]"
       >
         <div
           class="h-100 w-100 d-flex justify-content-center align-items-center"
@@ -44,6 +47,14 @@ export default {
         nameClass: "",
       }),
     },
+  },
+  data() {
+    return {
+      isEng: null,
+    };
+  },
+  beforeMount() {
+    this.isEng = localStorage.getItem("locale") == "en";
   },
 };
 </script>

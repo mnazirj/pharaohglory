@@ -37,21 +37,21 @@
               :resolver="resolver"
               @submit="onFormSubmit"
             >
-              <!-- username -->
+              <!-- email -->
               <div class="w-100 mb-4 mt-2">
                 <InputText
-                  name="username"
-                  v-model="username"
+                  name="email"
+                  v-model="email"
                   type="text"
-                  :placeholder="$t('dash.login.username')"
+                  :placeholder="$t('dash.login.email')"
                   fluid
                 />
                 <Message
-                  v-if="$form.username?.invalid"
+                  v-if="$form.email?.invalid"
                   severity="error"
                   size="small"
                   variant="simple"
-                  >{{ $form.username.error?.message }}</Message
+                  >{{ $t($form.email.error?.message) }}</Message
                 >
                 <!-- <input
                   type="text"
@@ -76,7 +76,7 @@
                   severity="error"
                   size="small"
                   variant="simple"
-                  >{{ $form.password.error?.message }}</Message
+                  >{{ $t($form.password.error?.message) }}</Message
                 >
               </div>
               <!-- <div class="w-100 mb-2 mt-2 relative">
@@ -116,13 +116,25 @@
                   {{ $t("dash.login.remember_me") }}
                 </label>
               </div>
-
+              <div class="w-100">
+                <Message
+                  v-if="isAuth == false"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  >Email or Password invalid</Message
+                >
+              </div>
               <!-- Login Button -->
               <div class="w-100 mb-2 d-flex justify-content-center mt-2">
                 <!-- <button type="button" class="btn btn-main" @click="login">
                   Login
                 </button> -->
-                <Button type="submit" :label="$t('dash.login.log')" />
+                <Button
+                  type="submit"
+                  :loading="loadingForData"
+                  :label="$t('dash.login.log')"
+                />
               </div>
             </Form>
           </div>
@@ -140,7 +152,8 @@ import Button from "primevue/button";
 import Message from "primevue/message";
 import Checkbox from "primevue/checkbox";
 import Card from "primevue/card";
-import { $t } from "@primevue/themes";
+import axios from "axios";
+import { promise } from "zod";
 export default {
   components: {
     Form,
@@ -150,16 +163,19 @@ export default {
     Message,
     Checkbox,
   },
+
   data() {
     return {
+      loadingForData: false,
+      isAuth: null,
       isEng: "",
       rememberMe: false,
-      inputType: "password",
+      // inputType: "password",
       initialValues: {
-        username: "",
+        email: "",
         password: "",
       },
-      username: "",
+      email: "",
       password: "",
       user: {
         id: 56,
@@ -186,41 +202,49 @@ export default {
     },
     login() {},
     resolver: ({ values }) => {
-      const errors = { username: [], password: [] };
-      if (!values.username) {
-        errors.username.push({
+      const errors = { email: [], password: [] };
+      if (!values.email) {
+        errors.email.push({
           type: "required",
-          message: "Username is required",
+          message: "dash.login.email_is_required",
         });
       }
       if (!values.password) {
         errors.password.push({
           type: "required",
-          message: "Password is required",
+          message: "dash.login.password_is_required",
         });
       }
       return {
         errors,
       };
     },
+    doAuth() {
+      axios
+        .post("account/auth/admin/login", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (this.rememberMe) {
+              localStorage.setItem("_token", res.data.tokens.access);
+            } else {
+              sessionStorage.setItem("_token", res.data.tokens.access);
+            }
+            // setTimeout(this.$router.go("/dashboard/home"), 1000);
+            this.$router.push({ name: "dash.home" });
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
     onFormSubmit({ valid }) {
       if (valid) {
-        if (
-          this.username == this.user.username &&
-          this.password == this.user.password
-        ) {
-          if (this.rememberMe) {
-            localStorage.setItem("isAuth", "true");
-            localStorage.setItem("user", JSON.stringify(this.user));
-          } else {
-            sessionStorage.setItem("isAuth", "true");
-            sessionStorage.setItem("user", JSON.stringify(this.user));
-          }
-          this.$store.dispatch("login", this.user);
-          this.$router.push({ name: "dash.home" });
-        } else {
-          console.log("error");
-        }
+        this.doAuth();
+
+        // console.log(this.isAuth);
       }
     },
   },

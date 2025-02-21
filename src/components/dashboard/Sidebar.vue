@@ -5,7 +5,7 @@
   >
     <div id="sidebar-nav" class="min-vh-100 h-100">
       <div
-        class="d-flex flex-column justify-content-between flex-wrap h-100 shadow-3"
+        class="d-flex flex-column justify-content-between flex-wrap h-100 shadow-3 bg-white"
       >
         <div class="w-100">
           <div
@@ -61,7 +61,10 @@
                   isActive('dash.home') ? 'active' : '',
                 ]"
               >
-                <i class="pi pi-objects-column me-2"></i><span>Overview</span>
+                <i
+                  :class="['pi pi-objects-column ', isEng ? 'me-2' : 'ms-2']"
+                ></i
+                ><span>Overview</span>
               </router-link>
 
               <router-link
@@ -71,8 +74,18 @@
                   isActive('dash.trips') ? 'active' : '',
                 ]"
               >
-                <i class="fa-solid fa-plane me-2"></i>
+                <i :class="['fa-solid fa-plane', isEng ? 'me-2' : 'ms-2']"></i>
                 <span>Trips</span>
+              </router-link>
+              <router-link
+                :to="{ name: 'dash.category' }"
+                :class="[
+                  'd-flex flex-nowrap align-items-center w-100 h-100 list-group-item rounded-2 my-1',
+                  isActive('dash.category') ? 'active' : '',
+                ]"
+              >
+                <i :class="['pi pi-filter-fill', isEng ? 'me-2' : 'ms-2']"></i>
+                <span>Category</span>
               </router-link>
 
               <router-link
@@ -82,7 +95,12 @@
                   isActive('dash.payments') ? 'active' : '',
                 ]"
               >
-                <i class="fa-solid fa-money-bill-wave me-2"></i
+                <i
+                  :class="[
+                    'fa-solid fa-money-bill-wave',
+                    isEng ? 'me-2' : 'ms-2',
+                  ]"
+                ></i
                 ><span>Payments</span>
               </router-link>
 
@@ -93,7 +111,8 @@
                   isActive('dash.accounts') ? 'active' : '',
                 ]"
               >
-                <i class="fa-solid fa-users me-2"></i><span>Accounts</span>
+                <i :class="['fa-solid fa-users', isEng ? 'me-2' : 'ms-2']"></i
+                ><span>Accounts</span>
               </router-link>
 
               <router-link
@@ -103,7 +122,7 @@
                   isActive('dash.websiteSettings') ? 'active' : '',
                 ]"
               >
-                <i class="fa-solid fa-gears me-2"></i
+                <i :class="['fa-solid fa-gears', isEng ? 'me-2' : 'ms-2']"></i
                 ><span class="text-nowrap">Website Settings</span>
               </router-link>
 
@@ -135,7 +154,8 @@
                   isActive('dash.profile') ? 'active' : '',
                 ]"
               >
-                <i class="pi pi-address-book me-2"></i><span>My Profile</span>
+                <i :class="['pi pi-address-book', isEng ? 'me-2' : 'ms-2']"></i
+                ><span>My Profile</span>
               </router-link>
             </div>
           </div>
@@ -145,7 +165,7 @@
             class="btn btn-main h-100 w-100 d-flex justify-content-center align-items-center rounded-0"
             @click="logout"
           >
-            <i class="pi pi-sign-out me-2"></i>
+            <i :class="['pi pi-sign-out', isEng ? 'me-2' : 'ms-2']"></i>
             <span> Logout</span>
           </button>
         </div>
@@ -171,6 +191,7 @@ export default {
       isExpanded: false,
       isHovered: false,
       isShown: true,
+      isEng: null,
     };
   },
   computed: {
@@ -210,9 +231,13 @@ export default {
     //   }
     // },
     logout() {
-      this.$store.dispatch("logout");
+      localStorage.removeItem("_token");
+      sessionStorage.removeItem("_token");
       this.$router.push({ name: "dash.login" });
     },
+  },
+  beforeMount() {
+    this.isEng = localStorage.getItem("locale") == "en";
   },
 };
 </script>

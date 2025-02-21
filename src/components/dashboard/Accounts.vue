@@ -10,7 +10,45 @@
         </IconField>
       </div>
     </div>
-    <div class="table-responsive">
+    <!-- Table -->
+    <DataTable
+      :value="filteredData"
+      paginator
+      :rows="5"
+      :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl']"
+    >
+      <Column header="Name">
+        <template #body="slotProps">
+          <div class="d-flex align-items-center">
+            <img
+              :src="slotProps.data.img"
+              alt="user-image"
+              class="img-user rounded-circle"
+            />
+            <span :class="['text-nowrap', isEng ? 'ms-3' : 'me-3']">{{
+              slotProps.data.name
+            }}</span>
+          </div>
+        </template>
+      </Column>
+      <Column field="username" header="Username"></Column>
+      <Column field="email" header="Email"></Column>
+      <Column header="Payments">
+        <template #body="slotProps">
+          <span>{{ slotProps.data.payments.length }}</span>
+        </template>
+      </Column>
+      <Column header="Actions">
+        <template #body="slotProps">
+          <Button
+            icon="pi pi-eye"
+            severity="secondary"
+            @click="showDialogTrigger(slotProps.data)"
+          ></Button>
+        </template>
+      </Column>
+    </DataTable>
+    <!-- <div class="table-responsive">
       <table class="table-page table align-middle text-center text-nowrap">
         <thead>
           <tr>
@@ -25,7 +63,7 @@
           <tr v-for="account in paginatedAccounts" :key="account.id">
             <td>
               <img
-                :src="account.userImg"
+                :src="account.img"
                 alt="user-img"
                 class="img-user rounded-circle"
               />
@@ -58,16 +96,63 @@
       :totalRecords="filteredData.length"
       :rowsPerPageOptions="[5, 10, 20, 30]"
       @page="onPageChange"
-    ></Paginator>
-    <!-- <div
-      class="pt:content: flex justify-content-center align-items-center flex-wrap gap-2"
-    ></div> -->
-    <!-- <div
-      class="pt:root="flex justify-content-center align-items-center flex-wrap bg-white text-main-color p-3 gap-2 rounded-2 w-full""
-    ></div> -->
-    <div class=""></div>
+    ></Paginator> -->
     <!-- show Modal -->
-    <div id="show-modal" class="modal fade" tabindex="-1">
+    <Dialog
+      v-model:visible="showShowDialog"
+      modal
+      :header="'Show Account #' + currentData.id"
+      :style="{ width: '35rem' }"
+    >
+      <div
+        class="d-flex justify-content-center align-items-center flex-wrap w-100 mb-2"
+      >
+        <!-- user info -->
+        <div
+          class="w-100 d-flex justify-content-center align-items-center flex-wrap mb-2"
+        >
+          <div
+            class="w-100 d-flex justify-content-center align-items-center mb-2"
+          >
+            <img
+              :src="currentData.img"
+              alt="user-image"
+              class="rounded-circle"
+              :style="{ width: '7rem', height: '7rem' }"
+            />
+          </div>
+          <div class="w-100 d-flex mb-2">
+            <span class="text-muted">Name : </span>
+            <span class="ms-1">{{ currentData.name }}</span>
+          </div>
+          <div class="w-100 d-flex mb-2">
+            <span class="text-muted">Username : </span>
+            <span>{{ currentData.username }}</span>
+          </div>
+          <div class="w-100 d-flex mb-2">
+            <span class="text-muted">Email : </span>
+            <span>{{ currentData.email }}</span>
+          </div>
+        </div>
+        <Divider />
+        <div
+          class="w-100 d-flex justify-content-center align-items-center flex-wrap mb-2"
+        >
+          <span class="text-muted w-100 fs-5 mb-2 text-center">Payments </span>
+          <DataTable
+            :value="currentData.payments"
+            paginator
+            :rows="3"
+            :class="['w-90 px-2 second-table ', isEng ? 'ltr' : 'rtl']"
+          >
+            <Column field="id" header="ID"></Column>
+            <Column field="to" header="To Trip"></Column>
+            <Column field="cash" header="Cash"></Column>
+          </DataTable>
+        </div>
+      </div>
+    </Dialog>
+    <!-- <div id="show-modal" class="modal fade" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
@@ -90,7 +175,7 @@
                   class="w-100 d-flex justify-content-center align-items-center py-1"
                 >
                   <img
-                    :src="currentData.userImg"
+                    :src="currentData.img"
                     alt="user-image"
                     class="rounded-circle"
                     :style="{ width: '7rem', height: '7rem' }"
@@ -142,7 +227,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -152,7 +237,10 @@ import Divider from "primevue/divider";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
-
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
 export default {
   components: {
     Paginator,
@@ -160,9 +248,15 @@ export default {
     IconField,
     InputIcon,
     InputText,
+    DataTable,
+    Column,
+    Button,
+    Dialog,
   },
   data() {
     return {
+      isEng: null,
+      showShowDialog: false,
       currentPage: 0,
       rowsPerPage: 5,
       searchValue: "",
@@ -171,7 +265,7 @@ export default {
         name: null,
         username: null,
         email: null,
-        userImg: null,
+        img: null,
         payments: [],
       },
       accounts: [
@@ -180,7 +274,7 @@ export default {
           name: "Mohammad MM",
           username: "mohammadMM1999",
           email: "Mohammad@test.com",
-          userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          img: require("@/assets/images/dashboard/avatar-1.png"),
           payments: [
             {
               id: 1,
@@ -199,7 +293,7 @@ export default {
           name: "Mohammad MM",
           username: "mohammadMM1999",
           email: "Mohammad@test.com",
-          userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          img: require("@/assets/images/dashboard/avatar-1.png"),
           payments: [
             {
               id: 1,
@@ -211,6 +305,26 @@ export default {
               to: "Qasun Mountuin Trip",
               cash: "10$",
             },
+            {
+              id: 3,
+              to: "Tartous Trip",
+              cash: "120$",
+            },
+            {
+              id: 4,
+              to: "Qasun Mountuin Trip",
+              cash: "10$",
+            },
+            {
+              id: 5,
+              to: "Tartous Trip",
+              cash: "120$",
+            },
+            {
+              id: 6,
+              to: "Qasun Mountuin Trip",
+              cash: "10$",
+            },
           ],
         },
         {
@@ -218,7 +332,7 @@ export default {
           name: "Ahmad MM",
           username: "Ahmad1999",
           email: "ahmad@test.com",
-          userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          img: require("@/assets/images/dashboard/avatar-1.png"),
           payments: [
             {
               id: 1,
@@ -237,7 +351,7 @@ export default {
           name: "Omar AlAmmar",
           username: "Omar123",
           email: "omar@test.com",
-          userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          img: require("@/assets/images/dashboard/avatar-1.png"),
           payments: [
             {
               id: 2,
@@ -256,7 +370,7 @@ export default {
           name: "Samer skar",
           username: "samer",
           email: "samer@test.com",
-          userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          img: require("@/assets/images/dashboard/avatar-1.png"),
           payments: [
             {
               id: 2,
@@ -275,7 +389,7 @@ export default {
           name: "Dina Dnow",
           username: "Dina879",
           email: "dina@test.com",
-          userImg: require("@/assets/images/dashboard/avatar-1.png"),
+          img: require("@/assets/images/dashboard/avatar-1.png"),
           payments: [
             {
               id: 2,
@@ -332,8 +446,39 @@ export default {
       this.currentPage = event.page;
       this.rowsPerPage = event.rows;
     },
+    showDialogTrigger(data) {
+      this.currentData = data;
+      this.showShowDialog = true;
+    },
+  },
+  beforeMount() {
+    this.isEng = localStorage.getItem("locale") == "en";
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+::v-deep .second-table .p-datatable-thead {
+  background-color: #ff1d48;
+  border-radius: 2rem;
+}
+::v-deep .second-table tr {
+  background-color: transparent;
+}
+::v-deep .second-table th {
+  background-color: transparent;
+  color: #353535;
+}
+::v-deep .second-table:is(.ltr) th:first-child {
+  border-top-left-radius: 0.5rem;
+}
+::v-deep .second-table:is(.ltr) th:last-child {
+  border-top-right-radius: 0.5rem;
+}
+::v-deep .second-table:is(.rtl) th:first-child {
+  border-top-left-radius: 0.5rem;
+}
+::v-deep .second-table:is(.rtl) th:last-child {
+  border-top-right-radius: 0.5rem;
+}
+</style>

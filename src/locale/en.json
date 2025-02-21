@@ -1,149 +1,216 @@
 {
-    
-    "nav":{
-        "wishlist":"Wishlist",
-        "profile":"Profile",
-        "search":"Search",
-        "input":"Find places and things",
-        "time":"anytime",
-        "reigster":"Register",
-        "login":"Login",
-        "clientarea":"Client Area",
-        "logout":"Logout",
-        "result":"Search results"
+  "nav": {
+    "wishlist": "Wishlist",
+    "profile": "Profile",
+    "search": "Search",
+    "input": "Find places and things",
+    "time": "anytime",
+    "reigster": "Register",
+    "login": "Login",
+    "clientarea": "Client Area",
+    "logout": "Logout",
+    "result": "Search results"
+  },
+  "selector": {
+    "culture": "Culture",
+    "food": "Food",
+    "nature": "Nature",
+    "sport": "Sport"
+  },
+  "trips": {
+    "culture": "Unforgettable cultural experiences",
+    "food": "Unforgettable food experiences",
+    "nature": "Unforgettable nature experiences",
+    "sport": "Unforgettable sport experiences",
+    "price": "From ${amount} per person",
+    "add_wish": "Add to wishlist",
+    "remove_wish": "Remove from wishlist",
+    "share": "Share",
+    "copid": "Link copied to clipboard",
+    "review": "Reviews",
+    "tip": "Reserve now to book your spot ",
+    "check": {
+      "title": "Check availability",
+      "header": "Checking availability for trip",
+      "adult": "Adult",
+      "child": "Child",
+      "price": "Price breakdown",
+      "total": "Subtotal",
+      "date": "Please select date",
+      "button": "Check availability",
+      "from": "From",
+      "person": "per person"
     },
-    "selector":{
-        "culture":"Culture",
-        "food":"Food",
-        "nature":"Nature",
-        "sport":"Sport"
-    },
-    "trips":{
-        "culture":"Unforgettable cultural experiences",
-        "food":"Unforgettable food experiences",
-        "nature":"Unforgettable nature experiences",
-        "sport":"Unforgettable sport experiences",
-        "price":"From ${amount} per person",
-        "add_wish":"Add to wishlist",
-        "remove_wish":"Remove from wishlist",
-        "share":"Share",
-        "copid":"Link copied to clipboard",
-        "review":"Reviews",
-        "tip":"Reserve now to book your spot ",
-        "check":{
-            "title":"Check availability",
-            "header":"Checking availability for trip",
-            "adult":"Adult",
-            "child":"Child",
-            "price":"Price breakdown",
-            "total":"Subtotal",
-            "date":"Please select date",
-            "button":"Check availability",
-            "from":"From",
-            "person":"per person"
-        },
-        "about":"About this activity",
-        "experience":"Experience",
-        "highlight":"Highlight",
-        "desc":"Full Description",
-        "include":"Includes",
-        "meeting":"Meeting Point",
-        "map":"Open in Google Maps",
-        "subheader":"You might also like...",
-        "customer_review":"Customer reviews",
-        "header":"All reviews are from verified customers who purchased the activity. Reviews can only be submitted after the activity takes place.",
-        "overall":"Overall rating",
-        "based":"Based On {amount} reviews",
-        "your":"Your review",
-        "button":"Submit"
-    },
-    "auth":{
-        "email":"Email Address",
-        "password":"Password",
-        "button":"Submit",
-        "or":"OR",
-        "register":{
-            "first_name":"First Name",
-            "last_name":"Last Name",
-           
-            
-            "google":"Register with Google",
-            "already":"Already having acconut?"
-        },
-        "login":{
-            "google":"Login with Google",
-            "forget":"Forger password?",
-            "new":"New Acconut?"
-        }
-    },
-    "clientarea":{
-        "adult":"Adult",
-        "child":"Child",
-        "details":{
-            "trip":"Trip",
-            "date":"Reservation Date",
-            "action":"Action",
-            "view":"View Details",
-            "member":"Members",
-            "dates":"Dates",
-            "reservtion":"Reservation date",
-            "pay_date":"Payment date",
-            "payment":"Payment Information",
-            "payment_id":"Payment ID",
-            "price":"Total Price",
-            "refund":"Request a refund"
-        },
-        "account":{
-            "personal":"Personal Information",
-            "auth":"Authentication Information",
-            "title":"Account Settings",
-            "first_name":"First Name",
-            "last_name":"Last Name",
-            "phone":"Phone Number",
-            "old":"Old Password",
-            "new":"New Password",
-            "button":"Change"
-        }
-    },
-    "wishlist":{
-        "title":"Wishlist",
-        "empty":"Your wishlist is empty"
-    },
-    "footer":{
-        "support":{
-            "title":"Support",
-            "contact":"Contact",
-            "pp":"Privacy Policy",
-            "ln":"Legal Notice"
-        },
-        "company":{
-            "title":"Company",
-            "about":"About Us",
-            "blog":"Blogs",
-            "gift":"Gifts Cards"
-        },
-        "copy":"Copyright"
-    },
-    "messages":{
-        "trip":{
-            "available":"Trips with selected information available",
-            "full":"Sorry remaing seat are: "
-        },
-        "auth":{
-            "register":"Successfully registered an acconut please verfiy your email via link we've sent to your email"
-        }
-    },
+    "about": "About this activity",
+    "experience": "Experience",
+    "highlight": "Highlight",
+    "desc": "Full Description",
+    "include": "Includes",
+    "meeting": "Meeting Point",
+    "map": "Open in Google Maps",
+    "subheader": "You might also like...",
+    "customer_review": "Customer reviews",
+    "header": "All reviews are from verified customers who purchased the activity. Reviews can only be submitted after the activity takes place.",
+    "overall": "Overall rating",
+    "based": "Based On {amount} reviews",
+    "your": "Your review",
+    "button": "Submit"
+  },
+  "auth": {
+    "email": "Email Address",
+    "password": "Password",
+    "button": "Submit",
+    "or": "OR",
+    "register": {
+      "first_name": "First Name",
+      "last_name": "Last Name",
 
-    
-    "dash":{
-        "login":{
-            "login":"Login",
-            "username":"Username",
-            "password":"Password",
-            "remember_me":"Remember Me",
-            "log":"Login",
-            "username_is_required":"Username is required",
-            "password_is_required":"Password is required"
-        }}
-    
+      "google": "Register with Google",
+      "already": "Already having acconut?"
+    },
+    "login": {
+      "google": "Login with Google",
+      "forget": "Forger password?",
+      "new": "New Acconut?"
+    }
+  },
+  "clientarea": {
+    "adult": "Adult",
+    "child": "Child",
+    "details": {
+      "trip": "Trip",
+      "date": "Reservation Date",
+      "action": "Action",
+      "view": "View Details",
+      "member": "Members",
+      "dates": "Dates",
+      "reservtion": "Reservation date",
+      "pay_date": "Payment date",
+      "payment": "Payment Information",
+      "payment_id": "Payment ID",
+      "price": "Total Price",
+      "refund": "Request a refund"
+    },
+    "account": {
+      "personal": "Personal Information",
+      "auth": "Authentication Information",
+      "title": "Account Settings",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "phone": "Phone Number",
+      "old": "Old Password",
+      "new": "New Password",
+      "button": "Change"
+    }
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "empty": "Your wishlist is empty"
+  },
+  "footer": {
+    "support": {
+      "title": "Support",
+      "contact": "Contact",
+      "pp": "Privacy Policy",
+      "ln": "Legal Notice"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About Us",
+      "blog": "Blogs",
+      "gift": "Gifts Cards"
+    },
+    "copy": "Copyright"
+  },
+  "messages": {
+    "trip": {
+      "available": "Trips with selected information available",
+      "full": "Sorry remaing seat are: "
+    },
+    "auth": {
+      "register": "Successfully registered an acconut please verfiy your email via link we've sent to your email"
+    }
+  },
+
+  "dash": {
+    "login": {
+      "login": "Login",
+      "email": "Email",
+      "password": "Password",
+      "remember_me": "Remember Me",
+      "log": "Login",
+      "email_is_required": "Email is required",
+      "password_is_required": "Password is required"
+    },
+    "trips": {
+      "search": "Search",
+      "create": "Create",
+      "title": "Title",
+      "category": "Category",
+      "quantity": "Quantity",
+      "availabilty": "Availabilty",
+      "actions": "Actions",
+      "curd_trip": {
+        "create_a_trip": "Create a trip",
+        "title_in_english": "Title in English",
+        "title_in_arabic": "Title in Arabic",
+        "description_in_english": "Description in English",
+        "description_in_arabic": "Description in Arabic",
+        "full_description_in_english": "Full decription in English",
+        "full_description_in_arabic": "Full description in Arabic",
+        "select_a_category": "Select a Category",
+        "select_a_type": "Select a type",
+        "highlights": "Highlights",
+        "includes": "Includes",
+        "about_activity": "About Activity",
+        "date_and_time": "Date and Time",
+        "payments": "Payments",
+        "members_count": "Members Count",
+        "images": "Images",
+        "meeting_point": "Meeting Point",
+        "add": "Add",
+        "in_english": "In English",
+        "in_arabic": "In Arabic",
+        "icon": "Icon",
+        "start_date": "Start Date",
+        "end_date": "End Date",
+        "duration": "Duration",
+        "adult_price": "Adult Price",
+        "adult_discount": "Adult Discount",
+        "children_price": "Children_price",
+        "children_discount": "Children_discount",
+        "enroll_members": "Enroll Members",
+
+        "start_date_required":"Start date is required",
+        "end_date_required":"End date is required",
+        "duration_required":"Duration is required",
+        "title_english_required":"Title in English is required",
+        "title_arabic_required":"Title in Arabic is required",
+        "description_english_required":"Desciption in English is required",
+        "description_arabic_required":"Desciption in Arabic is required",
+        "full_description_english_required":"Full desciption in English is required",
+        "full_description_arabic_required":"Full desciption in arabic is required",
+        "category_required":"You must select a event category",
+        "type_required":"You must select a event type"
+      }
+    },
+    "category": {
+      "search": "Search",
+      "create": "Create",
+      "actions": "Actions",
+      "id": "ID",
+      "category_name": "Category Name",
+      "curd": {
+        "edit_category": "Edit Cateogry",
+        "category_name_in_english": "Category name in English",
+        "category_name_in_arabic": "Category name in Arabic",
+        "update": "Update",
+        "delete_category": "Delete Category",
+        "delete_quastion1":"Are you sure you want delete category",
+        "delete_quastion2":"which has name",
+        "delete": "Delete",
+        "create_a_category": "Create a category"
+      }
+    }
+  }
 }

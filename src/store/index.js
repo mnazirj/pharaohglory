@@ -1,5 +1,4 @@
 import { createStore } from "vuex";
-import login from "./dashboard/login";
 
 async function updateWishListLocal(item) {
   await localStorage.setItem("wishlist", JSON.stringify(item));
@@ -14,31 +13,41 @@ function findWishItemIndex(state, payload) {
 
 export default createStore({
   state: {
-    // user: null,
+    // dashbboard
     // isAuth:
     //   localStorage.getItem("isAuth") === "true" ||
     //   sessionStorage.getItem("isAuth") === "true",
+    // token: null,
+    // user:
+    //   JSON.parse(localStorage.getItem("user")) ||
+    //   JSON.parse(sessionStorage.getItem("user")) ||
+    //   null,
 
     //WishList
     item: [],
   },
   getters: {
     // isAuth: (state) => state.isAuth,
-    getWishList: (state) => state.item,
+    // user: (state) => state.user,
+    // token: (state) => state.token,
+    // getWishList: (state) => state.item,
   },
   mutations: {
-    // login(state) {
-    //   state.isAuth = true;
-    // },
-    // logout(state) {
-    //   state.isAuth = false;
-    //   localStorage.removeItem("isAuth");
-    //   sessionStorage.removeItem("isAuth");
-    // },
-    // userLoader(state, newUser) {
-    //   state.user = newUser;
-    //   console.log(state.user);
-    // },
+    login(state, userInfo) {
+      // state.isAuth = true;
+      // state.user = userInfo;
+    },
+    logout(state) {
+      // state.isAuth = false;
+      // state.user = null;
+      // state.token = null;
+      // localStorage.removeItem("isAuth");
+      // localStorage.removeItem("user");
+      // sessionStorage.removeItem("isAuth");
+      // sessionStorage.removeItem("user");
+      // localStorage.removeItem("_token");
+      // sessionStorage.removeItem("_token");
+    },
 
     //WishList
     addToWishList(state, payload) {
@@ -64,16 +73,13 @@ export default createStore({
     },
   },
   actions: {
-    // login({ commit }) {
-    //   // api
-    //   commit("login");
-    // },
-    // logout({ commit }) {
-    //   //api
-    //   commit("logout");
-    // },
-  },
-  modules: {
-    Login: login,
+    login({ commit }, userInfo) {
+      // api
+      commit("login", userInfo);
+    },
+    logout({ commit }) {
+      //api
+      commit("logout");
+    },
   },
 });

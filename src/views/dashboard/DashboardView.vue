@@ -3,12 +3,16 @@
     <div class="row flex-nowrap">
       <div
         ref="sidebarContainer"
-        :class="['col-auto px-0 m-0', isShown ? 'shown' : '']"
+        :class="[
+          'col-auto px-0 m-0',
+          isShown ? 'shown' : '',
+          isEng ? 'ltr' : 'rtl',
+        ]"
         id="sidebar-container"
       >
         <Sidebar @sidebarToggleShown="sidebarToggleShown" />
       </div>
-      <main class="col p-0 mt-2">
+      <main :class="['col p-0 mt-2', isEng ? 'ltr' : 'rtl']">
         <!-- <Navbar /> -->
         <div v-if="!isShown" class="fixed z-3">
           <button
@@ -21,8 +25,11 @@
             <i class="pi pi-align-justify"></i>
           </button>
         </div>
-        <div class="w-100 d-flex justify-content-end align-items-center mb-4">
-          <div class="w-30 d-flex justify-content-evenly align-items-center">
+        <div
+          id="navbar"
+          class="w-100 d-flex justify-content-end align-items-center mb-4"
+        >
+          <div class="d-flex align-items-center">
             <SelectButton
               v-model="langValue"
               :options="languages"
@@ -30,9 +37,7 @@
               class="mx-2"
               @change="changeLang"
             />
-            <button class="btn btn-main rounded-circle mx-2">
-              <i class="pi pi-moon pt-1"></i>
-            </button>
+            <Button icon="pi pi-moon" class="rounded-circle"></Button>
           </div>
         </div>
         <div id="content">
@@ -48,6 +53,7 @@ import Sidebar from "@/components/dashboard/Sidebar.vue";
 import SelectButton from "primevue/selectbutton";
 import FloatLabel from "primevue/floatlabel";
 import IftaLabel from "primevue/iftalabel";
+import Button from "primevue/button";
 // import Navbar from "@/components/dashboard/Navbar.vue";
 export default {
   components: {
@@ -55,13 +61,15 @@ export default {
     SelectButton,
     FloatLabel,
     IftaLabel,
+    Button,
     // Navbar,
   },
   data() {
     return {
       isShown: true,
-      langValue: "En",
+      langValue: null,
       languages: ["En", "Ar"],
+      isEng: null,
     };
   },
   methods: {
@@ -73,6 +81,9 @@ export default {
       window.location.reload();
     },
   },
+  beforeMount() {
+    this.isEng = localStorage.getItem("locale") == "en";
+  },
 };
 </script>
 
@@ -82,14 +93,31 @@ export default {
   text-decoration: none !important;
 }
 main {
-  margin-left: 1rem;
   transition: all 0.3s ease;
 }
-#sidebar-container:not(.shown) + main #content {
+main:is(.ltr) {
   margin-left: 1rem;
+  min-width: calc(100% - 1rem);
 }
-#sidebar-container:is(.shown) + main {
+main:is(.rtl) {
+  margin-right: 1rem;
+  width: calc(100% - 1rem);
+}
+#sidebar-container:not(.shown) + main:is(.ltr) #content {
+  margin-left: 1rem;
+  min-width: calc(100% - 1rem);
+}
+#sidebar-container:not(.shown) + main:is(.rtl) #content {
+  margin-left: 1rem;
+  min-width: calc(100% - 1rem);
+}
+#sidebar-container:is(.shown) + main:is(.ltr) {
   margin-left: 15rem;
+  min-width: calc(100% - 15rem);
+}
+#sidebar-container:is(.shown) + main:is(.rtl) {
+  margin-right: 15rem;
+  min-width: calc(100% - 15rem);
 }
 /* table */
 ::v-deep .table-page {
@@ -178,5 +206,59 @@ main {
   ).p-toggleswitch-checked
   .p-toggleswitch-slider {
   background: #ff0e3a !important;
+}
+/* Data Table */
+/* main table */
+::v-deep .main-table .p-datatable-thead {
+  background-color: #353535;
+  border-radius: 2rem;
+}
+::v-deep .main-table tr {
+  background-color: transparent;
+}
+::v-deep .main-table th {
+  background-color: transparent;
+  color: #fff;
+}
+::v-deep .main-table:is(.ltr) th:first-child {
+  border-top-left-radius: 0.5rem;
+}
+::v-deep .main-table:is(.ltr) th:last-child {
+  border-top-right-radius: 0.5rem;
+}
+::v-deep .main-table:is(.rtl) th:first-child {
+  border-top-right-radius: 0.5rem;
+}
+::v-deep .main-table:is(.rtl) th:last-child {
+  border-top-left-radius: 0.5rem;
+}
+/* navbar */
+#navbar div button {
+  min-width: 2.7rem;
+  min-height: 2.7rem;
+}
+@media (min-width: 1440px) {
+  #navbar div {
+    width: 18%;
+    justify-content: space-evenly;
+  }
+}
+@media (max-width: 1440px) {
+  #navbar div {
+    width: 30%;
+    justify-content: space-evenly;
+  }
+}
+@media (max-width: 1023px) {
+  #navbar div {
+    width: 40%;
+    justify-content: space-evenly;
+  }
+}
+@media (max-width: 768px) {
+  #navbar div {
+    width: 90%;
+    justify-content: center;
+  }
 }
 </style>

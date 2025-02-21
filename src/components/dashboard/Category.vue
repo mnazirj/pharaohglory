@@ -1,0 +1,403 @@
+<template>
+  <div>
+    <!-- <div
+      class="d-flex justify-content-between align-content-center mt-1 mb-3 w-100"
+    >
+      <div class="d-flex justify-content-center align-content-center w-80">
+        <div
+          class="d-flex justify-content-end align-content-center w-50 input-group"
+        >
+          <IconField class="" style="min-width: 6rem">
+            <InputIcon class="pi pi-search text-main-color" />
+            <InputText
+              v-model="searchValue"
+              placeholder="Search"
+              class="w-100"
+            />
+          </IconField>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end align-content-center w-10 mx-2">
+        <Button
+          label="Create"
+          icon="pi pi-plus"
+          @click="showCreateDialog = true"
+          style="min-width: 5rem"
+        />
+      </div>
+    </div> -->
+    <div
+      id="header"
+      class="d-flex justify-content-between align-content-center mt-1 mb-3 w-100"
+    >
+      <div
+        id="search-container"
+        class="d-flex justify-content-center align-content-center"
+      >
+        <div class="d-flex align-content-center mx-3">
+          <IconField class="">
+            <InputIcon class="pi pi-search text-main-color" />
+            <InputText
+              v-model="searchValue"
+              :placeholder="$t('dash.category.search')"
+              class="w-100"
+            />
+          </IconField>
+        </div>
+      </div>
+
+      <div id="btn-create-container" class="d-flex align-content-center mx-2">
+        <Button
+          :label="$t('dash.category.create')"
+          icon="pi pi-plus"
+          @click="showCreateDialog = true"
+          style="min-width: 6rem"
+        />
+      </div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <DataTable
+        :value="filteredData"
+        paginator
+        :rows="5"
+        :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl']"
+      >
+        <Column field="id" :header="$t('dash.category.id')" style="width: 10%"></Column>
+        <Column
+          field="categoryName"
+          :header="$t('dash.category.category_name')"
+          style="width: 80%"
+        ></Column>
+        <Column :header="$t('dash.category.actions')" style="width: 10%">
+          <template #body="slotProps">
+            <div class="d-flex align-items-center">
+              <Button
+                icon="pi pi-trash"
+                severity="danger"
+                class="mx-1"
+                @click="triggerDeleteDialog(slotProps.data)"
+              ></Button>
+              <Button
+                icon="pi pi-pen-to-square"
+                class="mx-1"
+                severity="secondary"
+                @click="triggerEditDialog(slotProps.data)"
+              ></Button>
+            </div>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+    <!-- Delete Dialog -->
+    <Dialog
+      v-model:visible="showDeleteDialog"
+      :modal="true"
+      :closable="true"
+      :header="$t('dash.category.curd.delete_category')+' #' + currentData.id"
+      :style="{ width: '35rem' }"
+      :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
+    >
+      <p>
+        {{ $t('dash.category.curd.delete_quastion1') }} #{{ currentData.id }} {{ $t('dash.category.curd.delete_quastion2') }} "{{ currentData.categoryName }}" ?
+      </p>
+      <template #footer>
+        <Button
+          icon="pi pi-trash"
+          :label="$t('dash.category.curd.delete')"
+          @click="deleteCategory(currentData.slug)"
+        ></Button>
+      </template>
+    </Dialog>
+    <!-- Edit Dialog -->
+    <Dialog
+      v-model:visible="showEditDialog"
+      :modal="true"
+      :closable="true"
+      :header="$t('dash.category.curd.edit_category')+' #' + currentData.id"
+      :style="{ width: '35rem' }"
+      :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
+    >
+      <FloatLabel variant="on" class="w-100 my-3">
+        <IconField>
+          <InputIcon class="fa-solid fa-heading text-main-color" />
+          <InputText
+            id="en_category_name"
+            name="enCategoryName"
+            v-model="newCategory.enCategoryName"
+            fluid
+          />
+        </IconField>
+        <label for="en_category_name">{{ $t('dash.category.curd.category_name_in_english') }}</label>
+      </FloatLabel>
+
+      <FloatLabel variant="on" class="w-100 my-3">
+        <IconField>
+          <InputIcon class="fa-solid fa-heading text-main-color" />
+          <InputText
+            id="ar_category_name"
+            name="ar_categoryName"
+            v-model="newCategory.arCategoryName"
+            fluid
+          />
+        </IconField>
+        <label for="ar_category_name">{{ $t('dash.category.curd.category_name_in_arabic') }}</label>
+      </FloatLabel>
+      <template #footer>
+        <Button
+          icon="pi pi-save"
+          :label="$t('dash.category.curd.update')"
+          @click="updateCategory(currentData.slug)"
+        ></Button>
+      </template>
+    </Dialog>
+    <!-- create Dialog -->
+    <Dialog
+      v-model:visible="showCreateDialog"
+      :modal="true"
+      :closable="true"
+      :header="$t('dash.category.curd.create_a_category')"
+      :style="{ width: '35rem' }"
+      :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
+    >
+      <FloatLabel variant="on" class="w-100 my-3">
+        <IconField>
+          <InputIcon class="fa-solid fa-heading text-main-color" />
+          <InputText
+            id="en_category_name"
+            name="enCategoryName"
+            v-model="newCategory.enCategoryName"
+            fluid
+          />
+        </IconField>
+        <label for="en_category_name">{{ $t('dash.category.curd.category_name_in_english') }}</label>
+      </FloatLabel>
+      <FloatLabel variant="on" class="w-100 my-3">
+        <IconField>
+          <InputIcon class="fa-solid fa-heading text-main-color" />
+          <InputText
+            id="ar_category_name"
+            name="arCategoryName"
+            v-model="newCategory.arCategoryName"
+            fluid
+          />
+        </IconField>
+        <label for="ar_category_name">{{ $t('dash.category.curd.category_name_in_arabic') }}</label>
+      </FloatLabel>
+      <template #footer>
+        <Button
+          icon="pi pi-save"
+          :label="$t('dash.category.create')"
+          @click="createCategory"
+        ></Button>
+      </template>
+    </Dialog>
+  </div>
+</template>
+
+<script>
+import Dialog from "primevue/dialog";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import FloatLabel from "primevue/floatlabel";
+import axios from "axios";
+export default {
+  components: {
+    Dialog,
+    IconField,
+    InputIcon,
+    InputText,
+    Button,
+    DataTable,
+    Column,
+    FloatLabel,
+  },
+  data() {
+    return {
+      searchValue: "",
+      isEng: null,
+      categoryies: null,
+      newCategory: {
+        arCategoryName: null,
+        enCategoryName: null,
+      },
+      currentData: {
+        id: null,
+      },
+      showDeleteDialog: false,
+      showEditDialog: false,
+      showCreateDialog: false,
+    };
+  },
+  computed: {
+    filteredData() {
+      if (!this.searchValue) {
+        return this.categoryies;
+      }
+      return this.categoryies.filter(
+        (item) =>
+          item.id.toString().includes(this.searchValue) ||
+          item.categoryName
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase())
+      );
+    },
+  },
+  methods: {
+    triggerDeleteDialog(data) {
+      this.currentData = data;
+      this.showDeleteDialog = true;
+    },
+    triggerEditDialog(data) {
+      this.currentData = data;
+      this.showEditDialog = true;
+    },
+    deleteCategory(slug) {
+      this.showDeleteDialog = false;
+    },
+    getCategories() {
+      axios
+        .get("base/view/category?lang=" + localStorage.getItem("locale"), {
+          headers: {
+            Authorization:
+              "Bearer " +
+              (localStorage.getItem("_token") ||
+                sessionStorage.getItem("_token")),
+          },
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.categoryies = res.data;
+          }
+        });
+    },
+    createCategory() {
+      axios
+        .post(
+          "base/add/category",
+          {
+            enCategoryName: this.newCategory.enCategoryName,
+            arCategoryName: this.newCategory.arCategoryName,
+          },
+          {
+            headers: {
+              Authorization:
+                "Bearer " +
+                (localStorage.getItem("_token") ||
+                  sessionStorage.getItem("_token")),
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status == 200) {
+            this.showCreateDialog = false;
+            this.newCategory = null;
+            window.location.reload();
+          }
+        });
+    },
+    updateCategory(slug) {
+      axios
+        .put(
+          "base/edit/category/" + slug,
+          {
+            enCategoryName: this.newCategory.enCategoryName,
+            arCategoryName: this.newCategory.arCategoryName,
+          },
+          {
+            headers: {
+              Authorization:
+                "Bearer " +
+                (localStorage.getItem("_token") ||
+                  sessionStorage.getItem("_token")),
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status == 200) {
+            this.showEditDialog = false;
+            this.newCategory = null;
+            window.location.reload();
+          }
+        });
+    },
+    deleteCategory(slug) {
+      console.log(slug);
+      axios
+        .delete("base/delete/category/" + slug, {
+          headers: {
+            Authorization:
+              "Bearer " +
+              (localStorage.getItem("_token") ||
+                sessionStorage.getItem("_token")),
+          },
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.showDeleteDialog = false;
+            window.location.reload();
+          }
+        });
+    },
+  },
+  mounted() {
+    this.getCategories();
+  },
+  beforeMount() {
+    this.isEng = localStorage.getItem("locale") == "en";
+  },
+};
+</script>
+
+<style scoped>
+/* Responsive */
+/* header */
+@media (min-width: 1440px) {
+  #search-container {
+    width: 80%;
+  }
+  #header #search-container div {
+    width: 50%;
+    justify-content: end;
+  }
+}
+@media (max-width: 1440px) {
+  #search-container {
+    width: 80%;
+  }
+  #header #search-container div {
+    width: 60%;
+    justify-content: end;
+  }
+}
+@media (max-width: 1023px) {
+  #search-container {
+    width: 80%;
+  }
+  #header #search-container div {
+    width: 70%;
+    justify-content: end;
+  }
+}
+@media (max-width: 768px) {
+  #search-container {
+    width: 100%;
+  }
+  #header #search-container div {
+    width: 90%;
+    justify-content: center;
+  }
+  #header {
+    flex-wrap: wrap;
+  }
+  #btn-create-container {
+    width: 90%;
+    margin-top: 1rem;
+    justify-content: center;
+  }
+}
+</style>

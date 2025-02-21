@@ -138,12 +138,83 @@
     "dash":{
         "login":{
             "login":"تسجيل دخول",
-            "username":"اسم المستخدم",
+            "email":"البريد الإلكتروني",
             "password":"كلمة المرور",
             "remember_me":"تذكرني",
             "log":"تسجيل",
-            "username_is_required":"اسم المستخدم مطلوب",
+            "email_is_required":"البريد الإلكتروني مطلوب",
             "password_is_required":"كلمة المرور مطلوبة"
+        },
+        "trips":{
+            "search":"بحث",
+            "create":"إنشاء",
+            "title":"العنوان",
+            "category":"النوع",
+            "quantity":"العدد",
+            "availabilty":"الإتاحة",
+            "actions":"الخيارات",
+            "curd_trip":{
+                "create_a_trip":"إنشاء رحلة",
+                "title_in_english":"العنوان بالأنجليزية",
+                "title_in_arabic":"العنوان بالعربية",
+                "description_in_english":"التفاصيل بالأنجليزية",
+                "description_in_arabic":"التفاصيل بالعربية",
+                "full_description_in_english":"التفاصيل الكاملة بالأنجليزية",
+                "full_description_in_arabic":"التفاصيل الكاملة بالعربية",
+                "select_a_category":"اختر فئة",
+                "select_a_type":"اختر نوع",
+                "highlights":"أبرز النقاط",
+                "includes":"المتضمنات",
+                "about_activity":"حول الفعالية",
+                "date_and_time":"التاريخ و الوقت",
+                "payments":"المدفوعات",
+                "members_count":"عدد الأعضاء",
+                "images":"الصور",
+                "meeting_point":"نقطة الالتقاء",
+                "add":"إضافة",
+                "in_english":"بالأنجليزية",
+                "in_arabic":"بالعربية",
+                "icon":"الرمز",
+                "start_date":"تاريخ البدء",
+                "end_date":"تاريخ الانتهاء",
+                "duration":"المدة",
+                "adult_price":"السعر للبالغين",
+                "adult_discount":"الحسم للبالغين",
+                "children_price":"السعر للأطفال",
+                "children_discount":"الحسم للأطفال",
+                "enroll_members":"الأعضاء المسجلين",
+                
+                "start_date_required":"تاريخ البدء مطلوب",
+                "end_date_required":"تاريخ الانتهاء مطلوب",
+                "duration_required":"المدة مطلوبة",
+                "title_english_required":"العنوان بالأنجليزية مطلوب",
+                "title_arabic_required":"العنوان بالعربية مطلوب",
+                "description_english_required":"التفاصيل بالأنجليزية مطلوبة",
+                "description_arabic_required":"التفاصيل بالعربية مطلوبة",
+                "full_description_english_required":"التفاصيل الكاملة بالأنجليزية مطلوبة",
+                "full_description_arabic_required":"التفاصيل الكاملة بالعربية مطلوبة",
+                "category_required":"يجب اختيار فئة الحدث",
+                "type_required":"يجب اختيار نوع الحدث"
+            }
+
+        },
+        "category":{
+            "search":"بحث",
+            "create":"إنشاء",
+            "actions":"الخيارات",
+            "id":"المعرف",
+            "category_name":"اسم الفئة",
+            "curd": {
+                "edit_category": "تعديل الفئة",
+                "category_name_in_english": "اسم الفئة بالاتجليزية",
+                "category_name_in_arabic": "اسم الفئة بالعربية",
+                "update": "تحديث",
+                "delete_category": "حذف الفئة",
+                "delete_quastion1":"هل أنت متأكد أنك تريد حذف",
+                "delete_quastion2":"الذي لديه الاسم",
+                "delete": "حذف",
+                "create_a_category": "إنشاء فئة"
+              }
         }
     }
 

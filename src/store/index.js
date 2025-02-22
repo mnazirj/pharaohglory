@@ -13,31 +13,41 @@ function findWishItemIndex(state, payload) {
 
 export default createStore({
   state: {
-    // user: null,
-    isAuth:
-      localStorage.getItem("isAuth") === "true" ||
-      sessionStorage.getItem("isAuth") === "true",
+    // dashbboard
+    // isAuth:
+    //   localStorage.getItem("isAuth") === "true" ||
+    //   sessionStorage.getItem("isAuth") === "true",
+    // token: null,
+    // user:
+    //   JSON.parse(localStorage.getItem("user")) ||
+    //   JSON.parse(sessionStorage.getItem("user")) ||
+    //   null,
 
     //WishList
     item: [],
   },
   getters: {
-    isAuth: (state) => state.isAuth,
-    getWishList: (state) => state.item,
+    // isAuth: (state) => state.isAuth,
+    // user: (state) => state.user,
+    // token: (state) => state.token,
+    // getWishList: (state) => state.item,
   },
   mutations: {
-    login(state) {
-      state.isAuth = true;
+    login(state, userInfo) {
+      // state.isAuth = true;
+      // state.user = userInfo;
     },
     logout(state) {
-      state.isAuth = false;
-      localStorage.removeItem("isAuth");
-      sessionStorage.removeItem("isAuth");
+      // state.isAuth = false;
+      // state.user = null;
+      // state.token = null;
+      // localStorage.removeItem("isAuth");
+      // localStorage.removeItem("user");
+      // sessionStorage.removeItem("isAuth");
+      // sessionStorage.removeItem("user");
+      // localStorage.removeItem("_token");
+      // sessionStorage.removeItem("_token");
     },
-    // userLoader(state, newUser) {
-    //   state.user = newUser;
-    //   console.log(state.user);
-    // },
 
     //WishList
     addToWishList(state, payload) {
@@ -63,9 +73,9 @@ export default createStore({
     },
   },
   actions: {
-    login({ commit }) {
+    login({ commit }, userInfo) {
       // api
-      commit("login");
+      commit("login", userInfo);
     },
     logout({ commit }) {
       //api

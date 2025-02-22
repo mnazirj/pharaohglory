@@ -32,7 +32,7 @@
           />
           <button
             type="button"
-            class="btn btn-main rounded-circle"
+            class="btn btn-second rounded-circle"
             @click="triggerFileInput"
             title="Edit Image"
           >
@@ -50,7 +50,7 @@
       </div>
       <!-- Buttons Section -->
       <div class="w-90 d-flex justify-content-end mb-2">
-        <button
+        <!-- <button
           type="button"
           class="btn btn-outline-main mx-1"
           @click="showEditDialog = true"
@@ -63,28 +63,53 @@
           @click="showChangePassDialog = true"
         >
           <i class="fa-solid fa-key pt-1 fs-4"></i>
-        </button>
+        </button> -->
+        <Button
+          icon="pi pi-user-edit"
+          class="mx-1"
+          @click="showEditDialog = true"
+        ></Button>
+        <Button
+          icon="fa-solid fa-key"
+          class="mx-1"
+          @click="showChangePassDialog = true"
+        ></Button>
       </div>
       <!-- Information Section -->
       <div class="w-70 d-flex align-items-center flex-wrap">
         <div class="w-100 my-1 d-flex align-items-center">
-          <span class="text-muted text-nowrap fs-5 me-1">Name : </span>
+          <span
+            :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
+            >Name :
+          </span>
           <span class="text-nowrap">{{ user.name }}</span>
         </div>
-        <div class="w-100 my-1">
-          <span class="text-muted text-nowrap fs-5 me-1">Username : </span>
+        <div class="w-100 my-1 d-flex align-items-center">
+          <span
+            :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
+            >Username :
+          </span>
           <span class="text-nowrap">{{ user.username }}</span>
         </div>
-        <div class="w-100 my-1">
-          <span class="text-muted text-nowrap fs-5 me-1">Email : </span>
+        <div class="w-100 my-1 d-flex align-items-center">
+          <span
+            :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
+            >Email :
+          </span>
           <span class="text-nowrap">{{ user.email }}</span>
         </div>
-        <div class="w-100 my-1">
-          <span class="text-muted text-nowrap fs-5 me-1">Birthday : </span>
+        <div class="w-100 my-1 d-flex align-items-center">
+          <span
+            :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
+            >Birthday :
+          </span>
           <span class="text-nowrap">{{ user.birthday }}</span>
         </div>
-        <div class="w-100 my-1">
-          <span class="text-muted text-nowrap fs-5 me-1">Address : </span>
+        <div class="w-100 my-1 d-flex align-items-center">
+          <span
+            :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
+            >Address :
+          </span>
           <span class="text-nowrap">{{ user.address }}</span>
         </div>
       </div>
@@ -104,7 +129,7 @@
       <div
         class="w-90 d-flex justify-content-center align-items-center flex-wrap my-2"
       >
-        <span class="w-100 mb-1">Name</span>
+        <!-- <span class="w-100 mb-1">Name</span>
         <div class="w-100 input-group">
           <span class="input-group-text"
             ><i class="fa-solid fa-font text-main-color"></i
@@ -116,13 +141,20 @@
             aria-label="Name"
             v-model="user.name"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+          <IconField>
+            <InputIcon class="fa-solid fa-font text-main-color" />
+            <InputText id="name" name="name" v-model="user.name" fluid />
+          </IconField>
+          <label for="name">Name</label>
+        </FloatLabel>
       </div>
       <!-- Username -->
       <div
         class="w-90 d-flex justify-content-center align-items-center flex-wrap my-2"
       >
-        <span class="w-100 mb-1">Username</span>
+        <!-- <span class="w-100 mb-1">Username</span>
         <div class="w-100 input-group">
           <span class="input-group-text"
             ><i class="pi pi-user text-main-color"></i
@@ -134,13 +166,25 @@
             aria-label="Username"
             v-model="user.username"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+          <IconField>
+            <InputIcon class="pi pi-user text-main-color" />
+            <InputText
+              id="username"
+              name="username"
+              v-model="user.username"
+              fluid
+            />
+          </IconField>
+          <label for="username">Username</label>
+        </FloatLabel>
       </div>
       <!-- Email -->
       <div
         class="w-90 d-flex justify-content-center align-items-center flex-wrap my-2"
       >
-        <span class="w-100 mb-1">Email</span>
+        <!-- <span class="w-100 mb-1">Email</span>
         <div class="w-100 input-group">
           <span class="input-group-text"
             ><i class="pi pi-envelope text-main-color"></i
@@ -152,13 +196,20 @@
             aria-label="Email"
             v-model="user.email"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+          <IconField>
+            <InputIcon class="pi pi-envelope text-main-color" />
+            <InputText id="email" name="email" v-model="user.email" fluid />
+          </IconField>
+          <label for="email">Email</label>
+        </FloatLabel>
       </div>
       <!-- Birthday -->
       <div
         class="w-90 d-flex justify-content-center align-items-center flex-wrap my-2"
       >
-        <span class="w-100 mb-1">Birthday</span>
+        <!-- <span class="w-100 mb-1">Birthday</span>
         <div class="w-100 input-group">
           <span class="input-group-text"
             ><i class="fa-solid fa-cake-candles text-main-color"></i
@@ -170,13 +221,31 @@
             aria-label="Birthday"
             v-model="user.birthday"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+          <DatePicker
+            id="birthday"
+            name="birthday"
+            v-model="user.birthday"
+            fluid
+            showIcon
+            iconDisplay="input"
+          >
+            <template #inputicon="slotProps">
+              <i
+                class="fa-solid fa-cake-candles text-main-color"
+                @click="slotProps.clickCallback"
+              />
+            </template>
+          </DatePicker>
+          <label for="birthday">Birthday</label>
+        </FloatLabel>
       </div>
       <!-- Address -->
       <div
         class="w-90 d-flex justify-content-center align-items-center flex-wrap my-2"
       >
-        <span class="w-100 mb-1">Address</span>
+        <!-- <span class="w-100 mb-1">Address</span>
         <div class="w-100 input-group">
           <span class="input-group-text"
             ><i class="fa-solid fa-location-crosshairs text-main-color"></i
@@ -188,13 +257,20 @@
             aria-label="Address"
             v-model="user.address"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+          <IconField>
+            <InputIcon class="fa-solid fa-location-crosshairs text-main-color" />
+            <InputText id="address" name="address" v-model="user.address" fluid />
+          </IconField>
+          <label for="address">Address</label>
+        </FloatLabel>
       </div>
       <!-- Phone -->
       <div
         class="w-90 d-flex justify-content-center align-items-center flex-wrap my-2"
       >
-        <span class="w-100 mb-1">Phone</span>
+        <!-- <span class="w-100 mb-1">Phone</span>
         <div class="w-100 input-group">
           <span class="input-group-text"
             ><i class="pi pi-phone text-main-color"></i
@@ -206,11 +282,19 @@
             aria-label="Phone"
             v-model="user.phone"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+          <IconField>
+            <InputIcon class="pi pi-phone text-main-color" />
+            <InputText id="phone" name="phone" v-model="user.phone" fluid />
+          </IconField>
+          <label for="phone">Phone</label>
+        </FloatLabel>
       </div>
     </div>
     <template #footer>
-      <button type="button" class="btn btn-main" @click="saveEdit">Save</button>
+      <!-- <button type="button" class="btn btn-main" @click="saveEdit">Save</button> -->
+      <Button icon="pi pi-save" label="Save" @click="saveEdit"></Button>
     </template>
   </Dialog>
   <!-- Change Password modal -->
@@ -227,7 +311,7 @@
       <div
         class="w-80 d-flex justify-content-center align-content-center flex-wrap my-2"
       >
-        <div class="w-100">
+        <!-- <div class="w-100">
           <input
             ref="currentPassword"
             type="password"
@@ -235,13 +319,17 @@
             placeholder="Current Password"
             aria-label="Current Password"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+            <InputText ref="currentPassword" id="current_password" name="currentPassword" fluid />
+          <label for="current_password">Current Password</label>
+        </FloatLabel>
       </div>
       <!-- New Password -->
       <div
         class="w-80 d-flex justify-content-center align-content-center flex-wrap my-2"
       >
-        <div class="w-100">
+        <!-- <div class="w-100">
           <input
             ref="newPassword"
             type="password"
@@ -249,13 +337,17 @@
             placeholder="New Password"
             aria-label="New Password"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+            <InputText ref="newPassword" id="new_password" name="newPassword" fluid />
+          <label for="new_password">New Password</label>
+        </FloatLabel>
       </div>
       <!-- Confirm New Password -->
       <div
         class="w-80 d-flex justify-content-center align-content-center flex-wrap my-2"
       >
-        <div class="w-100">
+        <!-- <div class="w-100">
           <input
             ref="confirmNewPassword"
             type="password"
@@ -263,27 +355,43 @@
             placeholder="Confirm New Password"
             aria-label="Confirm New Password"
           />
-        </div>
+        </div> -->
+        <FloatLabel variant="on" class="w-100">
+            <InputText ref="confirmNewPassword" id="confirm_new_password" name="confirmNewPassword" fluid />
+          <label for="confirm_new_password">Confirm New Password</label>
+        </FloatLabel>
       </div>
     </div>
     <template #footer>
-      <button type="button" class="btn btn-main" @click="savePassword">
+      <!-- <button type="button" class="btn btn-main" @click="savePassword">
         Save
-      </button>
+      </button> -->
+      <Button icon="pi pi-save" label="Save" @click="savePassword"></Button>
     </template>
   </Dialog>
 </template>
 
 <script>
-import Tooltip from "primevue/tooltip";
 import Dialog from "primevue/dialog";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import FloatLabel from "primevue/floatlabel";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import DatePicker from "primevue/datepicker";
 export default {
   components: {
-    Tooltip,
     Dialog,
+    Button,
+    InputText,
+    InputIcon,
+    IconField,
+    FloatLabel,
+    DatePicker,
   },
   data() {
     return {
+      isEng: null,
       showEditDialog: false,
       showChangePassDialog: false,
       isImageHovered: false,
@@ -301,7 +409,7 @@ export default {
       },
     };
   },
-
+  computed: {},
   methods: {
     triggerFileInput() {
       this.$refs.fileInput.click();
@@ -331,10 +439,11 @@ export default {
       }
     },
   },
-  beforeUnmount() {
-    if (this.thereIsAChange) {
-      console.log(this.user);
-    }
+  mounted() {
+    console.log(this.user);
+  },
+  beforeMount() {
+    this.isEng = localStorage.getItem("locale") == "en";
   },
 };
 </script>

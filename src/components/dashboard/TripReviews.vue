@@ -1,25 +1,72 @@
 <template>
   <div class="">
     <div class="d-flex align-content-center mt-1 mb-3 w-100">
-      <div class="d-flex justify-content-between align-content-center w-75">
+      <div class="d-flex justify-content-between align-content-center w-90">
         <div class="w-30 d-flex">
-          <span class="font-bold fs-4 text-nowrap cursor-pointer" @click="backToTrip($route.params.tripId)">Reviews for trip #{{ $route.params.tripId }}</span>
+          <span class="font-bold fs-4 cursor-pointer" @click="$router.back()"
+            >Reviews for trip #{{ $route.params.tripId }}</span
+          >
         </div>
-        <div
-          class="d-flex justify-content-center align-content-center w-70 input-group"
-        >
-          <i
-            class="pi pi-search fs-5 p-2 bg-main-color rounded-start-2 text-white"
-          ></i>
-          <input
-            type="text"
-            id="search"
-            class="w-60 p-1 pe-2 ps-2 border-2 border-start-0 rounded-end-2"
-          />
+        <div class="d-flex align-content-center w-60 input-group">
+          <IconField class="w-50">
+            <InputIcon class="pi pi-search text-main-color" />
+            <InputText
+              v-model="searchValue"
+              placeholder="Search"
+              class="w-100"
+            />
+          </IconField>
         </div>
       </div>
     </div>
-    <div
+    <DataTable
+      :value="tripReviews"
+      paginator
+      :rows="5"
+      :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl']"
+    >
+      <Column header="User">
+        <template #body="slotProps">
+          <img
+            :src="slotProps.data.user.img"
+            alt="user-img"
+            :class="['rounded-circle', isEng ? 'me-2' : 'ms-2']"
+            :style="{ width: '3rem', height: '3rem' }"
+          />
+          <span>{{ slotProps.data.user.name }}</span>
+        </template>
+      </Column>
+      <Column header="Rate">
+        <template #body="slotProps">
+          <Rating
+            v-model="slotProps.data.rate"
+            readonly
+            class="d-flex justify-content-center align-items-center"
+          ></Rating>
+        </template>
+      </Column>
+      <Column header="Description">
+        <template #body="slotProps">
+          <span>{{ clipText(slotProps.data.description) }}</span>
+        </template>
+      </Column>
+      <Column header="Actions">
+        <template #body="slotProps">
+          <Button
+            icon="pi pi-eye"
+            severity="secondary"
+            class="mx-1"
+            @click="triggerShowDialog(slotProps.data)"
+          ></Button>
+          <Button
+            icon="pi pi-trash"
+            class="mx-1"
+            @click="triggerDeleteDialog(slotProps.data)"
+          ></Button>
+        </template>
+      </Column>
+    </DataTable>
+    <!-- <div
       class="table-responsive d-flex justify-content-center align-content-center flex-wrap mt-1 mb-1"
     >
       <table class="table-page table align-middle text-center text-nowrap">
@@ -80,9 +127,61 @@
       :totalRecords="tripReviews.length"
       :rowsPerPageOptions="[5, 10, 20, 30]"
       @page="onPageChange"
-    ></Paginator>
+    ></Paginator> -->
     <!-- show Modal -->
-    <div id="show-modal" class="modal fade" tabindex="-1">
+    <Dialog
+      v-model:visible="showShowDialog"
+      modal
+      :header="'Show Review #' + currentData.id"
+      :style="{ width: '35rem' }"
+    >
+      <div
+        class="w-100 d-flex justify-content-center align-items-center flex-wrap"
+      >
+        <!-- User Data -->
+        <div
+          class="w-90 d-flex justify-content-center align-items-center flex-wrap"
+        >
+          <span class="text-center w-100 mb-1 fs-5 font-bold">User Data</span>
+          <div
+            class="w-100 d-flex justify-content-center align-items-center my-1"
+          >
+            <Image
+              :src="currentData.user.img"
+              alt="User-Image"
+              class="rounded-circle"
+              width="120"
+            />
+          </div>
+          <div class="w-100 py-1">
+            <span class="text-muted">User id : </span>
+            <span>{{ currentData.user.id }}</span>
+          </div>
+          <div class="w-100 py-1">
+            <span class="text-muted">User Name : </span>
+            <span>{{ currentData.user.name }}</span>
+          </div>
+        </div>
+        <Divider />
+        <!-- Review Info -->
+        <div
+          class="w-90 d-flex justify-content-center align-items-center flex-wrap"
+        >
+          <span class="text-center w-100 mb-1 fs-5 font-bold">Review info</span>
+          <div class="w-100 d-flex align-items-center py-1">
+            <span class="text-muted">Rate : </span>
+            <span class="ms-1"
+              ><Rating v-model="currentData.rate" readonly
+            /></span>
+          </div>
+          <div class="w-100 py-1">
+            <span class="text-muted">Description : </span>
+            <span>{{ currentData.description }}</span>
+          </div>
+        </div>
+      </div>
+    </Dialog>
+    <!-- <div id="show-modal" class="modal fade" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
@@ -125,9 +224,9 @@
                     <span>{{ currentData.user.name }}</span>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
-              <!-- <div
+    <!-- <div
                 class="d-flex justify-content-center align-items-center flex-wrap w-90 border-bottom-1 pb-2"
               >
                 <span class="text-center w-100 mb-1 fs-5 font-bold"
@@ -151,7 +250,7 @@
                 </div>
               </div> -->
 
-              <div
+    <!-- <div
                 class="d-flex justify-content-center align-items-center flex-wrap w-90 pb-2"
               >
                 <div
@@ -173,11 +272,30 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Delete Modal -->
-
-    <div class="modal fade" id="deleteTrip-modal" tabindex="-1">
+    <Dialog
+      v-model:visible="showDeleteDialog"
+      modal
+      :header="'Delete Review #' + currentData.id"
+      :style="{ width: '35rem' }"
+    >
+      <span
+        >Are you sure you want delete review #{{ currentData.id }} form user '{{
+          currentData.user.name
+        }}' ?</span
+      >
+      <template #footer>
+        <Button
+          icon="pi pi-trash"
+          label="Delete"
+          severity="danger"
+          @click="deleteReview"
+        ></Button>
+      </template>
+    </Dialog>
+    <!-- <div class="modal fade" id="deleteTrip-modal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -211,22 +329,44 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import Rating from "primevue/rating";
 import Paginator from "primevue/paginator";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+import Image from "primevue/image";
+import Divider from "primevue/divider";
 export default {
   components: {
     Rating,
     Paginator,
+    IconField,
+    InputIcon,
+    InputText,
+    DataTable,
+    Column,
+    Button,
+    Dialog,
+    Image,
+    Divider,
   },
   data() {
     return {
+      isEng: null,
+      showShowDialog: false,
+      showDeleteDialog: false,
       currentPage: 0,
       rowsPerPage: 5,
+      searchValue: "",
       currentData: {
         id: null,
         user: {
@@ -363,11 +503,11 @@ export default {
     };
   },
   computed: {
-    paginatedTripReviews() {
-      const start = this.currentPage * this.rowsPerPage;
-      const end = start + this.rowsPerPage;
-      return this.tripReviews.slice(start, end);
-    },
+    // paginatedTripReviews() {
+    //   const start = this.currentPage * this.rowsPerPage;
+    //   const end = start + this.rowsPerPage;
+    //   return this.tripReviews.slice(start, end);
+    // },
   },
   methods: {
     clipText(text) {
@@ -377,22 +517,32 @@ export default {
       }
       return newText;
     },
-    currentDataSeeder(newData) {
-      this.currentData = newData;
+    // currentDataSeeder(newData) {
+    //   this.currentData = newData;
+    // },
+    // onPageChange(event) {
+    //   this.currentPage = event.page;
+    //   this.rowsPerPage = event.rows;
+    // },
+    triggerDeleteDialog(data) {
+      this.currentData = data;
+      this.showDeleteDialog = true;
     },
-    onPageChange(event) {
-      this.currentPage = event.page;
-      this.rowsPerPage = event.rows;
+    triggerShowDialog(data) {
+      this.currentData = data;
+      this.showShowDialog = true;
     },
-    backToTrip(id){
-      this.$router.back();
-    }
+    deleteReview() {
+      this.showDeleteDialog = false;
+    },
+  },
+  beforeMount() {
+    this.isEng = localStorage.getItem("locale") == "en";
   },
 };
 </script>
 
 <style scoped>
-
 /* ::v-deep .p-rating-option,
 .p-rating-option-active {
   cursor: default !important;

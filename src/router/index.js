@@ -68,13 +68,17 @@ const routes = [
     name: "dash",
     component: () => import("@/views/dashboard/DashboardView.vue"),
     beforeEnter: (to, from, next) => {
-      if (!store.getters.isAuth) {
-        next({ name: "dash.login" });
-      } else {
-        if (to.name === "dash") {
+      if (
+        localStorage.getItem("_token") != null ||
+        sessionStorage.getItem("_token") != null
+      ) {
+        if (to.name == "dash") {
           next({ name: "dash.home" });
+        } else {
+          next();
         }
-        next();
+      } else {
+        next({ name: "dash.login" });
       }
     },
     children: [
@@ -118,12 +122,33 @@ const routes = [
         name: "dash.profile",
         component: () => import("@/components/dashboard/Profile.vue"),
       },
+      {
+        path: "category",
+        name: "dash.category",
+        component: () => import("@/components/dashboard/Category.vue"),
+      },
     ],
   },
   {
     path: "/dashboard/login",
     name: "dash.login",
     component: () => import("@/views/dashboard/LoginView.vue"),
+    beforeEnter: (to, from, next) => {
+      console.log(from);
+      console.log(
+        "Check login cond : ",
+        localStorage.getItem("_token") != null ||
+          sessionStorage.getItem("_token") != null
+      );
+      if (
+        localStorage.getItem("_token") != null ||
+        sessionStorage.getItem("_token") != null
+      ) {
+        next({ name: "dash.home" });
+      } else {
+        next();
+      }
+    },
   },
   // End Dashboard routes
 ];

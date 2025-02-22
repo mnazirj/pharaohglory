@@ -81,14 +81,14 @@ export default {
           {
             data: [1240, 120, 75],
             backgroundColor: [
-              documentStyle.getPropertyValue("--p-teal-700"),
-              documentStyle.getPropertyValue("--p-amber-200"),
+              documentStyle.getPropertyValue("--p-rose-600"),
               documentStyle.getPropertyValue("--p-gray-200"),
+              documentStyle.getPropertyValue("--p-gray-800"),
             ],
             hoverBackgroundColor: [
-              documentStyle.getPropertyValue("--p-teal-800"),
-              documentStyle.getPropertyValue("--p-amber-300"),
+              documentStyle.getPropertyValue("--p-rose-700"),
               documentStyle.getPropertyValue("--p-gray-300"),
+              documentStyle.getPropertyValue("--p-gray-900"),
             ],
           },
         ],
@@ -199,13 +199,13 @@ export default {
         datasets: [
           {
             label: "Trips Type",
-            borderColor: documentStyle.getPropertyValue("--p-teal-700"),
+            borderColor: documentStyle.getPropertyValue("--p-rose-600"),
             pointBackgroundColor:
-              documentStyle.getPropertyValue("--p-teal-700"),
-            pointBorderColor: documentStyle.getPropertyValue("---p-teal-700"),
+              documentStyle.getPropertyValue("--p-rose-700"),
+            pointBorderColor: documentStyle.getPropertyValue("---p-rose-400"),
             pointHoverBackgroundColor: textColor,
             pointHoverBorderColor:
-              documentStyle.getPropertyValue("--p-teal-700"),
+              documentStyle.getPropertyValue("--p-rose-600"),
             data: [200, 350, 500, 500, 105, 800],
           },
         ],
@@ -261,7 +261,7 @@ export default {
               1456,
             ],
             fill: false,
-            borderColor: documentStyle.getPropertyValue("--p-teal-800"),
+            borderColor: documentStyle.getPropertyValue("--p-rose-600"),
             tension: 0.4,
           },
         ],

@@ -9,7 +9,7 @@
       header="Pick an icon"
       :modal="true"
       :closable="true"
-      :style="{ width: '40vw' }"
+      :style="{ width: '50%' }"
     >
       <div class="aim-modal--icon-search">
         <input v-model="filterText" placeholder="Filter by name..." />
@@ -34,9 +34,7 @@
         </div>
       </div>
       <template #footer>
-        <button class="btn btn-main" @click="insert">
-          Insert
-        </button>
+        <button class="btn btn-main" @click="insert">Insert</button>
       </template>
     </Dialog>
     <!-- <div

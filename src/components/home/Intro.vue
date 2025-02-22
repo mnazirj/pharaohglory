@@ -39,14 +39,14 @@
           @click="ChangeTab(2, information.mediaImage2)"
         />
         <Button
-          :label="$t('selector.culture')"
+          :label="$t('selector.nature')"
           icon="fas fa-mountain"
           :variant="currentTab == 3 ? '' : 'outlined'"
           class="w-100"
           @click="ChangeTab(3, information.mediaImage3)"
         />
         <Button
-          :label="$t('selector.culture')"
+          :label="$t('selector.sport')"
           icon="fas fa-person-skiing"
           :variant="currentTab == 4 ? '' : 'outlined'"
           class="w-100"

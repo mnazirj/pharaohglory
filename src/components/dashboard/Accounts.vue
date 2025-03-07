@@ -6,7 +6,7 @@
       >
         <IconField class="w-50">
           <InputIcon class="pi pi-search text-main-color" />
-          <InputText v-model="searchValue" placeholder="Search" class="w-100" />
+          <InputText v-model="searchValue" :placeholder="$t('dash.accounts.search')" class="w-100" />
         </IconField>
       </div>
     </div>
@@ -15,9 +15,9 @@
       :value="filteredData"
       paginator
       :rows="5"
-      :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl']"
+      :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl', isDark? 'dark':'']"
     >
-      <Column header="Name">
+      <Column :header="$t('dash.accounts.name')">
         <template #body="slotProps">
           <div class="d-flex align-items-center">
             <img
@@ -31,14 +31,14 @@
           </div>
         </template>
       </Column>
-      <Column field="username" header="Username"></Column>
-      <Column field="email" header="Email"></Column>
-      <Column header="Payments">
+      <Column field="username" :header="$t('dash.accounts.username')"></Column>
+      <Column field="email" :header="$t('dash.accounts.email')"></Column>
+      <Column :header="$t('dash.accounts.payments')">
         <template #body="slotProps">
           <span>{{ slotProps.data.payments.length }}</span>
         </template>
       </Column>
-      <Column header="Actions">
+      <Column :header="$t('dash.accounts.actions')">
         <template #body="slotProps">
           <Button
             icon="pi pi-eye"
@@ -48,61 +48,12 @@
         </template>
       </Column>
     </DataTable>
-    <!-- <div class="table-responsive">
-      <table class="table-page table align-middle text-center text-nowrap">
-        <thead>
-          <tr>
-            <th scope="col" colspan="2">Name</th>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
-            <th>Payments</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="account in paginatedAccounts" :key="account.id">
-            <td>
-              <img
-                :src="account.img"
-                alt="user-img"
-                class="img-user rounded-circle"
-              />
-            </td>
-            <td>{{ account.name }}</td>
-            <td>
-              {{ account.username }}
-            </td>
-            <td>{{ account.email }}</td>
-            <td>{{ account.payments.length }}</td>
-            <td>
-              <button
-                type=" button"
-                class="btn btn-outline-second me-1 ms-1"
-                data-bs-toggle="modal"
-                data-bs-target="#show-modal"
-                @click="currentDataSeeder(account)"
-              >
-                <i class="pi pi-eye pt-1"></i>
-              </button>
-            </td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <Paginator
-      class="w-100"
-      :rows="rowsPerPage"
-      :totalRecords="filteredData.length"
-      :rowsPerPageOptions="[5, 10, 20, 30]"
-      @page="onPageChange"
-    ></Paginator> -->
-    <!-- show Modal -->
     <Dialog
       v-model:visible="showShowDialog"
       modal
-      :header="'Show Account #' + currentData.id"
+      :header="$t('dash.accounts.curd.show_account') +' #' + currentData.id"
       :style="{ width: '35rem' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <div
         class="d-flex justify-content-center align-items-center flex-wrap w-100 mb-2"
@@ -122,15 +73,15 @@
             />
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Name : </span>
+            <span class="text-muted">{{ $t('dash.accounts.name') }} : </span>
             <span class="ms-1">{{ currentData.name }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Username : </span>
+            <span class="text-muted">{{ $t('dash.accounts.username') }} : </span>
             <span>{{ currentData.username }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Email : </span>
+            <span class="text-muted">{{ $t('dash.accounts.email') }} : </span>
             <span>{{ currentData.email }}</span>
           </div>
         </div>
@@ -138,96 +89,20 @@
         <div
           class="w-100 d-flex justify-content-center align-items-center flex-wrap mb-2"
         >
-          <span class="text-muted w-100 fs-5 mb-2 text-center">Payments </span>
+          <span class="text-muted w-100 fs-5 mb-2 text-center">{{ $t('dash.accounts.payments') }} </span>
           <DataTable
             :value="currentData.payments"
             paginator
             :rows="3"
             :class="['w-90 px-2 second-table ', isEng ? 'ltr' : 'rtl']"
           >
-            <Column field="id" header="ID"></Column>
-            <Column field="to" header="To Trip"></Column>
-            <Column field="cash" header="Cash"></Column>
+            <Column field="id" :header="$t('dash.accounts.curd.id')"></Column>
+            <Column field="to" :header="$t('dash.accounts.curd.to_trip')"></Column>
+            <Column field="cash" :header="$t('dash.accounts.curd.cash')"></Column>
           </DataTable>
         </div>
       </div>
     </Dialog>
-    <!-- <div id="show-modal" class="modal fade" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Account {{ currentData.id }}</h2>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div
-              class="d-flex justify-content-center align-items-center flex-wrap w-100 pb-2"
-            >
-              <div
-                class="w-90 d-flex justify-content-center align-content-center flex-wrap"
-              >
-                <div
-                  class="w-100 d-flex justify-content-center align-items-center py-1"
-                >
-                  <img
-                    :src="currentData.img"
-                    alt="user-image"
-                    class="rounded-circle"
-                    :style="{ width: '7rem', height: '7rem' }"
-                  />
-                </div>
-                <div class="w-100 py-1">
-                  <span class="text-muted">Name: </span>
-                  <span class="ms-1">{{ currentData.name }}</span>
-                </div>
-                <div class="w-100 py-1">
-                  <span class="text-muted">Username : </span>
-                  <span>{{ currentData.username }}</span>
-                </div>
-                <div class="w-100 py-1">
-                  <span class="text-muted">Email : </span>
-                  <span>{{ currentData.email }}</span>
-                </div>
-                <Divider />
-                <div
-                  class="w-100 py-1 d-flex flex-wrap justify-content-center align-items-center"
-                >
-                  <span class="text-muted w-100 fs-5 mb-2 text-center"
-                    >Payments
-                  </span>
-                  <div class="table-responsive w-100">
-                    <table class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">To Trip</th>
-                          <th scope="col">Cash</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
-                          v-for="payment in currentData.payments"
-                          :key="payment.id"
-                        >
-                          <td>{{ payment.id }}</td>
-                          <td>{{ payment.to }}</td>
-                          <td>{{ payment.cash }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -256,6 +131,7 @@ export default {
   data() {
     return {
       isEng: null,
+      isDark:null,
       showShowDialog: false,
       currentPage: 0,
       rowsPerPage: 5,
@@ -453,6 +329,7 @@ export default {
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>
@@ -476,9 +353,9 @@ export default {
   border-top-right-radius: 0.5rem;
 }
 ::v-deep .second-table:is(.rtl) th:first-child {
-  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 ::v-deep .second-table:is(.rtl) th:last-child {
-  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
 }
 </style>

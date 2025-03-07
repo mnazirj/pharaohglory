@@ -1,32 +1,5 @@
 <template>
   <div>
-    <!-- <div
-      class="d-flex justify-content-between align-content-center mt-1 mb-3 w-100"
-    >
-      <div class="d-flex justify-content-center align-content-center w-80">
-        <div
-          class="d-flex justify-content-end align-content-center w-50 input-group"
-        >
-          <IconField class="" style="min-width: 6rem">
-            <InputIcon class="pi pi-search text-main-color" />
-            <InputText
-              v-model="searchValue"
-              placeholder="Search"
-              class="w-100"
-            />
-          </IconField>
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-end align-content-center w-10 mx-2">
-        <Button
-          label="Create"
-          icon="pi pi-plus"
-          @click="showCreateDialog = true"
-          style="min-width: 5rem"
-        />
-      </div>
-    </div> -->
     <div
       id="header"
       class="d-flex justify-content-between align-content-center mt-1 mb-3 w-100"
@@ -61,7 +34,7 @@
         :value="filteredData"
         paginator
         :rows="5"
-        :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl']"
+        :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl', isDark? 'dark':'']"
       >
         <Column field="id" :header="$t('dash.category.id')" style="width: 10%"></Column>
         <Column
@@ -97,9 +70,10 @@
       :header="$t('dash.category.curd.delete_category')+' #' + currentData.id"
       :style="{ width: '35rem' }"
       :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <p>
-        {{ $t('dash.category.curd.delete_quastion1') }} #{{ currentData.id }} {{ $t('dash.category.curd.delete_quastion2') }} "{{ currentData.categoryName }}" ?
+        {{ $t('dash.category.curd.delete_quastion1') }} #{{ currentData.id }} {{ $t('dash.category.curd.delete_quastion2') }} "{{ currentData.categoryName }}" {{ $t('dash.category.curd.?') }}
       </p>
       <template #footer>
         <Button
@@ -117,6 +91,7 @@
       :header="$t('dash.category.curd.edit_category')+' #' + currentData.id"
       :style="{ width: '35rem' }"
       :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <FloatLabel variant="on" class="w-100 my-3">
         <IconField>
@@ -159,6 +134,7 @@
       :header="$t('dash.category.curd.create_a_category')"
       :style="{ width: '35rem' }"
       :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <FloatLabel variant="on" class="w-100 my-3">
         <IconField>
@@ -220,6 +196,7 @@ export default {
     return {
       searchValue: "",
       isEng: null,
+      isDark:null,
       categoryies: null,
       newCategory: {
         arCategoryName: null,
@@ -349,6 +326,7 @@ export default {
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>

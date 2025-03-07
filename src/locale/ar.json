@@ -194,8 +194,39 @@
                 "full_description_english_required":"التفاصيل الكاملة بالأنجليزية مطلوبة",
                 "full_description_arabic_required":"التفاصيل الكاملة بالعربية مطلوبة",
                 "category_required":"يجب اختيار فئة الحدث",
-                "type_required":"يجب اختيار نوع الحدث"
+                "type_required":"يجب اختيار نوع الحدث",
+
+
+                "delete_trip":"حذف الرحلة",
+                "delete_qustion1":"هل أنت متأكد أنك تريد حذف الرحلة",
+                "delete_qustion2":"الذي عنوانها",
+                "delete":"حذف",
+                "?":"؟",
+
+
+                "edit_trip":"تعديل الرحلة"
+            },
+            "reviews":{
+                "search":"بحث",
+                "reviews_for_trip":"مراجعات الرحلة",
+                "user":"المستخدم",
+                "rate":"التقييم",
+                "description":"التفاصيل",
+                "actions":"الخيارات",
+                "curd":{
+                    "delete_reivew":"حذف المراجعة",
+                    "delete_qustion1":"هل أنت متأكد أنك تريد حذف المراجعة",
+                    "delete_qustion2":"من المستخدم",
+                    "delete":"حذف",
+                    "?":"؟",
+
+                    "show_review":"عرض المراجعة",
+                    "user_information":"معلومات المستخدم",
+                    "id":"المعرف",
+                    "name":"الاسم",
+                    "review_information":"معلومات المراجعة"
             }
+      }
 
         },
         "category":{
@@ -213,8 +244,123 @@
                 "delete_quastion1":"هل أنت متأكد أنك تريد حذف",
                 "delete_quastion2":"الذي لديه الاسم",
                 "delete": "حذف",
-                "create_a_category": "إنشاء فئة"
+                "create_a_category": "إنشاء فئة",
+                "?":"؟"
               }
+        },
+        "sidebar":{
+            "overview":"الملخص",
+            "trips":"الرحلات",
+            "categories":"الفئات",
+            "payments":"المدفوعات",
+            "accounts":"الحسابات",
+            "website_settings":"إعدادات الموقع",
+            "my_profile":"حسابي",
+            "logout":"تسجيل الخروج"
+        },
+        "home":{
+            "trips":"الرحلات",
+            "reservations":"الحجوزات",
+            "users":"المستخدمين",
+            "incomes":"العائدات",
+            "trips_categorys":"عدد الرحلات حسب الفئة ",
+            "lastest_ready_trip":"آخر رحلات مضافة",
+            "finished_trips":"رحلات منتهية",
+            "sechduled_trips":"رحلات مجدولة",
+            "ready_trips":"رحلات جاهزة",
+            "title":"العنوان",
+            "category":"الفئة",
+            "quantity":"العدد",
+            "new_user":"مستخدمين جُدد",
+            "addition":"إضافي",
+            "new_reservations":"حجوزات جديدة",
+            "added_trips":"رحلات مضافة",
+            "jan":"كانون الثاني",
+            "feb":"شباط",
+            "mar":"آذار",
+            "apr":"نيسان",
+            "may":"أيار",
+            "june":"حزيران",
+            "july":"تموز",
+            "aug":"أب",
+            "sep":"أيلول",
+            "oct":"تشرين الأول",
+            "nov":"تشرين الثاني",
+            "dec":"كانون الأول"
+        },
+        "payments":{
+        "search":"بحث",
+        "user":"المستخدم",
+        "trip":"الرحلة",
+        "count":"العدد",
+        "total_price":"السعر الكلي",
+        "actions":"الخيارات",
+        "curd":{
+                "delete_payment":"حذف الرحلة",
+                "delete_qustion1":"هل أنت متأكد أنك تريد حذف الدفعة",
+                "delete_qustion2":"من المستخدم",
+                "delete":"حذف",
+                "?":"؟",
+
+                "show_payment":"عرض الدفعة",
+                "payment_information":"معلومات الدفعة",
+                "adult_count":"عدد البالغين",
+                "children_count":"عدد الأطفال",
+                "trip_information":"معلومات الرحلة",
+                "title":"العنوان",
+                "category":"الفئة",
+                "adult_price":"السعر للبالغين",
+                "children_price":"السعر للأطفال",
+                "adult_discount":"الخصم للبالغين",
+                "children_discount":"الخصم للأطفال",
+                "user_information":"معلومات المستخدم",
+                "name":"الاسم",
+                "email":"البريد الإلكتروني",
+                "username":"اسم المستخدم"
+            }
+        },
+        "accounts":{
+            "search":"بحث",
+            "name":"الاسم",
+            "username":"اسم المستخدم",
+            "email":"البريد الإلكتروني",
+            "payments":"المدفوعات",
+            "actions":"الخيارات",
+            "curd":{
+                "show_account":"عرض الحساب",
+                "id":"المعرف",
+                "to_trip":"إلى الرحلة",
+                "cash":"المبلغ"
+            }
+        },
+        "website_settings":{
+            "hero_section":"القطاع الرئيسي",
+            "hero_section_description":"التفاصيل للقطاع الرئيسي",
+            "hero_section_title":"العنوان للقطاع الرئيسي",
+            "contact":"الاتصال",
+            "contact_address":"عنوان الاتصال",
+            "contact_email":"البريد الالكتروني للاتصال",
+            "contact_phone":"هاتف الاتصال",
+            "social_media":"وسائل التواصل الاجتماعي",
+            "social_media_facebook":"وسائل التواصل الاجتماعي فيسبوك",
+            "social_media_x":"وسائل التواصل الاجتماعي إكس (تويتر)",
+            "social_media_instagram":"وسائل التواصل الاجتماعي إنستاغرام",
+            "social_media_youtube":"وسائل التواصل الاجتماعي يوتيوب",
+            "social_media_tiktok":"وسائل التواصل الاجتماعي تيك توك"
+        },
+        "my_profile":{
+            "name":"الاسم",
+            "username":"اسم المستخدم",
+            "email":"البريد الإلكتروني",
+            "birthday":"تاريخ الميلاد",
+            "address":"العنوان",
+            "phone":"الهاتف",
+            "current_password":"كلمة السر الحالية",
+            "new_password":"كلمة السر الجديدة",
+            "confirm_new_password":"تأكيد كلمة السر الجديدة",
+            "save":"حفظ",
+            "edit_profile":"تعديل الحساب",
+            "change_password":"تغير كلمة المرور"
         }
     }
 

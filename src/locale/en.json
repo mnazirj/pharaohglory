@@ -191,7 +191,37 @@
         "full_description_english_required":"Full desciption in English is required",
         "full_description_arabic_required":"Full desciption in arabic is required",
         "category_required":"You must select a event category",
-        "type_required":"You must select a event type"
+        "type_required":"You must select a event type",
+
+        "delete_trip":"Delete trip",
+        "delete_qustion1":"Are you sure you want delete trip",
+        "delete_qustion2":"which has title",
+        "delete":"Delete",
+        "?":"?",
+
+        "edit_trip":"Edit trip"
+
+      },
+      "reviews":{
+        "search":"Search",
+        "reviews_for_trip":"Reviews for trips",
+        "user":"User",
+        "rate":"Rate",
+        "description":"Description",
+        "actions":"Actions",
+        "curd":{
+          "delete_reivew":"Delete review",
+          "delete_qustion1":"Are you sure you want delete review",
+          "delete_qustion2":"from user",
+          "delete":"Delete",
+          "?":"?",
+
+          "show_review":"Show review",
+          "user_information":"User information",
+          "id":"ID",
+          "name":"Name",
+          "review_information":"Review information"
+        }
       }
     },
     "category": {
@@ -209,8 +239,123 @@
         "delete_quastion1":"Are you sure you want delete category",
         "delete_quastion2":"which has name",
         "delete": "Delete",
-        "create_a_category": "Create a category"
+        "create_a_category": "Create a category",
+        "?":"?"
       }
+    },
+    "sidebar":{
+      "overview":"Overview",
+      "trips":"Trips",
+      "categories":"Categories",
+      "payments":"Payments",
+      "accounts":"Accounts",
+      "website_settings":"Website Settings",
+      "my_profile":"My profile",
+      "logout":"Logout"
+    },
+    "home":{
+      "trips":"Trips",
+      "reservations":"Reservations",
+      "users":"Users",
+      "incomes":"Incomes",
+      "trips_categorys":"Trips quantity by category",
+      "lastest_ready_trip":"Lastest Ready Trip",
+      "finished_trips":"Finished Trips",
+      "sechduled_trips":"Sechduled Trips",
+      "ready_trips":"Ready Trips",
+      "title":"title",
+      "category":"Category",
+      "quantity":"Quantity",
+      "new_user":"New Users",
+      "addition":"Addition",
+      "new_reservations":"New Reservations",
+      "added_trips":"Added Trips",
+      "jan":"January",
+      "feb":"February",
+      "mar":"March",
+      "apr":"April",
+      "may":"May",
+      "june":"June",
+      "july":"July",
+      "aug":"August",
+      "sep":"September",
+      "oct":"October",
+      "nov":"November",
+      "dec":"December"
+    },
+    "payments":{
+      "search":"Search",
+      "user":"User",
+      "trip":"Trip",
+      "count":"Count",
+      "total_price":"Total Price",
+      "actions":"Actions",
+      "curd":{
+        "delete_payment":"Delete payment",
+        "delete_qustion1":"Are you sure you want delete Payment",
+        "delete_qustion2":"from user",
+        "delete":"Delete",
+        "?":"?",
+
+        "show_payment":"Show Payment",
+        "payment_information":"Payment information",
+        "adult_count":"Adult Count",
+        "children_count":"Children Count",
+        "trip_information":"Trip Information",
+        "title":"Title",
+        "category":"Category",
+        "adult_price":"Adult price",
+        "children_price":"Children price",
+        "adult_discount":"Adult discount",
+        "children_discount":"Children discount",
+        "user_information":"User information",
+        "name":"Name",
+        "email":"Email",
+        "username":"Username"
+      }
+    },
+    "accounts":{
+      "search":"Search",
+      "name":"Name",
+      "username":"Username",
+      "email":"Email",
+      "payments":"Payments",
+      "actions":"Actions",
+      "curd":{
+        "show_account":"Show Account",
+        "id":"ID",
+        "to_trip":"To trip",
+        "cash":"Cash"
+      }
+    },
+    "website_settings":{
+      "hero_section":"Hero section",
+      "hero_section_description":"Hero section description",
+      "hero_section_title":"Hero section title",
+      "contact":"Contact",
+      "contact_address":"Contact address",
+      "contact_email":"Contact email",
+      "contact_phone":"Contact phone",
+      "social_media":"Social media",
+      "social_media_facebook":"Social media Facebook",
+      "social_media_x":"Social media X (Twitter)",
+      "social_media_instagram":"Social media Instagram",
+      "social_media_youtube":"Social media Youtube",
+      "social_media_tiktok":"Social media Tiktok"
+    },
+    "my_profile":{
+      "name":"Name",
+      "username":"Username",
+      "email":"Email",
+      "birthday":"Birthday",
+      "address":"Address",
+      "phone":"Phone",
+      "current_password":"Current password",
+      "new_password":"New password",
+      "confirm_new_password":"Confirm new password",
+      "save":"Save",
+      "edit_profile":"Edit profile",
+      "change_password":"Change password"
     }
   }
 }

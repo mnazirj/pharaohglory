@@ -2,23 +2,11 @@
   <div class="w-100 d-flex justify-content-center align-items-center flex-wrap">
     <div class="w-100 d-flex justify-content-center align-items-center mb-3">
       <div
-        class="w-60 my-1 d-flex justify-content-center align-items-center flex-wrap shadow-2 rounded-2 p-3"
+        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap rounded-2  p-3', isDark? 'border-1':'shadow-2']"
       >
-        <span class="w-100 text-center fs-4 text-main-color mb-3">Hero Section</span>
+        <span class="w-100 text-center fs-4 text-main-color mb-3">{{ $t('dash.website_settings.hero_section') }}</span>
         <!-- Hero section Title -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Hero Section Title</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-solid fa-heading text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Hero Section Title"
-              aria-label="Hero Section Title"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-solid fa-heading text-main-color" />
@@ -29,23 +17,12 @@
                 fluid
               />
             </IconField>
-            <label for="hero_section_title">Hero Section Title</label>
+            <label for="hero_section_title">{{ $t('dash.website_settings.hero_section_title') }}</label>
           </FloatLabel>
         </div>
         <!-- Hero section description -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Hero Section Description</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-solid fa-paragraph text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Hero Section Description"
-              aria-label="Hero Section Description"
-            />
-          </div> -->
+        
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-solid fa-paragraph text-main-color" />
@@ -57,7 +34,7 @@
               />
             </IconField>
             <label for="hero_section_description"
-              >Hero Section Description</label
+              >{{ $t('dash.website_settings.hero_section_description') }}</label
             >
           </FloatLabel>
         </div>
@@ -66,23 +43,11 @@
 
     <div class="w-100 d-flex justify-content-center align-items-center mb-3">
       <div
-        class="w-60 my-1 d-flex justify-content-center align-items-center flex-wrap shadow-2 rounded-2 p-3"
+        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap  rounded-2 p-3', isDark? 'border-1':'shadow-2']"
       >
-        <span class="w-100 text-center fs-4 text-main-color mb-3">Contact</span>
+        <span class="w-100 text-center fs-4 text-main-color mb-3">{{ $t('dash.website_settings.contact') }}</span>
         <!-- Contact address -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Address</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-solid fa-location-dot text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Contact Address"
-              aria-label="Contact Address"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-solid fa-location-dot text-main-color" />
@@ -94,24 +59,12 @@
               />
             </IconField>
             <label for="contact_address"
-              >Contact Address</label
+              >{{ $t('dash.website_settings.contact_address') }}</label
             >
           </FloatLabel>
         </div>
         <!-- Contact mail -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Email</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-solid fa-envelope text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Contact Email"
-              aria-label="Contact Email"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-solid fa-envelope text-main-color" />
@@ -123,24 +76,12 @@
               />
             </IconField>
             <label for="contact_email"
-              >Contact Email</label
+              >{{ $t('dash.website_settings.contact_email') }}</label
             >
           </FloatLabel>
         </div>
         <!-- Contact Phone -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Phone</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-solid fa-phone text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Contact Phone"
-              aria-label="Contact Phone"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-solid fa-phone text-main-color" />
@@ -152,7 +93,7 @@
               />
             </IconField>
             <label for="contact_Phone"
-              >Contact Phone</label
+              >{{ $t('dash.website_settings.contact_phone') }}</label
             >
           </FloatLabel>
         </div>
@@ -161,23 +102,11 @@
 
     <div class="w-100 d-flex justify-content-center align-items-center mb-3">
       <div
-        class="w-60 my-1 d-flex justify-content-center align-items-center flex-wrap shadow-2 rounded-2 p-3"
+        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap rounded-2 p-3' , isDark? 'border-1':'shadow-2']"
       >
-        <span class="w-100 text-center fs-4 text-main-color mb-3">Social Media</span>
+        <span class="w-100 text-center fs-4 text-main-color mb-3">{{ $t('dash.website_settings.social_media') }}</span>
         <!-- Social Media facebook -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Facebook</span>
-          <div class="input-group">
-            <span class="input-group-text">
-              <i class="fa-brands fa-facebook-f text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Social Media Facebook"
-              aria-label="Social Media Facebook"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-brands fa-facebook-f text-main-color" />
@@ -189,24 +118,12 @@
               />
             </IconField>
             <label for="social_media_facebook"
-              >Social Media Facebook</label
+              >{{ $t('dash.website_settings.social_media_facebook') }}</label
             >
           </FloatLabel>
         </div>
         <!-- Social Media X  -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">X</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-brands fa-x-twitter text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Social Media X"
-              aria-label="Social Media X"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-brands fa-x-twitter text-main-color" />
@@ -218,24 +135,12 @@
               />
             </IconField>
             <label for="social_media_x"
-              >Social Media X (twitter)</label
+              >{{ $t('dash.website_settings.social_media_x') }}</label
             >
           </FloatLabel>
         </div>
         <!-- Social Media Instgram  -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Instgram</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-brands fa-instagram text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Social Media Instgram"
-              aria-label="Social Media Instgram"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-brands fa-instagram text-main-color" />
@@ -247,24 +152,12 @@
               />
             </IconField>
             <label for="social_media_instagram"
-              >Social Media Instagram</label
+              >{{ $t('dash.website_settings.social_media_instagram') }}</label
             >
           </FloatLabel>
         </div>
         <!-- Social Media Tiktok  -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Tiktok</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-brands fa-tiktok text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Social Media Tiktok"
-              aria-label="Social Media Tiktok"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-brands fa-tiktok text-main-color" />
@@ -276,24 +169,12 @@
               />
             </IconField>
             <label for="social_media_tiktok"
-              >Social Media Tiktok</label
+              >{{ $t('dash.website_settings.social_media_tiktok') }}</label
             >
           </FloatLabel>
         </div>
         <!-- Social Media Youtube  -->
         <div class="d-flex justify-content-center flex-wrap mb-4 w-90">
-          <!-- <span class="w-100">Youtube</span>
-          <div class="input-group">
-            <span class="input-group-text"
-              ><i class="fa-brands fa-youtube text-main-color"></i
-            ></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Social Media Youtube"
-              aria-label="Social Media Youtube"
-            />
-          </div> -->
           <FloatLabel variant="on" class="w-100">
             <IconField>
               <InputIcon class="fa-brands fa-youtube text-main-color" />
@@ -305,7 +186,7 @@
               />
             </IconField>
             <label for="social_media_youtube"
-              >Social Media Youtube</label
+              >{{ $t('dash.website_settings.social_media_youtube') }}</label
             >
           </FloatLabel>
         </div>
@@ -329,6 +210,7 @@ export default {
   data() {
     return {
       settings: {
+        isDark:null,
         heroSectionTitle: "",
         heroSectionDescription: "",
         contactAddress: "",
@@ -342,7 +224,11 @@ export default {
       },
     };
   },
+  beforeMount(){
+    this.isDark = localStorage.getItem("mode") == "dark";
+  }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

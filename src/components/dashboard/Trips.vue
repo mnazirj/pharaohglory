@@ -111,7 +111,11 @@
         :value="filteredData"
         paginator
         :rows="5"
-        :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl']"
+        :class="[
+          'w-100 px-2 main-table',
+          isEng ? 'ltr' : 'rtl',
+          isDark ? 'dark' : '',
+        ]"
       >
         <Column :header="$t('dash.trips.title')">
           <template #body="slotProps">
@@ -250,19 +254,26 @@
       v-model:visible="showDeleteDialog"
       :modal="true"
       :closable="true"
-      :header="'Delete Trip #' + currentDataTrip.id"
+      :header="
+        $t('dash.trips.curd_trip.delete_trip') + ' #' + currentDataTrip.id
+      "
       :style="{ width: '35rem' }"
       :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <p>
-        Are you Sure you want delete trip #{{ currentDataTrip.id }} which has
-        title "{{ isEng ? currentDataTrip.enTitle : currentDataTrip.arTitle }} "
-        ?
+        {{ $t("dash.trips.curd_trip.delete_qustion1") }} #{{
+          currentDataTrip.id
+        }}
+        {{ $t("dash.trips.curd_trip.delete_qustion2") }} "{{
+          isEng ? currentDataTrip.enTitle : currentDataTrip.arTitle
+        }}
+        " {{ $t("dash.trips.curd_trip.?") }}
       </p>
       <template #footer>
         <Button
           icon="pi pi-trash"
-          label="Delete"
+          :label="$t('dash.trips.curd_trip.delete')"
           @click="deleteTrip(currentDataTrip.slug)"
         ></Button>
       </template>
@@ -310,7 +321,8 @@
       :header="$t('dash.trips.curd_trip.create_a_trip')"
       :style="{ width: '75vw' }"
       :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
-      pt:hooks
+      :class="isEng ? 'set-ltr' : 'set-rtl'"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <Form
         v-slot="$form"
@@ -318,6 +330,7 @@
         :initialValues="initialValues"
         @submit="onFormSubmit"
         class="w-100 h-100"
+        validateOnSubmit="true"
       >
         <div
           class="d-flex justify-content-center align-item-center flex-wrap w-100"
@@ -330,7 +343,7 @@
               id="availability-container"
               class="d-flex align-item-center w-100 mt-2 mb-3"
             >
-              <span class="fs-5 me-3"
+              <span :class="['fs-5', isEng ? 'me-3' : 'ms-3']"
                 >{{ $t("dash.trips.availabilty") }} :
               </span>
               <div class="pt-1"><ToggleSwitch v-model="newTrip.status" /></div>
@@ -350,7 +363,7 @@
                     fluid
                   />
                   <label for="titleEn"
-                    ><i class="fa-solid fa-heading text-main-color me-2"></i
+                    ><i class="fa-solid fa-heading text-main-color mx-2"></i
                     ><span class="text-nowrap">{{
                       $t("dash.trips.curd_trip.title_in_english")
                     }}</span></label
@@ -375,7 +388,7 @@
                     fluid
                   />
                   <label for="titleAr"
-                    ><i class="fa-solid fa-heading text-main-color me-2"></i
+                    ><i class="fa-solid fa-heading text-main-color mx-2"></i
                     ><span class="text-nowrap">{{
                       $t("dash.trips.curd_trip.title_in_arabic")
                     }}</span></label
@@ -407,7 +420,7 @@
                     class="w-100"
                   />
                   <label for="descriptionEn"
-                    ><i class="fa-solid fa-paragraph text-main-color me-2"></i
+                    ><i class="fa-solid fa-paragraph text-main-color mx-2"></i
                     ><span class="text-nowrap">{{
                       $t("dash.trips.curd_trip.description_in_english")
                     }}</span></label
@@ -433,7 +446,7 @@
                     class="w-100"
                   />
                   <label for="descriptionAr"
-                    ><i class="fa-solid fa-paragraph text-main-color me-2"></i
+                    ><i class="fa-solid fa-paragraph text-main-color mx-2"></i
                     ><span class="text-nowrap">{{
                       $t("dash.trips.curd_trip.description_in_arabic")
                     }}</span></label
@@ -465,7 +478,7 @@
                     class="w-100"
                   />
                   <label for="fullDescriptionEn"
-                    ><i class="fa-solid fa-paragraph text-main-color me-2"></i
+                    ><i class="fa-solid fa-paragraph text-main-color mx-2"></i
                     ><span class="text-nowrap">{{
                       $t("dash.trips.curd_trip.full_description_in_english")
                     }}</span></label
@@ -491,7 +504,7 @@
                     class="w-100"
                   />
                   <label for="fullDescriptionAr"
-                    ><i class="fa-solid fa-paragraph text-main-color me-2"></i
+                    ><i class="fa-solid fa-paragraph text-main-color mx-2"></i
                     ><span class="text-nowrap">{{
                       $t("dash.trips.curd_trip.full_description_in_arabic")
                     }}</span></label
@@ -562,8 +575,8 @@
               <AccordionPanel value="0">
                 <AccordionHeader>
                   <div>
-                    <i class="fa-solid fa-highlighter me-2 text-main-color"></i>
-                    <span class="fs-5 font-bold me-2">{{
+                    <i class="fa-solid fa-highlighter text-main-color"></i>
+                    <span class="fs-5 font-bold mx-2">{{
                       $t("dash.trips.curd_trip.highlights")
                     }}</span>
                   </div>
@@ -630,10 +643,8 @@
               <AccordionPanel value="1">
                 <AccordionHeader>
                   <div>
-                    <i
-                      class="fa-regular fa-square-plus me-2 text-main-color"
-                    ></i>
-                    <span class="fs-5 font-bold me-2">{{
+                    <i class="fa-regular fa-square-plus text-main-color"></i>
+                    <span class="fs-5 font-bold mx-2">{{
                       $t("dash.trips.curd_trip.includes")
                     }}</span>
                   </div>
@@ -702,8 +713,8 @@
               <AccordionPanel value="2">
                 <AccordionHeader>
                   <div>
-                    <i class="fa-solid fa-circle-info me-2 text-main-color"></i>
-                    <span class="fs-5 font-bold me-2">{{
+                    <i class="fa-solid fa-circle-info text-main-color"></i>
+                    <span class="fs-5 font-bold mx-2">{{
                       $t("dash.trips.curd_trip.about_activity")
                     }}</span>
                   </div>
@@ -799,8 +810,8 @@
               <AccordionPanel value="3">
                 <AccordionHeader>
                   <div>
-                    <i class="pi pi-calendar-clock me-2 text-main-color"></i>
-                    <span class="fs-5 font-bold me-2"
+                    <i class="pi pi-calendar-clock text-main-color"></i>
+                    <span class="fs-5 font-bold mx-2"
                       >{{ $t("dash.trips.curd_trip.date_and_time") }} *</span
                     >
                   </div>
@@ -853,7 +864,7 @@
                         />
                         <label for="start_date"
                           ><i
-                            class="fa-regular fa-calendar-plus text-main-color me-2"
+                            class="fa-regular fa-calendar-plus text-main-color mx-2"
                           ></i
                           ><span class="text-nowrap">{{
                             $t("dash.trips.curd_trip.start_date")
@@ -910,7 +921,7 @@
                         />
                         <label for="end_date"
                           ><i
-                            class="fa-regular fa-calendar-xmark text-main-color me-2"
+                            class="fa-regular fa-calendar-xmark text-main-color mx-2"
                           ></i
                           ><span class="text-nowrap">{{
                             $t("dash.trips.curd_trip.end_date")
@@ -937,7 +948,7 @@
                         />
                         <label for="duration"
                           ><i
-                            class="fa-regular fa-clock text-main-color me-2"
+                            class="fa-regular fa-clock text-main-color mx-2"
                           ></i
                           ><span class="text-nowrap">
                             {{ $t("dash.trips.curd_trip.duration") }}
@@ -951,14 +962,6 @@
                         variant="simple"
                         class="w-100"
                         >{{ $t($form.duration.error?.message) }}</Message
-                      >
-                      <Message
-                        v-if="$form.durationFormat?.invalid"
-                        severity="error"
-                        size="small"
-                        variant="simple"
-                        class="w-100"
-                        >{{ $form.durationFormat.error?.message }}</Message
                       >
                       <!-- <div class="w-100 mb-1">
                         <i class="fa-regular fa-clock text-main-color me-2"></i>
@@ -994,8 +997,8 @@
               <AccordionPanel value="4">
                 <AccordionHeader>
                   <div>
-                    <i class="pi pi-dollar me-2 text-main-color"></i>
-                    <span class="fs-5 font-bold me-2">{{
+                    <i class="pi pi-dollar text-main-color"></i>
+                    <span class="fs-5 font-bold mx-2">{{
                       $t("dash.trips.curd_trip.payments")
                     }}</span>
                   </div>
@@ -1024,7 +1027,7 @@
                         ></InputText> -->
                         <label for="adult_price"
                           ><i
-                            class="fa-solid fa-person-half-dress text-main-color me-2"
+                            class="fa-solid fa-person-half-dress text-main-color mx-2"
                           ></i
                           ><span class="text-nowrap">{{
                             $t("dash.trips.curd_trip.adult_price")
@@ -1049,7 +1052,7 @@
                         ></InputText> -->
                         <label for="adult_discount"
                           ><i
-                            class="fa-solid fa-percent text-main-color me-2"
+                            class="fa-solid fa-percent text-main-color mx-2"
                           ></i
                           ><span class="text-nowrap">{{
                             $t("dash.trips.curd_trip.adult_discount")
@@ -1076,7 +1079,7 @@
                         ></InputText> -->
                         <label for="children_price"
                           ><i
-                            class="fa-solid fa-child-reaching text-main-color me-2"
+                            class="fa-solid fa-child-reaching text-main-color mx-2"
                           ></i
                           ><span class="text-nowrap">{{
                             $t("dash.trips.curd_trip.children_price")
@@ -1101,7 +1104,7 @@
                         ></InputText> -->
                         <label for="children_discount"
                           ><i
-                            class="fa-solid fa-percent text-main-color me-2"
+                            class="fa-solid fa-percent text-main-color mx-2"
                           ></i
                           ><span class="text-nowrap">{{
                             $t("dash.trips.curd_trip.children_discount")
@@ -1116,8 +1119,8 @@
               <AccordionPanel value="5">
                 <AccordionHeader>
                   <div class="w-100">
-                    <i class="pi pi-user-plus text-main-color me-2"></i>
-                    <span class="fs-5 text-nowrap">{{
+                    <i class="pi pi-user-plus text-main-color"></i>
+                    <span class="fs-5 text-nowrap mx-2">{{
                       $t("dash.trips.curd_trip.members_count")
                     }}</span>
                   </div>
@@ -1136,7 +1139,7 @@
                           fluid
                         />
                         <label for="enroll_member"
-                          ><i class="pi pi-users text-main-color me-2"></i
+                          ><i class="pi pi-users text-main-color mx-2"></i
                           ><span class="text-nowrap">{{
                             $t("dash.trips.curd_trip.enroll_members")
                           }}</span></label
@@ -1210,8 +1213,8 @@
               <AccordionPanel value="6">
                 <AccordionHeader>
                   <div>
-                    <i class="pi pi-images me-2 text-main-color"></i>
-                    <span class="fs-5 font-bold me-2">{{
+                    <i class="pi pi-images text-main-color"></i>
+                    <span class="fs-5 font-bold mx-2">{{
                       $t("dash.trips.curd_trip.images")
                     }}</span>
                   </div>
@@ -1273,10 +1276,8 @@
               <AccordionPanel value="7">
                 <AccordionHeader>
                   <div>
-                    <i
-                      class="fa-solid fa-location-dot me-2 text-main-color"
-                    ></i>
-                    <span class="fs-5">{{
+                    <i class="fa-solid fa-location-dot text-main-color"></i>
+                    <span class="fs-5 mx-2">{{
                       $t("dash.trips.curd_trip.meeting_point")
                     }}</span>
                   </div>
@@ -1332,6 +1333,16 @@
           </div>
         </div>
         <div class="d-flex justify-content-end align-items-center mt-4 mb-2">
+          <div class="w-80">
+            <Message
+              v-if="!$form.valid"
+              severity="error"
+              size="small"
+              variant="simple"
+              class="w-100"
+              >All inputs have * symbol is required</Message
+            >
+          </div>
           <Button
             icon="pi pi-save"
             :label="$t('dash.trips.create')"
@@ -1634,6 +1645,7 @@ export default {
   data() {
     return {
       isEng: null,
+      isDark: null,
       searchValue: "",
       showCreateDialog: false,
       showDeleteDialog: false,
@@ -2357,33 +2369,30 @@ export default {
 
       if (!values.duration) {
         errors.duration = [
-          { message: "dash.trips.curd_trip.duration_required" },
-        ];
-      }
-
-      var durationPattern = /[0-9]+\s[0-9]+:[0-9]+:[0-9]+/g;
-      if (!durationPattern.test(values.duration)) {
-        errors.durationFormat = [
           {
-            message:
-              "Format duration should be : 'dd hh:mm:ss' and all is number",
+            type: "required",
+            message: "dash.trips.curd_trip.duration_required",
           },
         ];
       }
 
-      console.log(values);
-      console.log(errors);
+      // var durationPattern = /[0-9]+\s[0-9]+:[0-9]+:[0-9]+/g;
+      // if (!durationPattern.test(values.duration)) {
+      //   errors.durationFormat = [
+      //     {
+      //       type:"format",
+      //       message:"Format duration should be : 'dd hh:mm:ss' and you should input every value",
+      //     },
+      //   ];
+      // }
+
       return {
         errors,
       };
     },
     onFormSubmit({ valid }) {
-      console.log(this.newTrip.startDate);
-      console.log(this.newTrip.endDate);
-      console.log(this.newTrip.duration);
       if (valid) {
-        // this.createTrip();
-        console.log("Trip is created");
+        this.createTrip();
       }
     },
   },
@@ -2399,6 +2408,7 @@ export default {
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>

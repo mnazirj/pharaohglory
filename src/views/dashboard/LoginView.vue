@@ -10,6 +10,7 @@
           :class="[
             'w-40 h-100 d-flex justify-content-center align-items-center bg-main-color',
             isEng ? 'rounded-start-2' : 'rounded-end-2',
+            isDark? 'dark':''
           ]"
         >
           <img
@@ -21,8 +22,9 @@
         <div
           id="main-side"
           :class="[
-            'w-60 h-100 bg-white ',
+            'w-60 h-100 ',
             isEng ? 'rounded-end-2' : 'rounded-start-2',
+            isDark? 'bg-dark' :'bg-white'
           ]"
         >
           <div class="w-100 text-center mt-2 mb-3">
@@ -169,6 +171,7 @@ export default {
       loadingForData: false,
       isAuth: null,
       isEng: "",
+      isDark:"",
       rememberMe: false,
       // inputType: "password",
       initialValues: {
@@ -191,16 +194,16 @@ export default {
     };
   },
   methods: {
-    passwordShowHideToggle() {
-      if (this.$refs.passwordInput.type == "password") {
-        this.$refs.passwordInput.type = "text";
-        this.inputType = "text";
-      } else {
-        this.$refs.passwordInput.type = "password";
-        this.inputType = "password";
-      }
-    },
-    login() {},
+    // passwordShowHideToggle() {
+    //   if (this.$refs.passwordInput.type == "password") {
+    //     this.$refs.passwordInput.type = "text";
+    //     this.inputType = "text";
+    //   } else {
+    //     this.$refs.passwordInput.type = "password";
+    //     this.inputType = "password";
+    //   }
+    // },
+    // login() {},
     resolver: ({ values }) => {
       const errors = { email: [], password: [] };
       if (!values.email) {
@@ -250,6 +253,7 @@ export default {
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>
@@ -318,6 +322,7 @@ export default {
     #ff849a
   );
 }
+
 .show-toggle {
   position: absolute;
   top: 0.5rem;

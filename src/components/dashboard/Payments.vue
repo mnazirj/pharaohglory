@@ -6,81 +6,22 @@
       >
         <IconField class="w-50">
           <InputIcon class="pi pi-search text-main-color" />
-          <InputText v-model="searchValue" placeholder="Search" class="w-100" />
+          <InputText
+            v-model="searchValue"
+            :placeholder="$t('dash.payments.search')"
+            class="w-100"
+          />
         </IconField>
       </div>
     </div>
-    <!-- <div class="table-responsive">
-      <table class="table-page table align-middle text-center text-nowrap">
-        <thead>
-          <tr>
-            <th scope="col">id</th>
-            <th scope="col" colspan="2">User</th>
-            <th scope="col">Trip</th>
-            <th scope="col">Count</th>
-            <th>Total Price</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="payment in paginatedPayments" :key="payment.id">
-            <td scope="row">#{{ payment.id }}</td>
-            <td>
-              <img
-                :src="payment.from.img"
-                alt="user-img"
-                class="img-user rounded-circle"
-              />
-            </td>
-            <td>{{ payment.from.name }}</td>
-            <td>
-              {{ payment.to.title }}
-            </td>
-            <td>
-              {{ payment.adultCount }} Adults<br />
-              {{ payment.childernCount }} Children
-            </td>
-            <td>{{ payment.total }}</td>
-            <td>
-              <button
-                type=" button"
-                class="btn btn-outline-second me-1 ms-1"
-                data-bs-toggle="modal"
-                data-bs-target="#show-modal"
-                @click="currentDataSeeder(payment)"
-              >
-                <i class="pi pi-eye pt-1"></i>
-              </button>
-              <button
-                type=" button"
-                class="btn btn-main me-1 ms-1"
-                data-bs-toggle="modal"
-                data-bs-target="#delete-modal"
-                @click="currentDataSeeder(payment)"
-              >
-                <i class="pi pi-trash pt-1"></i>
-              </button>
-            </td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <Paginator
-      class="w-100"
-      :rows="rowsPerPage"
-      :totalRecords="filteredData.length"
-      :rowsPerPageOptions="[5, 10, 20, 30]"
-      @page="onPageChange"
-    ></Paginator> -->
     <div class="d-flex justify-content-center">
       <DataTable
         :value="filteredData"
         paginator
         :rows="5"
-        :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl']"
+        :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl', isDark? 'dark':'']"
       >
-        <Column header="User">
+        <Column :header="$t('dash.payments.user')">
           <template #body="slotProps">
             <div class="d-flex align-items-center">
               <img
@@ -94,20 +35,23 @@
             </div>
           </template>
         </Column>
-        <Column header="Trip">
+        <Column :header="$t('dash.payments.trip')">
           <template #body="slotProps">
             <span class="text-nowrap">{{ slotProps.data.to.title }}</span>
           </template>
         </Column>
-        <Column header="Count">
+        <Column :header="$t('dash.payments.count')">
           <template #body="slotProps">
             <span>{{
               slotProps.data.childernCount + slotProps.data.adultCount
             }}</span>
           </template>
         </Column>
-        <Column field="total" header="Total Price"></Column>
-        <Column header="Actions">
+        <Column
+          field="total"
+          :header="$t('dash.payments.total_price')"
+        ></Column>
+        <Column :header="$t('dash.payments.actions')">
           <template #body="slotProps">
             <div class="d-flex">
               <Button
@@ -130,8 +74,9 @@
     <Dialog
       v-model:visible="showShowDialog"
       modal
-      :header="'Show Payment #' + currentData.id"
+      :header="$t('dash.payments.curd.show_payment') + ' #' + currentData.id"
       :style="{ width: '35rem' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <div
         class="d-flex justify-content-center align-items-center flex-wrap w-100 mb-2"
@@ -141,18 +86,26 @@
           class="d-flex justify-content-center align-items-center flex-wrap w-90 mb-2"
         >
           <div class="w-100 d-flex mb-2">
-            <span class="w-100 text-center fs-5">Payment information </span>
+            <span class="w-100 text-center fs-5">{{
+              $t("dash.payments.curd.payment_information")
+            }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Total Price: </span>
+            <span class="text-muted">
+              {{ $t("dash.payments.total_price") }} :
+            </span>
             <span class="ms-1">{{ currentData.total }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Adult Count : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.adult_count") }} :
+            </span>
             <span>{{ currentData.adultCount }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Children Count : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.children_count") }} :
+            </span>
             <span>{{ currentData.childernCount }}</span>
           </div>
         </div>
@@ -163,32 +116,46 @@
         >
           <div class="w-100 d-flex mb-2">
             <span class="w-100 text-center fs-5"
-              >Trip #{{ currentData.to.id }} information
+              >{{ $t("dash.payments.curd.trip_information") }} #{{
+                currentData.to.id
+              }}
             </span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Title : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.title") }} :
+            </span>
             <span class="ms-1">{{ currentData.to.title }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Type : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.category") }} :
+            </span>
             <span class="ms-1">{{ currentData.to.type }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Adults Price : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.adult_price") }} :
+            </span>
             <span class="ms-1">{{ currentData.to.adultPrice }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Adults Discount : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.adult_discount") }} :
+            </span>
             <span class="ms-1">{{ currentData.to.adultsDiscount }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Children Price : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.children_price") }} :
+            </span>
             <span class="ms-1">{{ currentData.to.childPrice }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Children Discount : </span>
-            <span class="ms-1">{{ currentData.to.adultsDiscount }}</span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.children_discount") }} :
+            </span>
+            <span class="ms-1">{{ currentData.to.childrenDiscount }}</span>
           </div>
         </div>
         <Divider />
@@ -198,7 +165,9 @@
         >
           <div class="w-100 d-flex mb-2">
             <span class="w-100 text-center fs-5"
-              >User #{{ currentData.from.id }} information
+              >{{ $t("dash.payments.curd.user_information") }} #{{
+                currentData.from.id
+              }}
             </span>
           </div>
           <div
@@ -212,181 +181,49 @@
             />
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Name: </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.name") }} :
+            </span>
             <span class="ms-1">{{ currentData.from.name }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Username : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.username") }} :
+            </span>
             <span class="ms-1">{{ currentData.from.username }}</span>
           </div>
           <div class="w-100 d-flex mb-2">
-            <span class="text-muted">Email : </span>
+            <span class="text-muted"
+              >{{ $t("dash.payments.curd.email") }} :
+            </span>
             <span class="ms-1">{{ currentData.from.email }}</span>
           </div>
         </div>
       </div>
     </Dialog>
-    <!-- <div id="show-modal" class="modal fade" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Payment #{{ currentData.id }}</h2>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div> -->
-    <!-- <div class="modal-body">
-            <div
-              class="d-flex justify-content-center align-items-center flex-wrap w-100 pb-2"
-            >
-              <div
-                class="w-90 d-flex justify-content-center align-content-center flex-wrap"
-              > -->
-    <!-- payment information -->
-    <!-- <div
-                  class="w-100 d-flex justify-content-center align-items-center flex-wrap"
-                >
-                  <span class="w-100 text-center fs-4"
-                    >Payment #{{ currentData.id }} information</span
-                  >
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Total Price: </span>
-                    <span class="ms-1">{{ currentData.total }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Children Count : </span>
-                    <span>{{ currentData.childernCount }}</span>
-                  </div>
-                </div>
-                <Divider /> -->
-    <!-- user information -->
-    <!-- <div
-                  class="w-100 d-flex justify-content-center align-items-center flex-wrap py-1"
-                >
-                  <span class="w-100 text-center fs-4"
-                    >User #{{ currentData.from.id }} information</span
-                  >
-                  <div
-                    class="w-100 d-flex justify-content-center align-items-center"
-                  >
-                    <img
-                      :src="currentData.from.img"
-                      alt="user-image"
-                      class="rounded-circle"
-                      :style="{ width: '7rem', height: '7rem' }"
-                    />
-                  </div>
-
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Name: </span>
-                    <span class="ms-1">{{ currentData.from.name }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Username : </span>
-                    <span class="ms-1">{{ currentData.from.username }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Username : </span>
-                    <span class="ms-1">{{ currentData.from.username }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Email : </span>
-                    <span class="ms-1">{{ currentData.from.email }}</span>
-                  </div>
-                </div>
-                <Divider /> -->
-    <!-- trip information -->
-    <!-- <div
-                  class="w-100 py-1 d-flex flex-wrap justify-content-center align-items-center"
-                >
-                  <span class="w-100 text-center fs-4">Trip Information </span>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Title : </span>
-                    <span class="ms-1">{{ currentData.to.title }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Type : </span>
-                    <span class="ms-1">{{ currentData.to.type }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Adults Price : </span>
-                    <span class="ms-1">{{ currentData.to.adultPrice }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Children Price : </span>
-                    <span class="ms-1">{{ currentData.to.childPrice }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Discount : </span>
-                    <span class="ms-1">{{ currentData.to.discount }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <!-- delete modal -->
     <Dialog
       v-model:visible="showDeleteDialog"
       modal
-      :header="'Delete #' + currentData.id + ' payment'"
+      :header="$t('dash.payments.curd.delete_payment') + ' #' + currentData.id"
       :style="{ width: '35rem' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <span
-        >Are you Sure you want delete Payment #{{ currentData.id }} From User
-        #{{ currentData.from.id }} "{{ currentData.from.name }} " ?</span
+        >{{ $t("dash.payments.curd.delete_qustion1") }} #{{ currentData.id }}
+        {{ $t("dash.payments.curd.delete_qustion2") }} #{{
+          currentData.from.id
+        }}
+        "{{ currentData.from.name }} " {{ $t("dash.payments.curd.?") }}</span
       >
       <template #footer>
         <Button
-          label="Delete"
+          :label="$t('dash.payments.curd.delete')"
           icon="pi pi-trash"
           @click="deletePayment"
         ></Button>
       </template>
     </Dialog>
-    <!-- <div class="modal fade" id="delete-modal" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 class="modal-title fs-5">
-              Delete Payment #{{ currentData.id }}
-            </h2>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div
-            class="modal-body d-flex justify-content-center align-items-center"
-          >
-            <p>
-              Are you Sure you want delete Payment #{{ currentData.id }} From
-              User #{{ currentData.from.id }} "{{ currentData.from.name }} " ?
-            </p>
-          </div>
-          <div class="modal-footer d-flex justify-content-end">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-dismiss="modal"
-              @click="deleteData"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -419,6 +256,7 @@ export default {
   data() {
     return {
       isEng: null,
+      isDark:null,
       showDeleteDialog: false,
       showShowDialog: false,
       // currentPage: 0,
@@ -670,6 +508,7 @@ export default {
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>

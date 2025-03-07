@@ -76,7 +76,7 @@ export default {
       const documentStyle = getComputedStyle(document.body);
 
       return {
-        labels: ["Finished Trips ", "Sechduled Trips", "Ready Trips"],
+        labels: [this.$t('dash.home.finished_trips'), this.$t('dash.home.sechduled_trips'), this.$t('dash.home.ready_trips')],
         datasets: [
           {
             data: [1240, 120, 75],
@@ -109,80 +109,6 @@ export default {
         },
       };
     },
-    // setChartDataBar() {
-    //   const documentStyle = getComputedStyle(document.documentElement);
-
-    //   return {
-    //     labels: [
-    //       "January",
-    //       "February",
-    //       "March",
-    //       "April",
-    //       "May",
-    //       "June",
-    //       "July",
-    //     ],
-    //     datasets: [
-    //       {
-    //         label: "My First dataset",
-    //         backgroundColor: documentStyle.getPropertyValue("--p-teal-700"),
-    //         borderColor: documentStyle.getPropertyValue("--p-teal-700"),
-    //         data: [65, 59, 80, 81, 56, 55, 40],
-    //       },
-    //       {
-    //         label: "My Second dataset",
-    //         backgroundColor: documentStyle.getPropertyValue("--p-gray-500"),
-    //         borderColor: documentStyle.getPropertyValue("--p-gray-500"),
-    //         data: [28, 48, 40, 19, 86, 27, 90],
-    //       },
-    //     ],
-    //   };
-    // },
-    // setChartOptionsBar() {
-    //   const documentStyle = getComputedStyle(document.documentElement);
-    //   const textColor = documentStyle.getPropertyValue("--p-text-color");
-    //   const textColorSecondary = documentStyle.getPropertyValue(
-    //     "--p-text-muted-color"
-    //   );
-    //   const surfaceBorder = documentStyle.getPropertyValue(
-    //     "--p-content-border-color"
-    //   );
-
-    //   return {
-    //     maintainAspectRatio: false,
-    //     aspectRatio: 0.8,
-    //     plugins: {
-    //       legend: {
-    //         labels: {
-    //           color: textColor,
-    //         },
-    //       },
-    //     },
-    //     scales: {
-    //       x: {
-    //         ticks: {
-    //           color: textColorSecondary,
-    //           font: {
-    //             weight: 500,
-    //           },
-    //         },
-    //         grid: {
-    //           display: false,
-    //           drawBorder: false,
-    //         },
-    //       },
-    //       y: {
-    //         ticks: {
-    //           color: textColorSecondary,
-    //         },
-    //         grid: {
-    //           color: surfaceBorder,
-    //           drawBorder: false,
-    //         },
-    //       },
-    //     },
-    //   };
-    // },
     setChartDataRadar() {
       const documentStyle = getComputedStyle(document.documentElement);
       const textColor = documentStyle.getPropertyValue("--p-text-color");
@@ -198,7 +124,7 @@ export default {
         ],
         datasets: [
           {
-            label: "Trips Type",
+            label:this.$t('dash.home.trips_categorys'),
             borderColor: documentStyle.getPropertyValue("--p-rose-600"),
             pointBackgroundColor:
               documentStyle.getPropertyValue("--p-rose-700"),
@@ -240,22 +166,22 @@ export default {
 
       return {
         labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
+        this.$t('dash.home.jan'),
+        this.$t('dash.home.feb'),
+        this.$t('dash.home.mar'),
+        this.$t('dash.home.apr'),
+        this.$t('dash.home.may'),
+        this.$t('dash.home.june'),
+        this.$t('dash.home.july'),
+        this.$t('dash.home.aug'),
+        this.$t('dash.home.sep'),
+        this.$t('dash.home.oct'),
+        this.$t('dash.home.nov'),
+        this.$t('dash.home.dec'),
         ],
         datasets: [
           {
-            label: "Income",
+            label: this.$t('dash.home.incomes'),
             data: [
               15450, 5950, 8050, 3560, 11320, 1985, 1205, 4582, 1250, 350, 7850,
               1456,

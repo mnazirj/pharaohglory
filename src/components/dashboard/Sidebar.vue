@@ -5,7 +5,7 @@
   >
     <div id="sidebar-nav" class="min-vh-100 h-100">
       <div
-        class="d-flex flex-column justify-content-between flex-wrap h-100 shadow-3 bg-white"
+        :class="['d-flex flex-column justify-content-between flex-wrap h-100 shadow-3 ',isDark? 'bg-dark':'bg-white']"
       >
         <div class="w-100">
           <div
@@ -24,7 +24,7 @@
               class="d-flex justify-content-end align-items-center mb-2 me-2"
             >
               <i
-                class="pi pi-align-justify text-white pt-2 cursor-pointer ms-2"
+                :class="['pi pi-align-justify pt-2 cursor-pointer ms-2', isDark ? 'text-dark':'text-white']"
                 data-bs-toggle="collapse"
                 data-bs-target="#sidebar"
                 @click="sidebarToggleShown"
@@ -51,9 +51,9 @@
             </div>
           </div>
           <div
-            class="d-flex justify-content-center align-items-center flex-wrap w-100 py-2 bg-white"
+            :class="['d-flex justify-content-center align-items-center flex-wrap w-100 py-2', isDark ? 'bg-dark':'bg-white']"
           >
-            <div class="list-group border-0 w-90">
+            <div :class="['list-group border-0 w-90' , isDark? 'dark':'']">
               <router-link
                 :to="{ name: 'dash.home' }"
                 :class="[
@@ -64,7 +64,7 @@
                 <i
                   :class="['pi pi-objects-column ', isEng ? 'me-2' : 'ms-2']"
                 ></i
-                ><span>Overview</span>
+                ><span>{{ $t('dash.sidebar.overview') }}</span>
               </router-link>
 
               <router-link
@@ -75,7 +75,7 @@
                 ]"
               >
                 <i :class="['fa-solid fa-plane', isEng ? 'me-2' : 'ms-2']"></i>
-                <span>Trips</span>
+                <span>{{ $t('dash.sidebar.trips') }}</span>
               </router-link>
               <router-link
                 :to="{ name: 'dash.category' }"
@@ -85,7 +85,7 @@
                 ]"
               >
                 <i :class="['pi pi-filter-fill', isEng ? 'me-2' : 'ms-2']"></i>
-                <span>Category</span>
+                <span>{{ $t('dash.sidebar.categories') }}</span>
               </router-link>
 
               <router-link
@@ -101,7 +101,7 @@
                     isEng ? 'me-2' : 'ms-2',
                   ]"
                 ></i
-                ><span>Payments</span>
+                ><span>{{ $t('dash.sidebar.payments') }}</span>
               </router-link>
 
               <router-link
@@ -112,7 +112,7 @@
                 ]"
               >
                 <i :class="['fa-solid fa-users', isEng ? 'me-2' : 'ms-2']"></i
-                ><span>Accounts</span>
+                ><span>{{ $t('dash.sidebar.accounts') }}</span>
               </router-link>
 
               <router-link
@@ -123,29 +123,8 @@
                 ]"
               >
                 <i :class="['fa-solid fa-gears', isEng ? 'me-2' : 'ms-2']"></i
-                ><span class="text-nowrap">Website Settings</span>
+                ><span class="text-nowrap">{{ $t('dash.sidebar.website_settings') }}</span>
               </router-link>
-
-              <!-- <div
-                :class="[
-                  'list-group-item m-2 mt-1 rounded-2 ',
-                  isActive('dash.reviews') ? 'active' : '',
-                ]"
-              >
-                <router-link
-                  :to="{ name: 'dash.reviews' }"
-                  class="d-flex flex-nowrap align-items-center w-100 h-100"
-                >
-                  <i class="pi pi-star-fill me-2"></i
-                  ><span
-                    :class="[
-                      'collapse collapse-horizontal',
-                      isExpanded || isHovered ? 'show' : '',
-                    ]"
-                    >Reviews</span
-                  >
-                </router-link>
-              </div> -->
 
               <router-link
                 :to="{ name: 'dash.profile' }"
@@ -155,7 +134,7 @@
                 ]"
               >
                 <i :class="['pi pi-address-book', isEng ? 'me-2' : 'ms-2']"></i
-                ><span>My Profile</span>
+                ><span>{{ $t('dash.sidebar.my_profile') }}</span>
               </router-link>
             </div>
           </div>
@@ -166,7 +145,7 @@
             @click="logout"
           >
             <i :class="['pi pi-sign-out', isEng ? 'me-2' : 'ms-2']"></i>
-            <span> Logout</span>
+            <span> {{ $t('dash.sidebar.logout') }}</span>
           </button>
         </div>
       </div>
@@ -192,6 +171,7 @@ export default {
       isHovered: false,
       isShown: true,
       isEng: null,
+      isDark:null,
     };
   },
   computed: {
@@ -200,13 +180,6 @@ export default {
     },
   },
   methods: {
-    // expandSidebarByButton() {
-    //   if (this.isExpanded) {
-    //     this.isExpanded = false;
-    //   } else {
-    //     this.isExpanded = true;
-    //   }
-    // },
     sidebarMouseOver() {
       if (!this.isExpanded && this.isLargeScreen) {
         this.isHovered = true;
@@ -224,12 +197,6 @@ export default {
     isActive(routeName) {
       return this.$route.name === routeName;
     },
-    // handleResize() {
-    //   this.isLargeScreen = window.innerWidth >= 1024;
-    //   if (!this.isLargeScreen) {
-    //     this.isExpanded = true; // Automatically expand sidebar for smaller screens
-    //   }
-    // },
     logout() {
       localStorage.removeItem("_token");
       sessionStorage.removeItem("_token");
@@ -238,6 +205,7 @@ export default {
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>
@@ -259,18 +227,34 @@ export default {
 .list-group {
   border-radius: 0px;
 }
-.list-group-item {
+.list-group .list-group-item {
   height: 2.5rem !important;
   border: none;
   background-color: transparent;
   color: #444444 !important;
 }
-.list-group-item:hover {
+.list-group .list-group-item:hover {
   background-color: #eaeaea;
   cursor: pointer;
   color: #1b1b1b !important;
 }
-.list-group-item:is(.active) {
+.list-group .list-group-item:is(.active) {
+  background-color: #ff1d48;
+  color: #fff !important;
+}
+/* dark list group */
+.list-group:is(.dark) .list-group-item {
+  height: 2.5rem !important;
+  border: none;
+  background-color: transparent;
+  color: #d6d6d6 !important;
+}
+.list-group:is(.dark) .list-group-item:hover {
+  background-color: #eaeaea;
+  cursor: pointer;
+  color: #424242 !important;
+}
+.list-group:is(.dark) .list-group-item:is(.active) {
   background-color: #ff1d48;
   color: #fff !important;
 }

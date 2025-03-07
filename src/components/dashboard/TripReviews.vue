@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-between align-content-center w-90">
         <div class="w-30 d-flex">
           <span class="font-bold fs-4 cursor-pointer" @click="$router.back()"
-            >Reviews for trip #{{ $route.params.tripId }}</span
+            >{{ $t('dash.trips.reviews.reviews_for_trip') }} {{ $route.params.tripId }}</span
           >
         </div>
         <div class="d-flex align-content-center w-60 input-group">
@@ -12,7 +12,7 @@
             <InputIcon class="pi pi-search text-main-color" />
             <InputText
               v-model="searchValue"
-              placeholder="Search"
+              :placeholder="$t('dash.trips.reviews.search')"
               class="w-100"
             />
           </IconField>
@@ -23,9 +23,9 @@
       :value="tripReviews"
       paginator
       :rows="5"
-      :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl']"
+      :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl' , isDark? 'dark':'']"
     >
-      <Column header="User">
+      <Column :header="$t('dash.trips.reviews.user')">
         <template #body="slotProps">
           <img
             :src="slotProps.data.user.img"
@@ -36,7 +36,7 @@
           <span>{{ slotProps.data.user.name }}</span>
         </template>
       </Column>
-      <Column header="Rate">
+      <Column :header="$t('dash.trips.reviews.rate')">
         <template #body="slotProps">
           <Rating
             v-model="slotProps.data.rate"
@@ -45,12 +45,12 @@
           ></Rating>
         </template>
       </Column>
-      <Column header="Description">
+      <Column :header="$t('dash.trips.reviews.description')">
         <template #body="slotProps">
           <span>{{ clipText(slotProps.data.description) }}</span>
         </template>
       </Column>
-      <Column header="Actions">
+      <Column :header="$t('dash.trips.reviews.actions')">
         <template #body="slotProps">
           <Button
             icon="pi pi-eye"
@@ -66,74 +66,13 @@
         </template>
       </Column>
     </DataTable>
-    <!-- <div
-      class="table-responsive d-flex justify-content-center align-content-center flex-wrap mt-1 mb-1"
-    >
-      <table class="table-page table align-middle text-center text-nowrap">
-        <thead>
-          <tr>
-            <th scope="col" colspan="2">User</th>
-            <th scope="col">Review</th>
-            <th scope="col">Description</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="tripReview in paginatedTripReviews" :key="tripReview.id">
-            <td>
-              <img
-                :src="tripReview.user.img"
-                alt="user-img"
-                class="img-user rounded-circle"
-              />
-            </td>
-            <td>{{ tripReview.user.name }}</td>
-            <td>
-              <Rating
-                v-model="tripReview.rate"
-                readonly
-                class="d-flex justify-content-center align-items-center"
-              />
-            </td>
-            <td>{{ clipText(tripReview.description) }}</td>
-            <td>
-              <button
-                type=" button"
-                class="btn btn-main me-1 ms-1"
-                data-bs-toggle="modal"
-                data-bs-target="#show-modal"
-                @click="currentDataSeeder(tripReview)"
-              >
-                <i class="pi pi-eye pt-1"></i>
-              </button>
-              <button
-                type=" button"
-                class="btn btn-danger me-1 ms-1"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteTrip-modal"
-                @click="currentDataSeeder(tripReview)"
-              >
-                <i class="pi pi-trash pt-1"></i>
-              </button>
-            </td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <Paginator
-      class="w-100"
-      :rows="rowsPerPage"
-      :totalRecords="tripReviews.length"
-      :rowsPerPageOptions="[5, 10, 20, 30]"
-      @page="onPageChange"
-    ></Paginator> -->
     <!-- show Modal -->
     <Dialog
       v-model:visible="showShowDialog"
       modal
-      :header="'Show Review #' + currentData.id"
+      :header="$t('dash.trips.reviews.curd.show_review')+' #' + currentData.id"
       :style="{ width: '35rem' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <div
         class="w-100 d-flex justify-content-center align-items-center flex-wrap"
@@ -142,7 +81,7 @@
         <div
           class="w-90 d-flex justify-content-center align-items-center flex-wrap"
         >
-          <span class="text-center w-100 mb-1 fs-5 font-bold">User Data</span>
+          <span class="text-center w-100 mb-1 fs-5 font-bold">{{ $t('dash.trips.reviews.curd.user_information') }}</span>
           <div
             class="w-100 d-flex justify-content-center align-items-center my-1"
           >
@@ -154,11 +93,11 @@
             />
           </div>
           <div class="w-100 py-1">
-            <span class="text-muted">User id : </span>
+            <span class="text-muted">{{ $t('dash.trips.reviews.curd.id') }} : </span>
             <span>{{ currentData.user.id }}</span>
           </div>
           <div class="w-100 py-1">
-            <span class="text-muted">User Name : </span>
+            <span class="text-muted">{{ $t('dash.trips.reviews.curd.name') }} : </span>
             <span>{{ currentData.user.name }}</span>
           </div>
         </div>
@@ -167,169 +106,43 @@
         <div
           class="w-90 d-flex justify-content-center align-items-center flex-wrap"
         >
-          <span class="text-center w-100 mb-1 fs-5 font-bold">Review info</span>
+          <span class="text-center w-100 mb-1 fs-5 font-bold">{{ $t('dash.trips.reviews.curd.review_information') }}</span>
           <div class="w-100 d-flex align-items-center py-1">
-            <span class="text-muted">Rate : </span>
+            <span class="text-muted">{{ $t('dash.trips.reviews.rate') }} : </span>
             <span class="ms-1"
               ><Rating v-model="currentData.rate" readonly
             /></span>
           </div>
           <div class="w-100 py-1">
-            <span class="text-muted">Description : </span>
+            <span class="text-muted">{{ $t('dash.trips.reviews.description') }} : </span>
             <span>{{ currentData.description }}</span>
           </div>
         </div>
       </div>
     </Dialog>
-    <!-- <div id="show-modal" class="modal fade" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Review #{{ currentData.id }}</h2>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div
-              class="d-flex justify-content-center align-items-center w-100 flex-wrap"
-            >
-              <div
-                class="d-flex justify-content-center align-items-center flex-wrap w-90 border-bottom-1 pb-2"
-              >
-                <span class="text-center w-100 mb-1 fs-5 font-bold"
-                  >User Data</span
-                >
-                <div
-                  class="w-100 d-flex justify-content-center align-content-center flex-wrap"
-                >
-                  <div
-                    class="d-flex justify-content-center align-items-center w-100 py-1"
-                  >
-                    <img
-                      :src="currentData.user.img"
-                      alt="user-img"
-                      class="img-user"
-                    />
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">User id : </span>
-                    <span>{{ currentData.user.id }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">User Name : </span>
-                    <span>{{ currentData.user.name }}</span>
-                  </div>
-                </div>
-              </div> -->
-
-    <!-- <div
-                class="d-flex justify-content-center align-items-center flex-wrap w-90 border-bottom-1 pb-2"
-              >
-                <span class="text-center w-100 mb-1 fs-5 font-bold"
-                  >Trip Data</span
-                >
-                <div
-                  class="w-100 d-flex justify-content-center align-content-center flex-wrap"
-                >
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Trip id : </span>
-                    <span>{{ currentData.trip.id }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Trip Name : </span>
-                    <span>{{ currentData.trip.name }}</span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Trip Type : </span>
-                    <span>{{ currentData.trip.type }}</span>
-                  </div>
-                </div>
-              </div> -->
-
-    <!-- <div
-                class="d-flex justify-content-center align-items-center flex-wrap w-90 pb-2"
-              >
-                <div
-                  class="w-100 d-flex justify-content-center align-content-center flex-wrap"
-                >
-                  <div class="w-100 d-flex align-items-center py-1">
-                    <span class="text-muted">Rate : </span>
-                    <span class="ms-1"
-                      ><Rating v-model="currentData.rate" readonly
-                    /></span>
-                  </div>
-                  <div class="w-100 py-1">
-                    <span class="text-muted">Description : </span>
-                    <span>{{ currentData.description }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <!-- Delete Modal -->
     <Dialog
       v-model:visible="showDeleteDialog"
       modal
-      :header="'Delete Review #' + currentData.id"
+      :header="$t('dash.trips.reviews.curd.delete_reivew') +' #' + currentData.id"
       :style="{ width: '35rem' }"
+      :dir="isEng ? 'ltr' : 'rtl'"
     >
       <span
-        >Are you sure you want delete review #{{ currentData.id }} form user '{{
+        >{{ $t('dash.trips.reviews.curd.delete_qustion1') }} #{{ currentData.id }} {{ $t('dash.trips.reviews.curd.delete_qustion2') }} '{{
           currentData.user.name
-        }}' ?</span
+        }}' {{ $t('dash.trips.reviews.curd.?') }}</span
       >
       <template #footer>
         <Button
           icon="pi pi-trash"
-          label="Delete"
+          :label="$t('dash.trips.reviews.curd.delete')"
           severity="danger"
           @click="deleteReview"
         ></Button>
       </template>
     </Dialog>
-    <!-- <div class="modal fade" id="deleteTrip-modal" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title font-kanit fs-5">
-              Delete Review #{{ currentData.id }}
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div
-            class="modal-body d-flex justify-content-center align-items-center"
-          >
-            <p>
-              Are you Sure you want delete review #{{ currentData.id }} from
-              user "{{ currentData.user.name }} ?"
-            </p>
-          </div>
-          <div class="modal-footer d-flex justify-content-end">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-dismiss="modal"
-              @click="deleteData"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -362,6 +175,7 @@ export default {
   data() {
     return {
       isEng: null,
+      isDark:null,
       showShowDialog: false,
       showDeleteDialog: false,
       currentPage: 0,
@@ -538,6 +352,7 @@ export default {
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>

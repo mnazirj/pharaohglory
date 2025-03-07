@@ -1,5 +1,5 @@
 <template>
-  <div class="card m-2 shadow-4">
+  <div :class="['card m-2 ' , isDark?'borader-2':'shadow-4']">
     <div
       class="d-flex justify-content-center align-items-center flex-nowrap w-100 h-100"
     >
@@ -12,19 +12,23 @@
         <div
           class="h-100 w-100 d-flex justify-content-center align-items-center"
         >
-          <i :class="['icon text-white', card.icon]"></i>
+          <i
+            :class="['icon ', card.icon, isDark ? 'text-dark' : 'text-white']"
+          ></i>
         </div>
       </div>
       <div
         class="w-60 d-flex justify-content-center align-items-center flex-wrap text-nowrap"
       >
         <span id="card-name" :class="['w-100 text-center', card.nameClass]">{{
-          card.name
+          $t(card.name)
         }}</span>
         <span id="card-value" class="w-100 text-center">{{ card.value }}</span>
         <span id="card-lable" class="w-100 text-center text-muted"
-          ><i :class="['me-1', card.lableIcon]"></i
-          ><span class="text-wrap">{{ card.lable }}</span>
+          ><i :class="['mx-1', card.lableIcon]"></i
+          ><span class="text-wrap"
+            >{{ $t(card.lable) }} {{ card.lableValue }}</span
+          >
         </span>
       </div>
     </div>
@@ -45,16 +49,19 @@ export default {
         lableIcon: "",
         lable: "",
         nameClass: "",
+        lableValue: "",
       }),
     },
   },
   data() {
     return {
       isEng: null,
+      isDark: null,
     };
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>

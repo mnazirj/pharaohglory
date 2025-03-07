@@ -37,7 +37,11 @@
               class="mx-2"
               @change="changeLang"
             />
-            <Button icon="pi pi-moon" class="rounded-circle"></Button>
+            <Button
+              :icon="['pi' , isDark? 'pi-sun':'pi-moon']"
+              class="rounded-circle"
+              @click="toggleMode"
+            ></Button>
           </div>
         </div>
         <div id="content">
@@ -70,6 +74,7 @@ export default {
       langValue: null,
       languages: ["En", "Ar"],
       isEng: null,
+      isDark:null,
     };
   },
   methods: {
@@ -80,9 +85,19 @@ export default {
       localStorage.setItem("locale", this.langValue.toLowerCase());
       window.location.reload();
     },
+    toggleMode() {
+      if (localStorage.getItem("mode")) {
+        localStorage.removeItem("mode");
+        window.location.reload();
+      } else {
+        localStorage.setItem("mode", "dark");
+        window.location.reload();
+      }
+    },
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>
@@ -211,6 +226,10 @@ main:is(.rtl) {
 /* main table */
 ::v-deep .main-table .p-datatable-thead {
   background-color: #353535;
+  border-radius: 2rem;
+}
+::v-deep .main-table:is(.dark) .p-datatable-thead {
+  background-color: #ff1d48;
   border-radius: 2rem;
 }
 ::v-deep .main-table tr {

@@ -4,7 +4,9 @@
       class="d-flex justify-content-center align-content-center flex-wrap w-90"
     >
       <div class="w-100">
-        <h2 class="text-center">Edit Trip {{ $route.params.tripId }}</h2>
+        <h2 class="text-center">
+          {{ $t("dash.trips.curd_trip.edit_trip") }} {{ $route.params.tripId }}
+        </h2>
       </div>
       <Form
         v-slot="$form"
@@ -19,7 +21,7 @@
           class="d-flex align-item-center w-100 mt-2 mb-3"
         >
           <span :class="['fs-5 text-nowrap', isEng ? 'me-3' : 'ms-3']"
-            >Availability :
+            >{{ $t("dash.trips.availabilty") }} :
           </span>
           <div class="pt-1">
             <ToggleSwitch v-model="trip.isAvailable" name="status" />
@@ -46,7 +48,9 @@
                     isEng ? 'me-2' : 'ms-2',
                   ]"
                 ></i
-                ><span class="text-nowrap">Title in English</span></label
+                ><span class="text-nowrap">{{
+                  $t("dash.trips.curd_trip.title_in_english")
+                }}</span></label
               >
             </FloatLabel>
             <Message
@@ -74,7 +78,9 @@
                     isEng ? 'me-2' : 'ms-2',
                   ]"
                 ></i
-                ><span class="text-nowrap">Title in Arabic</span></label
+                ><span class="text-nowrap">{{
+                  $t("dash.trips.curd_trip.title_in_arabic")
+                }}</span></label
               >
             </FloatLabel>
             <Message
@@ -110,7 +116,9 @@
                     isEng ? 'me-2' : 'ms-2',
                   ]"
                 ></i
-                ><span class="text-nowrap">Description in English</span></label
+                ><span class="text-nowrap">{{
+                  $t("dash.trips.curd_trip.description_in_english")
+                }}</span></label
               >
             </FloatLabel>
             <Message
@@ -139,7 +147,9 @@
                     isEng ? 'me-2' : 'ms-2',
                   ]"
                 ></i
-                ><span class="text-nowrap">Description in Arabic</span></label
+                ><span class="text-nowrap">{{
+                  $t("dash.trips.curd_trip.description_in_arabic")
+                }}</span></label
               >
             </FloatLabel>
             <Message
@@ -174,9 +184,9 @@
                     isEng ? 'me-2' : 'ms-2',
                   ]"
                 ></i
-                ><span class="text-nowrap"
-                  >Full Description in English</span
-                ></label
+                ><span class="text-nowrap">{{
+                  $t("dash.trips.curd_trip.full_description_in_english")
+                }}</span></label
               >
             </FloatLabel>
             <Message
@@ -205,9 +215,9 @@
                     isEng ? 'me-2' : 'ms-2',
                   ]"
                 ></i
-                ><span class="text-nowrap"
-                  >Full Description in Arabic</span
-                ></label
+                ><span class="text-nowrap">{{
+                  $t("dash.trips.curd_trip.full_description_in_arabic")
+                }}</span></label
               >
             </FloatLabel>
             <Message
@@ -232,7 +242,7 @@
               name="category"
               optionValue="id"
               optionLabel="categoryName"
-              placeholder="Select a Category"
+              :placeholder="$t('dash.trips.curd_trip.select_a_category')"
               class="w-100"
               @change="categorySelected"
             />
@@ -253,7 +263,7 @@
               id="type"
               name="type"
               optionLabel="typeName"
-              placeholder="Select a Type"
+              :placeholder="$t('dash.trips.curd_trip.select_a_type')"
               class="w-100"
             />
             <Message
@@ -279,19 +289,27 @@
                   isEng ? 'me-2' : 'ms-2',
                 ]"
               ></i>
-              <span class="fs-5 text-nowrap">Heighlights</span>
+              <span class="fs-5 text-nowrap">{{
+                $t("dash.trips.curd_trip.highlights")
+              }}</span>
             </div>
             <DataTable
               v-if="trip.eventHighlights != null"
               :value="trip.eventHighlights"
               class="w-100"
             >
-              <Column header="In English" style="width: 42.5%">
+              <Column
+                :header="$t('dash.trips.curd_trip.in_english')"
+                style="width: 42.5%"
+              >
                 <template #body="slotProps">
                   <Textarea v-model="slotProps.data.enTitle" fluid></Textarea>
                 </template>
               </Column>
-              <Column header="In Arabic" style="width: 42.5%">
+              <Column
+                :header="$t('dash.trips.curd_trip.in_arabic')"
+                style="width: 42.5%"
+              >
                 <template #body="slotProps">
                   <Textarea v-model="slotProps.data.arTitle" fluid></Textarea>
                 </template>
@@ -313,7 +331,7 @@
             >
               <Button
                 icon="pi pi-plus"
-                label="Add"
+                :label="$t('dash.trips.curd_trip.add')"
                 variant="text"
                 @click="addHighlight"
               ></Button>
@@ -333,26 +351,34 @@
                   isEng ? 'me-2' : 'ms-2',
                 ]"
               ></i>
-              <span class="fs-5 text-nowrap">Includes</span>
+              <span class="fs-5 text-nowrap">{{
+                $t("dash.trips.curd_trip.includes")
+              }}</span>
             </div>
             <DataTable
               v-if="trip.eventIncludes != null"
               :value="trip.eventIncludes"
               class="w-100"
             >
-              <Column header="In English" style="width: 35%">
+              <Column
+                :header="$t('dash.trips.curd_trip.in_english')"
+                style="width: 35%"
+              >
                 <template #body="slotProps">
                   <Textarea v-model="slotProps.data.enTitle" fluid></Textarea>
                 </template>
               </Column>
 
-              <Column header="In Arabic" style="width: 35%">
+              <Column
+                :header="$t('dash.trips.curd_trip.in_arabic')"
+                style="width: 35%"
+              >
                 <template #body="slotProps">
                   <Textarea v-model="slotProps.data.arTitle" fluid></Textarea>
                 </template>
               </Column>
 
-              <Column header="Availability" style="width: 10%">
+              <Column :header="$t('dash.trips.availabilty')" style="width: 10%">
                 <template #body="slotProps">
                   <ToggleSwitch v-model="slotProps.data.status" />
                 </template>
@@ -374,7 +400,7 @@
             >
               <Button
                 icon="pi pi-plus"
-                label="Add"
+                :label="$t('dash.trips.curd_trip.add')"
                 variant="text"
                 @click="addInclude"
               ></Button>
@@ -394,14 +420,19 @@
                   isEng ? 'me-2' : 'ms-2',
                 ]"
               ></i>
-              <span class="fs-5 text-nowrap">About Activity</span>
+              <span class="fs-5 text-nowrap"
+                >{{ $t("dash.trips.curd_trip.about_activity") }}y</span
+              >
             </div>
             <DataTable
               v-if="trip.aboutEvent != null"
               :value="trip.aboutEvent"
               class="w-100"
             >
-              <Column header="Icon" style="width: 5%">
+              <Column
+                :header="$t('dash.trips.curd_trip.icon')"
+                style="width: 5%"
+              >
                 <template #body="slotProps">
                   <IconPicker
                     v-model="slotProps.data.icon"
@@ -410,25 +441,37 @@
                 </template>
               </Column>
 
-              <Column header="Title in English" style="width: 15%">
+              <Column
+                :header="$t('dash.trips.curd_trip.title_in_english')"
+                style="width: 15%"
+              >
                 <template #body="slotProps">
                   <Textarea v-model="slotProps.data.enSubTitle"></Textarea>
                 </template>
               </Column>
 
-              <Column header="Description in English" style="width: 30%">
+              <Column
+                :header="$t('dash.trips.curd_trip.description_in_english')"
+                style="width: 30%"
+              >
                 <template #body="slotProps">
                   <Textarea v-model="slotProps.data.enTitle" fluid></Textarea>
                 </template>
               </Column>
 
-              <Column header="Title in Arabic" style="width: 15%">
+              <Column
+                :header="$t('dash.trips.curd_trip.title_in_arabic')"
+                style="width: 15%"
+              >
                 <template #body="slotProps">
                   <Textarea v-model="slotProps.data.arSubTitle"></Textarea>
                 </template>
               </Column>
 
-              <Column header="Description in Arabic" style="width: 30%">
+              <Column
+                :header="$t('dash.trips.curd_trip.description_in_arabic')"
+                style="width: 30%"
+              >
                 <template #body="slotProps">
                   <Textarea v-model="slotProps.data.arTitle" fluid></Textarea>
                 </template>
@@ -450,7 +493,7 @@
             >
               <Button
                 icon="pi pi-plus"
-                label="Add"
+                :label="$t('dash.trips.curd_trip.add')"
                 variant="text"
                 @click="addAboutActivity"
               ></Button>
@@ -470,7 +513,9 @@
                 isEng ? 'me-2' : 'ms-2',
               ]"
             ></i>
-            <span class="fs-5 text-nowrap">Date & Time</span>
+            <span class="fs-5 text-nowrap">{{
+              $t("dash.trips.curd_trip.date_and_time")
+            }}</span>
           </div>
           <div
             class="d-flex justify-content-between align-content-center w-100"
@@ -501,7 +546,9 @@
                       isEng ? 'me-2' : 'ms-2',
                     ]"
                   ></i
-                  ><span class="text-nowrap">Start Date</span></label
+                  ><span class="text-nowrap">{{
+                    $t("dash.trips.curd_trip.start_date")
+                  }}</span></label
                 >
               </FloatLabel>
             </div>
@@ -531,7 +578,9 @@
                       isEng ? 'me-2' : 'ms-2',
                     ]"
                   ></i
-                  ><span class="text-nowrap">End Date</span></label
+                  ><span class="text-nowrap">{{
+                    $t("dash.trips.curd_trip.end_date")
+                  }}</span></label
                 >
               </FloatLabel>
             </div>
@@ -568,7 +617,9 @@
                       isEng ? 'me-2' : 'ms-2',
                     ]"
                   ></i
-                  ><span class="text-nowrap">Duration</span></label
+                  ><span class="text-nowrap">{{
+                    $t("dash.trips.curd_trip.duration")
+                  }}</span></label
                 >
               </FloatLabel>
             </div>
@@ -583,7 +634,9 @@
             <i
               :class="['pi pi-dollar text-main-color', isEng ? 'me-2' : 'ms-2']"
             ></i>
-            <span class="fs-5 text-nowrap">Prices & Discounts</span>
+            <span class="fs-5 text-nowrap">{{
+              $t("dash.trips.curd_trip.payments")
+            }}</span>
           </div>
           <div
             class="d-flex justify-content-between align-content-center w-100"
@@ -603,7 +656,9 @@
                       isEng ? 'me-2' : 'ms-2',
                     ]"
                   ></i
-                  ><span class="text-nowrap">Adult Price</span></label
+                  ><span class="text-nowrap">{{
+                    $t("dash.trips.curd_trip.adult_price")
+                  }}</span></label
                 >
               </FloatLabel>
             </div>
@@ -622,7 +677,9 @@
                       isEng ? 'me-2' : 'ms-2',
                     ]"
                   ></i
-                  ><span class="text-nowrap">Adult Discount</span></label
+                  ><span class="text-nowrap">{{
+                    $t("dash.trips.curd_trip.adult_discount")
+                  }}</span></label
                 >
               </FloatLabel>
             </div>
@@ -641,7 +698,9 @@
                       isEng ? 'me-2' : 'ms-2',
                     ]"
                   ></i
-                  ><span class="text-nowrap">Children Price</span></label
+                  ><span class="text-nowrap">{{
+                    $t("dash.trips.curd_trip.children_price")
+                  }}</span></label
                 >
               </FloatLabel>
             </div>
@@ -660,7 +719,9 @@
                       isEng ? 'me-2' : 'ms-2',
                     ]"
                   ></i
-                  ><span class="text-nowrap">Children Discount</span></label
+                  ><span class="text-nowrap">{{
+                    $t("dash.trips.curd_trip.children_discount")
+                  }}</span></label
                 >
               </FloatLabel>
             </div>
@@ -678,7 +739,9 @@
                 isEng ? 'me-2' : 'ms-2',
               ]"
             ></i>
-            <span class="fs-5 text-nowrap">Members Count</span>
+            <span class="fs-5 text-nowrap">{{
+              $t("dash.trips.curd_trip.members_count")
+            }}</span>
           </div>
           <div class="w-30 mx-2">
             <FloatLabel variant="on">
@@ -695,7 +758,9 @@
                     isEng ? 'me-2' : 'ms-2',
                   ]"
                 ></i
-                ><span class="text-nowrap">Enroll Members</span></label
+                ><span class="text-nowrap">{{
+                  $t("dash.trips.curd_trip.enroll_members")
+                }}</span></label
               >
             </FloatLabel>
           </div>
@@ -712,7 +777,9 @@
                 isEng ? 'me-2' : 'ms-2',
               ]"
             ></i>
-            <span class="fs-5 text-nowrap">Event Images</span>
+            <span class="fs-5 text-nowrap">{{
+              $t("dash.trips.curd_trip.images")
+            }}</span>
           </div>
           <div class="w-100 d-flex justify-content-center flex-wrap">
             <div
@@ -751,7 +818,7 @@
             />
             <Button
               icon="pi pi-plus"
-              label="Add"
+              :label="$t('dash.trips.curd_trip.add')"
               variant="text"
               @click="triggerFileInputImage"
             ></Button>
@@ -781,28 +848,54 @@
                 isEng ? 'me-2' : 'ms-2',
               ]"
             ></i>
-            <span class="fs-5 text-nowrap">Meeting Point</span>
+            <span class="fs-5 text-nowrap">{{
+              $t("dash.trips.curd_trip.meeting_point")
+            }}</span>
           </div>
 
           <div id="map" class="my-2"></div>
           <div
             class="w-100 d-flex justify-content-center align-items-center flex-wrap my-2"
           >
-            <span class="w-100 fs-5 my-1">Meeting Point Description</span>
-            <Textarea
-              v-model="trip.arMeetingPoint"
-              @input="autoResize($event)"
-              name="ar_meeting_point_description"
-              fluid
-              class="my-3"
-            ></Textarea>
-            <Textarea
-              v-model="trip.enMeetingPoint"
-              @input="autoResize($event)"
-              name="en_meeting_point_description"
-              fluid
-              class="my-3"
-            ></Textarea>
+            <div class="w-100 mx-2 my-2">
+              <FloatLabel variant="on">
+                <Textarea
+                  v-model="trip.arMeetingPoint"
+                  @input="autoResize($event)"
+                  id="ar_meeting_point_description"
+                  name="arMeetingPointDescription"
+                  fluid
+                ></Textarea>
+                <label for="ar_meeting_point_description">
+                  <span class="text-nowrap"
+                    >{{ $t("dash.trips.curd_trip.meeting_point")
+                    }} {{
+                      $t("dash.trips.curd_trip.description_in_arabic")
+                    }}</span
+                  >
+                </label>
+              </FloatLabel>
+            </div>
+            <div class="w-100 mx-2 my-2">
+              <FloatLabel variant="on">
+              <Textarea
+                v-model="trip.enMeetingPoint"
+                @input="autoResize($event)"
+                id="en_meeting_point_description"
+                name="enMeetingPointSescription"
+                fluid
+              ></Textarea>
+              <label for="en_meeting_point_description">
+                <span class="text-nowrap"
+                  >{{ $t("dash.trips.curd_trip.meeting_point")
+                  }} {{
+                    $t("dash.trips.curd_trip.description_in_english")
+                  }}</span
+                >
+              </label>
+            </FloatLabel>
+            </div>
+           
           </div>
         </div>
         <!-- submit button -->

@@ -4,7 +4,7 @@
       class="w-60 d-flex justify-content-center align-items-center flex-wrap shadow-2 rounded-3 mt-5 p-3"
     >
       <!-- Image seciton -->
-      <div
+      <!-- <div
         id="image-container"
         class="d-flex justify-content-center align-items-center w-100 overflow-hidden relative"
         @mouseenter="isImageHovered = true"
@@ -47,7 +47,7 @@
             <i class="pi pi-trash pt-1"></i>
           </button>
         </div>
-      </div>
+      </div> -->
       <!-- Buttons Section -->
       <div class="w-90 d-flex justify-content-end mb-2">
         <!-- <button
@@ -80,37 +80,44 @@
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >Name :
+            >{{ $t('dash.my_profile.name') }} :
           </span>
           <span class="text-nowrap">{{ user.name }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >Username :
+            >{{ $t('dash.my_profile.username') }} :
           </span>
           <span class="text-nowrap">{{ user.username }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >Email :
+            >{{ $t('dash.my_profile.email') }} :
           </span>
           <span class="text-nowrap">{{ user.email }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >Birthday :
+            >{{ $t('dash.my_profile.birthday') }} :
           </span>
           <span class="text-nowrap">{{ user.birthday }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >Address :
+            >{{ $t('dash.my_profile.address') }} :
           </span>
           <span class="text-nowrap">{{ user.address }}</span>
+        </div>
+        <div class="w-100 my-1 d-flex align-items-center">
+          <span
+            :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
+            >{{ $t('dash.my_profile.phone') }} :
+          </span>
+          <span class="text-nowrap">{{ user.phone }}</span>
         </div>
       </div>
     </div>
@@ -119,8 +126,9 @@
   <Dialog
     v-model:visible="showEditDialog"
     modal
-    header="Edit Profile"
+    :header="$t('dash.my_profile.edit_profile')"
     :style="{ width: '35rem' }"
+    :dir="isEng ? 'ltr' : 'rtl'"
   >
     <div
       class="d-flex justify-content-center align-items-center flex-wrap w-100"
@@ -147,7 +155,7 @@
             <InputIcon class="fa-solid fa-font text-main-color" />
             <InputText id="name" name="name" v-model="user.name" fluid />
           </IconField>
-          <label for="name">Name</label>
+          <label for="name">{{ $t('dash.my_profile.name') }}</label>
         </FloatLabel>
       </div>
       <!-- Username -->
@@ -177,7 +185,7 @@
               fluid
             />
           </IconField>
-          <label for="username">Username</label>
+          <label for="username">{{ $t('dash.my_profile.username') }}</label>
         </FloatLabel>
       </div>
       <!-- Email -->
@@ -202,7 +210,7 @@
             <InputIcon class="pi pi-envelope text-main-color" />
             <InputText id="email" name="email" v-model="user.email" fluid />
           </IconField>
-          <label for="email">Email</label>
+          <label for="email">{{ $t('dash.my_profile.email') }}</label>
         </FloatLabel>
       </div>
       <!-- Birthday -->
@@ -238,7 +246,7 @@
               />
             </template>
           </DatePicker>
-          <label for="birthday">Birthday</label>
+          <label for="birthday">{{ $t('dash.my_profile.birthday') }}</label>
         </FloatLabel>
       </div>
       <!-- Address -->
@@ -263,7 +271,7 @@
             <InputIcon class="fa-solid fa-location-crosshairs text-main-color" />
             <InputText id="address" name="address" v-model="user.address" fluid />
           </IconField>
-          <label for="address">Address</label>
+          <label for="address">{{ $t('dash.my_profile.address') }}</label>
         </FloatLabel>
       </div>
       <!-- Phone -->
@@ -288,21 +296,22 @@
             <InputIcon class="pi pi-phone text-main-color" />
             <InputText id="phone" name="phone" v-model="user.phone" fluid />
           </IconField>
-          <label for="phone">Phone</label>
+          <label for="phone">{{ $t('dash.my_profile.phone') }}</label>
         </FloatLabel>
       </div>
     </div>
     <template #footer>
       <!-- <button type="button" class="btn btn-main" @click="saveEdit">Save</button> -->
-      <Button icon="pi pi-save" label="Save" @click="saveEdit"></Button>
+      <Button icon="pi pi-save" :label="$t('dash.my_profile.save')" @click="saveEdit"></Button>
     </template>
   </Dialog>
   <!-- Change Password modal -->
   <Dialog
     v-model:visible="showChangePassDialog"
     modal
-    header="Change Password"
+    :header="$t('dash.my_profile.change_password')"
     :style="{ width: '35rem' }"
+    :dir="isEng ? 'ltr' : 'rtl'"
   >
     <div
       class="d-flex justify-content-center align-items-center flex-wrap w-100"
@@ -322,7 +331,7 @@
         </div> -->
         <FloatLabel variant="on" class="w-100">
             <InputText ref="currentPassword" id="current_password" name="currentPassword" fluid />
-          <label for="current_password">Current Password</label>
+          <label for="current_password">{{ $t('dash.my_profile.current_password') }}</label>
         </FloatLabel>
       </div>
       <!-- New Password -->
@@ -340,7 +349,7 @@
         </div> -->
         <FloatLabel variant="on" class="w-100">
             <InputText ref="newPassword" id="new_password" name="newPassword" fluid />
-          <label for="new_password">New Password</label>
+          <label for="new_password">{{ $t('dash.my_profile.new_password') }}</label>
         </FloatLabel>
       </div>
       <!-- Confirm New Password -->
@@ -358,7 +367,7 @@
         </div> -->
         <FloatLabel variant="on" class="w-100">
             <InputText ref="confirmNewPassword" id="confirm_new_password" name="confirmNewPassword" fluid />
-          <label for="confirm_new_password">Confirm New Password</label>
+          <label for="confirm_new_password">{{ $t('dash.my_profile.confirm_new_password') }}</label>
         </FloatLabel>
       </div>
     </div>
@@ -366,7 +375,7 @@
       <!-- <button type="button" class="btn btn-main" @click="savePassword">
         Save
       </button> -->
-      <Button icon="pi pi-save" label="Save" @click="savePassword"></Button>
+      <Button icon="pi pi-save" :label="$t('dash.my_profile.save')" @click="savePassword"></Button>
     </template>
   </Dialog>
 </template>

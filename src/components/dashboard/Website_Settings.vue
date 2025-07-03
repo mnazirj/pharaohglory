@@ -2,7 +2,7 @@
   <div class="w-100 d-flex justify-content-center align-items-center flex-wrap">
     <div class="w-100 d-flex justify-content-center align-items-center mb-3">
       <div
-        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap rounded-2  p-3', isDark? 'border-1':'shadow-2']"
+        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap rounded-2  p-3', isDark? 'dark-shadow':'shadow-2']"
       >
         <span class="w-100 text-center fs-4 text-main-color mb-3">{{ $t('dash.website_settings.hero_section') }}</span>
         <!-- Hero section Title -->
@@ -43,7 +43,7 @@
 
     <div class="w-100 d-flex justify-content-center align-items-center mb-3">
       <div
-        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap  rounded-2 p-3', isDark? 'border-1':'shadow-2']"
+        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap  rounded-2 p-3', isDark? 'dark-shadow':'shadow-2']"
       >
         <span class="w-100 text-center fs-4 text-main-color mb-3">{{ $t('dash.website_settings.contact') }}</span>
         <!-- Contact address -->
@@ -102,7 +102,7 @@
 
     <div class="w-100 d-flex justify-content-center align-items-center mb-3">
       <div
-        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap rounded-2 p-3' , isDark? 'border-1':'shadow-2']"
+        :class="['w-60 my-1 d-flex justify-content-center align-items-center flex-wrap rounded-2 p-3' , isDark? 'dark-shadow':'shadow-2']"
       >
         <span class="w-100 text-center fs-4 text-main-color mb-3">{{ $t('dash.website_settings.social_media') }}</span>
         <!-- Social Media facebook -->

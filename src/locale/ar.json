@@ -245,8 +245,11 @@
                 "delete_quastion2":"الذي لديه الاسم",
                 "delete": "حذف",
                 "create_a_category": "إنشاء فئة",
-                "?":"؟"
-              }
+                "?":"؟",
+
+                "en_category_name_required":"اسم الفئة بالانجليزية مطلوب",
+                "ar_category_name_required":"اسم الفئة بالعربية مطلوب"
+            }
         },
         "sidebar":{
             "overview":"الملخص",

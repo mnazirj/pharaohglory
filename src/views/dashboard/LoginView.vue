@@ -10,7 +10,7 @@
           :class="[
             'w-40 h-100 d-flex justify-content-center align-items-center bg-main-color',
             isEng ? 'rounded-start-2' : 'rounded-end-2',
-            isDark? 'dark':''
+            isDark ? 'dark' : '',
           ]"
         >
           <img
@@ -24,7 +24,7 @@
           :class="[
             'w-60 h-100 ',
             isEng ? 'rounded-end-2' : 'rounded-start-2',
-            isDark? 'bg-dark' :'bg-white'
+            isDark ? 'bg-dark' : 'bg-white',
           ]"
         >
           <div class="w-100 text-center mt-2 mb-3">
@@ -120,11 +120,11 @@
               </div>
               <div class="w-100">
                 <Message
-                  v-if="isAuth == false"
+                  v-if="isAuth"
                   severity="error"
                   size="small"
                   variant="simple"
-                  >Email or Password invalid</Message
+                  >Email or Password or both is invalid</Message
                 >
               </div>
               <!-- Login Button -->
@@ -136,6 +136,7 @@
                   type="submit"
                   :loading="loadingForData"
                   :label="$t('dash.login.log')"
+                  @click="isAuth = false"
                 />
               </div>
             </Form>
@@ -171,7 +172,7 @@ export default {
       loadingForData: false,
       isAuth: null,
       isEng: "",
-      isDark:"",
+      isDark: "",
       rememberMe: false,
       // inputType: "password",
       initialValues: {
@@ -223,6 +224,7 @@ export default {
       };
     },
     doAuth() {
+      this.loadingForData = true;
       axios
         .post("account/auth/admin/login", {
           email: this.email,
@@ -237,9 +239,14 @@ export default {
             }
             // setTimeout(this.$router.go("/dashboard/home"), 1000);
             this.$router.push({ name: "dash.home" });
+          } else {
+            this.loadingForData = false;
+            this.isAuth = true;
           }
         })
         .catch((e) => {
+          this.loadingForData = false;
+          this.isAuth = true;
           console.log(e);
         });
     },

@@ -273,6 +273,9 @@ export default {
   .chart-radar {
     width: 60%;
   }
+  .chart-table {
+    width: 80%;
+  }
 }
 @media screen and (max-width: 767px) {
   .chart-donat {
@@ -286,6 +289,9 @@ export default {
   } */
   .chart-radar {
     width: 100%;
+  }
+  .chart-table {
+    width: 98%;
   }
 }
 /* @media screen and (max-width: 576px) {
@@ -302,4 +308,5 @@ export default {
     width: 90%;
   }
 } */
+
 </style>

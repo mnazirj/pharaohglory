@@ -1,7 +1,11 @@
 <template>
   <div class="w-100 d-flex justify-content-center align-items-center">
     <div
-      class="w-60 d-flex justify-content-center align-items-center flex-wrap shadow-2 rounded-3 mt-5 p-3"
+      id="container"
+      :class="[
+        ' d-flex justify-content-center align-items-center flex-wrap rounded-3 my-5 p-3',
+        isDark ? 'dark-shadow' : 'shadow-2',
+      ]"
     >
       <!-- Image seciton -->
       <!-- <div
@@ -49,21 +53,7 @@
         </div>
       </div> -->
       <!-- Buttons Section -->
-      <div class="w-90 d-flex justify-content-end mb-2">
-        <!-- <button
-          type="button"
-          class="btn btn-outline-main mx-1"
-          @click="showEditDialog = true"
-        >
-          <i class="pi pi-user-edit pt-1 fs-4"></i>
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-main mx-1"
-          @click="showChangePassDialog = true"
-        >
-          <i class="fa-solid fa-key pt-1 fs-4"></i>
-        </button> -->
+      <div class=" d-flex justify-content-end mb-2">
         <Button
           icon="pi pi-user-edit"
           class="mx-1"
@@ -76,46 +66,46 @@
         ></Button>
       </div>
       <!-- Information Section -->
-      <div class="w-70 d-flex align-items-center flex-wrap">
+      <div class=" d-flex align-items-center flex-wrap">
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >{{ $t('dash.my_profile.name') }} :
+            >{{ $t("dash.my_profile.name") }} :
           </span>
           <span class="text-nowrap">{{ user.name }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >{{ $t('dash.my_profile.username') }} :
+            >{{ $t("dash.my_profile.username") }} :
           </span>
           <span class="text-nowrap">{{ user.username }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >{{ $t('dash.my_profile.email') }} :
+            >{{ $t("dash.my_profile.email") }} :
           </span>
           <span class="text-nowrap">{{ user.email }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >{{ $t('dash.my_profile.birthday') }} :
+            >{{ $t("dash.my_profile.birthday") }} :
           </span>
           <span class="text-nowrap">{{ user.birthday }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >{{ $t('dash.my_profile.address') }} :
+            >{{ $t("dash.my_profile.address") }} :
           </span>
           <span class="text-nowrap">{{ user.address }}</span>
         </div>
         <div class="w-100 my-1 d-flex align-items-center">
           <span
             :class="['text-muted text-nowrap fs-5', isEng ? 'me-1' : 'ms-1']"
-            >{{ $t('dash.my_profile.phone') }} :
+            >{{ $t("dash.my_profile.phone") }} :
           </span>
           <span class="text-nowrap">{{ user.phone }}</span>
         </div>
@@ -155,7 +145,7 @@
             <InputIcon class="fa-solid fa-font text-main-color" />
             <InputText id="name" name="name" v-model="user.name" fluid />
           </IconField>
-          <label for="name">{{ $t('dash.my_profile.name') }}</label>
+          <label for="name">{{ $t("dash.my_profile.name") }}</label>
         </FloatLabel>
       </div>
       <!-- Username -->
@@ -185,7 +175,7 @@
               fluid
             />
           </IconField>
-          <label for="username">{{ $t('dash.my_profile.username') }}</label>
+          <label for="username">{{ $t("dash.my_profile.username") }}</label>
         </FloatLabel>
       </div>
       <!-- Email -->
@@ -210,7 +200,7 @@
             <InputIcon class="pi pi-envelope text-main-color" />
             <InputText id="email" name="email" v-model="user.email" fluid />
           </IconField>
-          <label for="email">{{ $t('dash.my_profile.email') }}</label>
+          <label for="email">{{ $t("dash.my_profile.email") }}</label>
         </FloatLabel>
       </div>
       <!-- Birthday -->
@@ -246,7 +236,7 @@
               />
             </template>
           </DatePicker>
-          <label for="birthday">{{ $t('dash.my_profile.birthday') }}</label>
+          <label for="birthday">{{ $t("dash.my_profile.birthday") }}</label>
         </FloatLabel>
       </div>
       <!-- Address -->
@@ -268,10 +258,17 @@
         </div> -->
         <FloatLabel variant="on" class="w-100">
           <IconField>
-            <InputIcon class="fa-solid fa-location-crosshairs text-main-color" />
-            <InputText id="address" name="address" v-model="user.address" fluid />
+            <InputIcon
+              class="fa-solid fa-location-crosshairs text-main-color"
+            />
+            <InputText
+              id="address"
+              name="address"
+              v-model="user.address"
+              fluid
+            />
           </IconField>
-          <label for="address">{{ $t('dash.my_profile.address') }}</label>
+          <label for="address">{{ $t("dash.my_profile.address") }}</label>
         </FloatLabel>
       </div>
       <!-- Phone -->
@@ -296,13 +293,17 @@
             <InputIcon class="pi pi-phone text-main-color" />
             <InputText id="phone" name="phone" v-model="user.phone" fluid />
           </IconField>
-          <label for="phone">{{ $t('dash.my_profile.phone') }}</label>
+          <label for="phone">{{ $t("dash.my_profile.phone") }}</label>
         </FloatLabel>
       </div>
     </div>
     <template #footer>
       <!-- <button type="button" class="btn btn-main" @click="saveEdit">Save</button> -->
-      <Button icon="pi pi-save" :label="$t('dash.my_profile.save')" @click="saveEdit"></Button>
+      <Button
+        icon="pi pi-save"
+        :label="$t('dash.my_profile.save')"
+        @click="saveEdit"
+      ></Button>
     </template>
   </Dialog>
   <!-- Change Password modal -->
@@ -330,8 +331,15 @@
           />
         </div> -->
         <FloatLabel variant="on" class="w-100">
-            <InputText ref="currentPassword" id="current_password" name="currentPassword" fluid />
-          <label for="current_password">{{ $t('dash.my_profile.current_password') }}</label>
+          <InputText
+            ref="currentPassword"
+            id="current_password"
+            name="currentPassword"
+            fluid
+          />
+          <label for="current_password">{{
+            $t("dash.my_profile.current_password")
+          }}</label>
         </FloatLabel>
       </div>
       <!-- New Password -->
@@ -348,8 +356,15 @@
           />
         </div> -->
         <FloatLabel variant="on" class="w-100">
-            <InputText ref="newPassword" id="new_password" name="newPassword" fluid />
-          <label for="new_password">{{ $t('dash.my_profile.new_password') }}</label>
+          <InputText
+            ref="newPassword"
+            id="new_password"
+            name="newPassword"
+            fluid
+          />
+          <label for="new_password">{{
+            $t("dash.my_profile.new_password")
+          }}</label>
         </FloatLabel>
       </div>
       <!-- Confirm New Password -->
@@ -366,8 +381,15 @@
           />
         </div> -->
         <FloatLabel variant="on" class="w-100">
-            <InputText ref="confirmNewPassword" id="confirm_new_password" name="confirmNewPassword" fluid />
-          <label for="confirm_new_password">{{ $t('dash.my_profile.confirm_new_password') }}</label>
+          <InputText
+            ref="confirmNewPassword"
+            id="confirm_new_password"
+            name="confirmNewPassword"
+            fluid
+          />
+          <label for="confirm_new_password">{{
+            $t("dash.my_profile.confirm_new_password")
+          }}</label>
         </FloatLabel>
       </div>
     </div>
@@ -375,7 +397,11 @@
       <!-- <button type="button" class="btn btn-main" @click="savePassword">
         Save
       </button> -->
-      <Button icon="pi pi-save" :label="$t('dash.my_profile.save')" @click="savePassword"></Button>
+      <Button
+        icon="pi pi-save"
+        :label="$t('dash.my_profile.save')"
+        @click="savePassword"
+      ></Button>
     </template>
   </Dialog>
 </template>
@@ -401,6 +427,7 @@ export default {
   data() {
     return {
       isEng: null,
+      isDark: null,
       showEditDialog: false,
       showChangePassDialog: false,
       isImageHovered: false,
@@ -453,6 +480,7 @@ export default {
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
+    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>
@@ -495,5 +523,30 @@ export default {
   height: fit-content;
   background: rgba(48, 48, 48, 0.34);
   color: white;
+}
+#container > div {
+  width: 90%;
+}
+@media (min-width: 1440px) {
+  #container{
+    width: 50%;
+  }
+}
+@media (max-width: 1440px) {
+  #container{
+    width: 60%;
+  }
+}
+@media (max-width: 1023px) {
+  #container{
+    width: 70%;
+  }
+}
+@media (max-width: 768px) {
+  #container{
+    width: 98%;
+    overflow-x: auto;
+    margin-right: 1rem;
+  }
 }
 </style>

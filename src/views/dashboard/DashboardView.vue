@@ -34,11 +34,11 @@
               v-model="langValue"
               :options="languages"
               id="languages"
-              class="mx-2"
+              class="mx-4"
               @change="changeLang"
             />
             <Button
-              :icon="['pi' , isDark? 'pi-sun':'pi-moon']"
+              :icon="['pi', isDark ? 'pi-sun' : 'pi-moon']"
               class="rounded-circle"
               @click="toggleMode"
             ></Button>
@@ -74,7 +74,7 @@ export default {
       langValue: null,
       languages: ["En", "Ar"],
       isEng: null,
-      isDark:null,
+      isDark:null ,
     };
   },
   methods: {
@@ -86,18 +86,20 @@ export default {
       window.location.reload();
     },
     toggleMode() {
+
+      document.documentElement.classList.toggle("my-app-dark");
+      document.body.classList.toggle("custom-dark");
+
       if (localStorage.getItem("mode")) {
         localStorage.removeItem("mode");
-        window.location.reload();
       } else {
         localStorage.setItem("mode", "dark");
-        window.location.reload();
       }
+      console.log(this.isDark);
     },
   },
   beforeMount() {
     this.isEng = localStorage.getItem("locale") == "en";
-    this.isDark = localStorage.getItem("mode") == "dark";
   },
 };
 </script>
@@ -106,6 +108,10 @@ export default {
 ::v-deep a {
   color: inherit !important;
   text-decoration: none !important;
+}
+::v-deep .dark-shadow {
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.03),
+    0px 0px 2px rgba(255, 255, 255, 0.06), 0px 2px 6px rgba(255, 255, 255, 0.12) !important;
 }
 main {
   transition: all 0.3s ease;
@@ -257,25 +263,25 @@ main:is(.rtl) {
   min-height: 2.7rem;
 }
 @media (min-width: 1440px) {
-  #navbar div {
+  #navbar > div {
     width: 18%;
     justify-content: space-evenly;
   }
 }
 @media (max-width: 1440px) {
-  #navbar div {
+  #navbar > div {
     width: 30%;
     justify-content: space-evenly;
   }
 }
 @media (max-width: 1023px) {
-  #navbar div {
+  #navbar > div {
     width: 40%;
     justify-content: space-evenly;
   }
 }
 @media (max-width: 768px) {
-  #navbar div {
+  #navbar > div {
     width: 90%;
     justify-content: center;
   }

@@ -52,7 +52,7 @@
     <charts>
       <template #table-slot>
         <div
-          :class="['w-80 d-flex justify-content-center align-items-center flex-wrap rounded-2', isDark? 'border-1' :'shadow-2']"
+          :class="['w-80 d-flex justify-content-center align-items-center flex-wrap rounded-2', isDark? 'dark-shadow' :'shadow-2']"
         >
           <div
             class="d-flex justify-content-center align-items-center flex-wrap p-2 w-100"

@@ -2192,25 +2192,23 @@ export default {
           }
         });
     },
-    initMap() {
-      nextTick(() => {
-        const mapElement = document.getElementById("map");
+    async initMap() {
+      const mapElement = document.getElementById("map");
 
-        if (mapElement) {
-          // Initialize the map
-          this.map = new google.maps.Map(mapElement, {
-            center: { lat: 30.033333, lng: 31.233334 },
-            zoom: 7,
-          });
+      if (mapElement) {
+        // Initialize the map
+        this.map = await new google.maps.Map(mapElement, {
+          center: { lat: 30.033333, lng: 31.233334 },
+          zoom: 7,
+        });
 
-          // Add a click listener to set a marker
-          this.map.addListener("click", (event) => {
-            this.addMarker(event.latLng);
-          });
-        } else {
-          console.error("Map element not found.");
-        }
-      });
+        // Add a click listener to set a marker
+        this.map.addListener("click", (event) => {
+          this.addMarker(event.latLng);
+        });
+      } else {
+        console.error("Map element not found.");
+      }
     },
     addMarker(latLng) {
       const svgIcon = {
@@ -2286,33 +2284,7 @@ export default {
           }
         });
     },
-    // startDateResolver: ({ values }) => {
-    //   const errors = {};
-    //   if (!values) {
-    //     errors.startDate = [
-    //       { message: "dash.trips.curd_trip.start_date_required" },
-    //     ];
-    //   }
-    //   return { errors };
-    // },
-    // endDateResolver: ({ values }) => {
-    //   const errors = {};
-    //   if (!values) {
-    //     errors.endDate = [
-    //       { message: "dash.trips.curd_trip.end_date_required" },
-    //     ];
-    //   }
-    //   return { errors };
-    // },
-    // durationResolver: ({ values }) => {
-    //   const errors = {};
-    //   if (!values) {
-    //     errors.duration = [
-    //       { message: "dash.trips.curd_trip.duration_required" },
-    //     ];
-    //   }
-    //   return { errors };
-    // },
+
     resolver: ({ values }) => {
       const errors = {};
 
@@ -2398,8 +2370,6 @@ export default {
   },
   mounted() {
     // Define the global initMap function
-    window.initMap = this.initMap;
-    this.initMap();
 
     this.getTrips(
       localStorage.getItem("_token") || sessionStorage.getItem("_token")

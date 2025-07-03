@@ -240,7 +240,10 @@
         "delete_quastion2":"which has name",
         "delete": "Delete",
         "create_a_category": "Create a category",
-        "?":"?"
+        "?":"?",
+
+        "en_category_name_required":"Category name in english is required",
+        "ar_category_name_required":"Category name in arabic is required"
       }
     },
     "sidebar":{

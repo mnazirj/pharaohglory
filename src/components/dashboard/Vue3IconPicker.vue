@@ -11,11 +11,19 @@
       :closable="true"
       :style="{ width: '50%' }"
     >
-      <div class="aim-modal--icon-search">
-        <input v-model="filterText" placeholder="Filter by name..." />
-        <i class="fas fa-search"> </i>
+      <div class=" absolute fixed w-100 d-flex justify-content-center">
+        <!-- <input v-model="filterText" placeholder="Filter by name..." />
+        <i class="fas fa-search"> </i> -->
+        <IconField class="">
+            <InputIcon class="pi pi-search text-main-color" />
+            <InputText
+              v-model="filterText"
+              :placeholder="$t('dash.trips.search')"
+              fluid
+            />
+          </IconField>
       </div>
-      <div class="aim-modal--icon-preview-inner">
+      <div class="aim-modal--icon-preview-inner mt-5 ">
         <div class="aim-modal--icon-preview">
           <div
             class="aim-icon-item"
@@ -34,7 +42,7 @@
         </div>
       </div>
       <template #footer>
-        <button class="btn btn-main" @click="insert">Insert</button>
+        <button class="btn btn-main mt-2" @click="insert">Insert</button>
       </template>
     </Dialog>
     <!-- <div
@@ -139,9 +147,15 @@
 <script>
 import fontLibrary from "./data/fonts";
 import Dialog from "primevue/dialog";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
 export default {
   components: {
     Dialog,
+    IconField,
+    InputIcon,
+    InputText,
   },
   inheritAttrs: false,
   props: {

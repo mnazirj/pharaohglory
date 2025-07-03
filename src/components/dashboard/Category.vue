@@ -34,9 +34,17 @@
         :value="filteredData"
         paginator
         :rows="5"
-        :class="['w-100 px-2 main-table', isEng ? 'ltr' : 'rtl', isDark? 'dark':'']"
+        :class="[
+          'w-100 px-2 main-table',
+          isEng ? 'ltr' : 'rtl',
+          isDark ? 'dark' : '',
+        ]"
       >
-        <Column field="id" :header="$t('dash.category.id')" style="width: 10%"></Column>
+        <Column
+          field="id"
+          :header="$t('dash.category.id')"
+          style="width: 10%"
+        ></Column>
         <Column
           field="categoryName"
           :header="$t('dash.category.category_name')"
@@ -67,16 +75,20 @@
       v-model:visible="showDeleteDialog"
       :modal="true"
       :closable="true"
-      :header="$t('dash.category.curd.delete_category')+' #' + currentData.id"
+      :header="$t('dash.category.curd.delete_category') + ' #' + currentData.id"
       :style="{ width: '35rem' }"
       :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
       :dir="isEng ? 'ltr' : 'rtl'"
     >
       <p>
-        {{ $t('dash.category.curd.delete_quastion1') }} #{{ currentData.id }} {{ $t('dash.category.curd.delete_quastion2') }} "{{ currentData.categoryName }}" {{ $t('dash.category.curd.?') }}
+        {{ $t("dash.category.curd.delete_quastion1") }} #{{ currentData.id }}
+        {{ $t("dash.category.curd.delete_quastion2") }} "{{
+          currentData.categoryName
+        }}" {{ $t("dash.category.curd.?") }}
       </p>
       <template #footer>
         <Button
+          :loading="isLoading"
           icon="pi pi-trash"
           :label="$t('dash.category.curd.delete')"
           @click="deleteCategory(currentData.slug)"
@@ -88,43 +100,65 @@
       v-model:visible="showEditDialog"
       :modal="true"
       :closable="true"
-      :header="$t('dash.category.curd.edit_category')+' #' + currentData.id"
+      :header="$t('dash.category.curd.edit_category') + ' #' + currentData.id"
       :style="{ width: '35rem' }"
       :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
       :dir="isEng ? 'ltr' : 'rtl'"
     >
-      <FloatLabel variant="on" class="w-100 my-3">
-        <IconField>
-          <InputIcon class="fa-solid fa-heading text-main-color" />
-          <InputText
-            id="en_category_name"
-            name="enCategoryName"
-            v-model="newCategory.enCategoryName"
-            fluid
-          />
-        </IconField>
-        <label for="en_category_name">{{ $t('dash.category.curd.category_name_in_english') }}</label>
-      </FloatLabel>
-
-      <FloatLabel variant="on" class="w-100 my-3">
-        <IconField>
-          <InputIcon class="fa-solid fa-heading text-main-color" />
-          <InputText
-            id="ar_category_name"
-            name="ar_categoryName"
-            v-model="newCategory.arCategoryName"
-            fluid
-          />
-        </IconField>
-        <label for="ar_category_name">{{ $t('dash.category.curd.category_name_in_arabic') }}</label>
-      </FloatLabel>
-      <template #footer>
-        <Button
-          icon="pi pi-save"
-          :label="$t('dash.category.curd.update')"
-          @click="updateCategory(currentData.slug)"
-        ></Button>
-      </template>
+      <Form v-slot="$form" :resolver="editResolver" @submit="editOnFormSubmit">
+        <FloatLabel variant="on" class="w-100 my-3">
+          <IconField>
+            <InputIcon class="fa-solid fa-heading text-main-color" />
+            <InputText
+              id="en_category_name"
+              name="enCategoryName"
+              v-model="newCategory.enCategoryName"
+              fluid
+            />
+          </IconField>
+          <label for="en_category_name">{{
+            $t("dash.category.curd.category_name_in_english")
+          }}</label>
+        </FloatLabel>
+        <Message
+          v-if="$form.enCategoryName?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+          class="w-100"
+          >{{ $form.enCategoryName.error?.message }}</Message
+        >
+        <FloatLabel variant="on" class="w-100 my-3">
+          <IconField>
+            <InputIcon class="fa-solid fa-heading text-main-color" />
+            <InputText
+              id="ar_category_name"
+              name="ar_categoryName"
+              v-model="newCategory.arCategoryName"
+              fluid
+            />
+          </IconField>
+          <label for="ar_category_name">{{
+            $t("dash.category.curd.category_name_in_arabic")
+          }}</label>
+        </FloatLabel>
+        <Message
+          v-if="$form.arCategoryName?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+          class="w-100"
+          >{{ $form.arCategoryName.error?.message }}</Message
+        >
+        <div class="d-flex justify-content-end align-items-center mt-4 mb-2">
+          <Button
+            icon="pi pi-save"
+            :label="$t('dash.category.curd.update')"
+            :loading="isLoading"
+            @click="updateCategory(currentData.slug)"
+          ></Button>
+        </div>
+      </Form>
     </Dialog>
     <!-- create Dialog -->
     <Dialog
@@ -136,37 +170,65 @@
       :breakpoints="{ '1199px': '85vw', '575px': '95vw' }"
       :dir="isEng ? 'ltr' : 'rtl'"
     >
-      <FloatLabel variant="on" class="w-100 my-3">
-        <IconField>
-          <InputIcon class="fa-solid fa-heading text-main-color" />
-          <InputText
-            id="en_category_name"
-            name="enCategoryName"
-            v-model="newCategory.enCategoryName"
-            fluid
-          />
-        </IconField>
-        <label for="en_category_name">{{ $t('dash.category.curd.category_name_in_english') }}</label>
-      </FloatLabel>
-      <FloatLabel variant="on" class="w-100 my-3">
-        <IconField>
-          <InputIcon class="fa-solid fa-heading text-main-color" />
-          <InputText
-            id="ar_category_name"
-            name="arCategoryName"
-            v-model="newCategory.arCategoryName"
-            fluid
-          />
-        </IconField>
-        <label for="ar_category_name">{{ $t('dash.category.curd.category_name_in_arabic') }}</label>
-      </FloatLabel>
-      <template #footer>
-        <Button
-          icon="pi pi-save"
-          :label="$t('dash.category.create')"
-          @click="createCategory"
-        ></Button>
-      </template>
+      <Form
+        v-slot="$form"
+        :resolver="createResolver"
+        @submit="createOnFormSubmit"
+      >
+        <FloatLabel variant="on" class="w-100 my-3">
+          <IconField>
+            <InputIcon class="fa-solid fa-heading text-main-color" />
+            <InputText
+              id="en_category_name"
+              name="enCategoryName"
+              v-model="newCategory.enCategoryName"
+              fluid
+            />
+          </IconField>
+          <label for="en_category_name">{{
+            $t("dash.category.curd.category_name_in_english")
+          }}</label>
+        </FloatLabel>
+        <Message
+          v-if="$form.enCategoryName?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+          class="w-100"
+          >{{ $form.enCategoryName.error?.message }}</Message
+        >
+        <FloatLabel variant="on" class="w-100 my-3">
+          <IconField>
+            <InputIcon class="fa-solid fa-heading text-main-color" />
+            <InputText
+              id="ar_category_name"
+              name="arCategoryName"
+              v-model="newCategory.arCategoryName"
+              fluid
+            />
+          </IconField>
+          <label for="ar_category_name">{{
+            $t("dash.category.curd.category_name_in_arabic")
+          }}</label>
+        </FloatLabel>
+        <Message
+          v-if="$form.enCategoryName?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+          class="w-100"
+          >{{ $form.arCategoryName.error?.message }}</Message
+        >
+        <div class="d-flex justify-content-end align-items-center mt-4 mb-2">
+          {{ console.log($form) }}
+          <Button
+            icon="pi pi-save"
+            :label="$t('dash.category.create')"
+            :loading="isLoading"
+            type="submit"
+          ></Button>
+        </div>
+      </Form>
     </Dialog>
   </div>
 </template>
@@ -180,6 +242,8 @@ import Button from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import FloatLabel from "primevue/floatlabel";
+import { Form } from "@primevue/forms";
+import Message from "primevue/message";
 import axios from "axios";
 export default {
   components: {
@@ -191,16 +255,19 @@ export default {
     DataTable,
     Column,
     FloatLabel,
+    Form,
+    Message,
   },
   data() {
     return {
       searchValue: "",
+      isLoading: false,
       isEng: null,
-      isDark:null,
+      isDark: null,
       categoryies: null,
       newCategory: {
-        arCategoryName: null,
-        enCategoryName: null,
+        arCategoryName: "",
+        enCategoryName: "",
       },
       currentData: {
         id: null,
@@ -249,10 +316,12 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.categoryies = res.data;
+            console.log(this.categoryies);
           }
         });
     },
     createCategory() {
+      this.isLoading = true;
       axios
         .post(
           "base/add/category",
@@ -274,10 +343,13 @@ export default {
             this.showCreateDialog = false;
             this.newCategory = null;
             window.location.reload();
+          } else {
+            this.isLoading = false;
           }
         });
     },
     updateCategory(slug) {
+      this.isLoading = true;
       axios
         .put(
           "base/edit/category/" + slug,
@@ -299,11 +371,13 @@ export default {
             this.showEditDialog = false;
             this.newCategory = null;
             window.location.reload();
+          } else {
+            this.isLoading = false;
           }
         });
     },
     deleteCategory(slug) {
-      console.log(slug);
+      this.isLoading = true;
       axios
         .delete("base/delete/category/" + slug, {
           headers: {
@@ -317,8 +391,49 @@ export default {
           if (res.status == 200) {
             this.showDeleteDialog = false;
             window.location.reload();
+          }else {
+            this.isLoading = false;
           }
         });
+    },
+    createResolver({ values }) {
+      const errors = {};
+
+      if (!values.enCategoryName) {
+        errors.enCategoryName = [
+          { message: this.$t("dash.category.curd.en_category_name_required") },
+        ];
+      }
+      if (!values.arCategoryName) {
+        errors.arCategoryName = [
+          { message: this.$t("dash.category.curd.ar_category_name_required") },
+        ];
+      }
+      return { errors };
+    },
+    createOnFormSubmit({ valid }) {
+      if (valid) {
+        this.createCategory();
+      }
+    },
+    editResolver({ values }) {
+      const errors = {};
+      if (!values.enCategoryName) {
+        errors.enCategoryName = [
+          { message: this.$t("dash.category.curd.en_category_name_required") },
+        ];
+      }
+      if (!values.arCategoryName) {
+        errors.arCategoryName = [
+          { message: this.$t("dash.category.curd.ar_category_name_required") },
+        ];
+      }
+      return { errors };
+    },
+    editOnFormSubmit({ valid }) {
+      if (valid) {
+        this.updateCategory();
+      }
     },
   },
   mounted() {

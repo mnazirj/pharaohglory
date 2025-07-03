@@ -1,5 +1,5 @@
 <template>
-  <div :class="['card m-2 ' , isDark?'borader-2':'shadow-4']">
+  <div :class="['card m-2 ', isDark ? 'dark-shadow' : 'shadow-2']">
     <div
       class="d-flex justify-content-center align-items-center flex-nowrap w-100 h-100"
     >
@@ -71,13 +71,13 @@ export default {
   height: 9rem;
   transition: all 0.2s ease;
   transform-origin: center;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.03), 0px 0px 2px rgba(0, 0, 0, 0.06),
-    0px 2px 6px rgba(0, 0, 0, 0.12) !important;
+  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.03), 0px 0px 2px rgba(0, 0, 0, 0.06),
+    0px 2px 6px rgba(0, 0, 0, 0.12) !important; */
 }
 .card:hover {
   height: 9.2rem;
-  box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.08), 0px 3px 4px rgba(0, 0, 0, 0.1),
-    0px 1px 4px -1px rgba(0, 0, 0, 0.1) !important;
+  /* box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.08), 0px 3px 4px rgba(0, 0, 0, 0.1),
+    0px 1px 4px -1px rgba(0, 0, 0, 0.1) !important; */
 }
 #card-name {
   font-size: 1.7rem;
